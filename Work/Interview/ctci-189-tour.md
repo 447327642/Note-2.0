@@ -17,7 +17,7 @@
 - Big O
 	- 例题
 - 算法题解答技巧
-	- Core Data Sturctures, Algorithms, and Concepts
+	- Core Data Structures, Algorithms, and Concepts
 	- A Problem-Solving Flow
 		- 1.Listen
 		- 2.Example
@@ -70,7 +70,7 @@
 7. Object-Oriented Design: 10
 8. Recursion and Dynamic Programming: 14
 9. System Design and Scalability: 8
-10. Sorting and Searching: 11
+10. Sorting and Searching: 11 (10.7
 11. Testing: 6
 12. C and C++: 11
 13. Java: 8
@@ -227,7 +227,7 @@ The for loop will start when `x = 2` and end when `x * x = n`, aka √n. So it r
 	void permuation(String str){
 	    permutation(str, "");
 	}
-
+	
 	void permutation(String str, String prefix){
 	    if (str.length() == 0){
 	        System.out.println(prefix);
@@ -269,7 +269,7 @@ There are 2 branches per call, and we go as deep as N, there fore the runtime is
 	        System.out.println(i + ": " + fib(i));
 	    }
 	}
-
+	
 	int fib(int n){
 	    if (n <= 0) return 0;
 	    else if (n == 1) return 1;
@@ -337,7 +337,7 @@ O(a/b). The variable count will eventually equal 1/b. The while loop iterates co
 A bottleneck is a part of your algorithm that slows down the overall runtime. There are two common ways this occurs:
 
 + You have one-time work that slows down your algorithm.
-+ You have a chun of work that's done repeatedly, like searching.
++ You have a chunk of work that's done repeatedly, like searching.
 
 #### 1.Listen
 
@@ -345,7 +345,7 @@ A bottleneck is a part of your algorithm that slows down the overall runtime. Th
 
 + record **unique** information
 + use all the information in the problem
-+ write the pertinent information on the whiteborad
++ write the pertinent information on the whiteboard
 
 #### 2.Example
 
@@ -371,25 +371,25 @@ Walk through your brute force with **BUD optimization** and try some of these id
 + Solve it manually on an example, then reverse engineer your thought process. How did you solve it?
 + Solve it "incorrectly" and then think about why the algorithm fails. Can you fix those issues?
 + Make a time vs. space tradeoff. Hash tables are especially useful!
-+ Precompute information. Is there a way that you can reorganize the data(sorting, etc.) or compute som evalues upfront that will help save time in the long run?
++ Precompute information. Is there a way that you can reorganize the data(sorting, etc.) or compute some values upfront that will help save time in the long run?
 + Use a hash table. Hash tables are widely used in interview questions and should be at the top of your mind.
 + Think about the best conceivable runtime.
 
 #### 5.Walk Through
 
-Now that you have an opimal solution, **walk through your approach inh detail**. Make sure you understand each detail before you start coding.
+Now that you have an optimal solution, **walk through your approach in detail**. Make sure you understand each detail before you start coding.
 
-Whiteborad coding is slow, very slow. You need to make sure that you get it as close to "perfect" int he beginning as possible.
+Whiteboard coding is slow, very slow. You need to make sure that you get it as close to "perfect" int he beginning as possible.
 
 #### 6.Implement
 
 Your goal is to **write beautiful code**. Modularize your code from the beginning and refactor to clean up anything that isn't beautiful.
 
-**Keep taling!** Your interviewer wants to hear how you approach the problem.
+**Keep talking!** Your interviewer wants to hear how you approach the problem.
 
 Beautiful code means:
 
-+ **Modularized code**: good codign style & make things easier for you.
++ **Modularized code**: good coding style & make things easier for you.
 + **Error checks**: add a `todo` and then just explain out loud what you'd like to test.
 + **Use other classes/structs where appropriate**: e.g. points in 2 or 3 dimension
 + **Good variable names**
@@ -422,7 +422,7 @@ When you're discussing a linked list in an interview, you must understand whethe
 
 ### The "Runner" Technique
 
-The "runner"(or second pointer) technique is used in many linked list problems. The runner technique means that you iterate through the linked list with two pointers simultaneously, with one ahead. The "fast" node might be ahead by a fixed amount, or it might be hopping multiple nodes for each one node that "slow" node iterrates through.
+The "runner"(or second pointer) technique is used in many linked list problems. The runner technique means that you iterate through the linked list with two pointers simultaneously, with one ahead. The "fast" node might be ahead by a fixed amount, or it might be hopping multiple nodes for each one node that "slow" node iterates through.
 
 ## Stacks and Queues
 
@@ -437,11 +437,11 @@ Tree and graph questions are rife with ambiguous details and incorrect assumptio
 
 + Trees vs. Binary Trees
 + Binary Tree vs. Binary Search Tree
-	+ all left descendents \<= n \< all right descendents
+	+ all left descendants \<= n \< all right descendants
 	+ the definition of a binary search tree can vary slightly with respect to quality. Under some definitions, the tree cannot have duplicate values. In others, the duplicate values will be on the right or can be on either side. All are valid definitions, but you should clarify this with your interviewer.
 + Balanced vs. Unbalanced
 + Complete Binary Trees
-	+ A complete binary tree is a binary tree in which every level of the tree is fully filled, except for perhaps the lst level. To the extent that th last level is filled, it is filled left to right.
+	+ A complete binary tree is a binary tree in which every level of the tree is fully filled, except for perhaps the last level. To the extent that the last level is filled, it is filled left to right.
 + Full Binary Trees
 	+ A full binary tree is a binary tree in which every node has either zero or two children. That is, no nodes have only one child.
 + Perfect Binary Trees
@@ -495,7 +495,7 @@ A trie is a variant of an n-ary tree in which characters are stored at each node
 
 The \* nodes are often used to indicate complete words.
 
-Very commonly, a trie is used to store the entire (English) language for quick prefix lookups. While a hash table can quikcly look up whether a string is a valid word, it cannot tell us if a string is a prefix of any valid words.
+Very commonly, a trie is used to store the entire (English) language for quick prefix lookups. While a hash table can quickly look up whether a string is a valid word, it cannot tell us if a string is a prefix of any valid words.
 
 ### Graphs
 
@@ -510,13 +510,13 @@ Most common way to represent a graph. Every vertex stores a list of adjacent ver
 	class Graph{
 	    public Node[] nodes;
 	}
-
+	
 	class Node {
 	    public String name;
 	    public Node[] children;
 	}
 
-**Adjacentcy Matrices**
+**Adjacency Matrices**
 
 an NxN boolean matrix (where N is the number of nodes), where a true value at `matrix[i][j]` indicates an edge from node i to node j.
 
@@ -547,7 +547,7 @@ BFS uses a queue. In BFS, node `a` visits each of `a's` neighbors before visitin
 	    Queue queue = new Queue();
 	    root.marked = true;
 	    queue.enqueue(root);
-
+	
 	    while (!queue.isEmpty()){
 	        Node r = queue.dequeue();
 	        visit(r);
@@ -581,35 +581,35 @@ Merge sort divides then array in half, sorts each of those halves, and then merg
 The merge method operates by copying all the elements from the target array segment into a helper array, keeping track of where the start of the left and right halves should be (`helperLeft` and `helperRight`).
 
 	void mergesort(int[] array){
-		int[] helper = new int[array.length];
-		mergesort(array, helper, 0, array.length - 1)
+	    int[] helper = new int[array.length];
+	    mergesort(array, helper, 0, array.length - 1)
 	}
-
+	
 	void merge(int[] array, int[] helper, int low, int middle, int high){
-		for (int i = low; i <= high; i++){
-			helper[i] = array[i];
-		}
-
-		int helperLeft = low;
-		int helperRight = middle + 1;
-		int current = low;
-
-		while (helperLeft <= middle && helperRight <= high){
-			if (helper[helperLeft] <= helper[helperRight]){
-				array[current] = helper[helperLeft];
-				helperLefting;
-			}
-			else {
-				array[current] = helper[helperRight];
-				helperRight++;
-			}
-			current++;
-		}
-
-		int remaining = middle - helperLeft;
-		for (int i = 0; i <= remaining; i++){
-			array[current + i] = helper[helperLeft + i];
-		}
+	    for (int i = low; i <= high; i++){
+	        helper[i] = array[i];
+	    }
+	
+	    int helperLeft = low;
+	    int helperRight = middle + 1;
+	    int current = low;
+	
+	    while (helperLeft <= middle && helperRight <= high){
+	        if (helper[helperLeft] <= helper[helperRight]){
+	            array[current] = helper[helperLeft];
+	            helperLefting;
+	        }
+	        else {
+	            array[current] = helper[helperRight];
+	            helperRight++;
+	        }
+	        current++;
+	    }
+	
+	    int remaining = middle - helperLeft;
+	    for (int i = 0; i <= remaining; i++){
+	        array[current + i] = helper[helperLeft + i];
+	    }
 	}
 
 You may notice that only the remaining elements from the left half of the helper array are copied into the target array. Why not the right half? The right half doesn't need to be copied because it's already there.
@@ -619,29 +619,29 @@ You may notice that only the remaining elements from the left half of the helper
 In quick sort, we pick a random element and partition the array, such that all numbers that are less than the partitioning element come before all elements that are greater than it. The partitioning can be performed efficiently through a series of swaps.
 
 	void quickSort(int arr[], int left, int right){
-		int index = partition(arr, left, right);
-		if (left < index - 1){
-			quickSort(arr, left, index - 1);
-		}
-		if (index < right){
-			quickSort(arr, index, right);
-		}
+	    int index = partition(arr, left, right);
+	    if (left < index - 1){
+	        quickSort(arr, left, index - 1);
+	    }
+	    if (index < right){
+	        quickSort(arr, index, right);
+	    }
 	}
-
+	
 	int partition(int arr[], int left, int right){
-		int pivot = arr[(left + right) / 2];
-		while (left <= right){
-			while (arr[left] < pivot) left++;
-			while (arr[right] > pivot) right--;
-
-			// Swap elements, and move left and right indices
-			if (left <= right){
-				swap(arr, left, right);
-				left++;
-				right--;
-			}
-		}
-		return left;
+	    int pivot = arr[(left + right) / 2];
+	    while (left <= right){
+	        while (arr[left] < pivot) left++;
+	        while (arr[right] > pivot) right--;
+	
+	        // Swap elements, and move left and right indices
+	        if (left <= right){
+	            swap(arr, left, right);
+	            left++;
+	            right--;
+	        }
+	    }
+	    return left;
 	}
 
 ### Radix Sort
@@ -653,38 +653,38 @@ Takes advantage of the fact that integers have finite number of bits. In radix s
 注意加一和减一的问题
 
 	int binarySearch(int[] a, int x){
-		int low = 0;
-		int high = a.length - 1;
-		int mid;
-
-		while (low <= high){
-			mid = (low + high) / 2;
-			if (a[mid] < x){
-				low = mid + 1;
-			}
-			else if (a[mid] > x){
-				high = mid - 1;
-			}
-			else {
-				return mid;
-			}
-		}
-		return -1;
+	    int low = 0;
+	    int high = a.length - 1;
+	    int mid;
+	
+	    while (low <= high){
+	        mid = (low + high) / 2;
+	        if (a[mid] < x){
+	            low = mid + 1;
+	        }
+	        else if (a[mid] > x){
+	            high = mid - 1;
+	        }
+	        else {
+	            return mid;
+	        }
+	    }
+	    return -1;
 	}
-
+	
 	int binarySearchRecursive(int[] a, int x, int low, int high){
-		if (low > high) return -1;
-
-		int mid = (low + high) / 2;
-		if (a[mid] < x){
-			return binarySearchRecursive(a, x, mid + 1, high);
-		}
-		else if (a[mid] > x){
-			return binarySearchRecursive(a, x, low, mid - 1);
-		}
-		else{
-			return mid;
-		}
+	    if (low > high) return -1;
+	
+	    int mid = (low + high) / 2;
+	    if (a[mid] < x){
+	        return binarySearchRecursive(a, x, mid + 1, high);
+	    }
+	    else if (a[mid] > x){
+	        return binarySearchRecursive(a, x, low, mid - 1);
+	    }
+	    else{
+	        return mid;
+	    }
 	}
 
 ---
@@ -727,7 +727,7 @@ scalability questions, object-oriented design
 
 ### Google
 
-+ phone screen interview - enginner - tough technical questions
++ phone screen interview - engineer - tough technical questions
 + 4 to 6 interviews
 
 **必须准备**
@@ -736,7 +736,7 @@ scalable system, system design and scalability, algorithm skills
 
 ### Apple
 
-+ excellen technical skills
++ excellent technical skills
 + passion
 + 1 recruiter phone screen
 + a series of technical phone screens
@@ -767,4 +767,3 @@ entrepreneurial spirit, love to build stuff fast
 **必须准备**
 
 more challenging questions, core data structures, system design(backend), 提前准备与训练 HarkerRank.com
-

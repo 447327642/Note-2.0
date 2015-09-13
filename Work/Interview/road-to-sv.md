@@ -111,7 +111,7 @@ Sep 7 | 简历已投至 9.13 日合适的 14 间公司 | 下一次 9.15 - 9.21 �
 1. Android Engine Engineer @ PennyPop
 2. (**Pending**)Software Engineer @ Visual Concepts(2K) cmu, w33 # 100K
 3. Software Engineer - Ad Network/Machine Learning @ Apple
-4. Data Infrastructure Software Engineer - Machine Learning Startup @ Voleon Capital Management LP
+4. (**Rejected**)Data Infrastructure Software Engineer - Machine Learning Startup @ Voleon Capital Management LP
 5. Data Scientist @ EngageClick Inc
 6. Software Developer @ 2redbeans
 7. Graphics Architecture Engineer @ NVIDIA
@@ -126,7 +126,7 @@ Sep 7 | 简历已投至 9.13 日合适的 14 间公司 | 下一次 9.15 - 9.21 �
 
 关于投简历：
 
-1）如何投？我的推荐顺序是内推\>直接找recruiter\>网申，非常不建议网申（小公司除外，初期我们还是需要投一些小公司练手的，海投的途径我主要用过以下几个，indeed，Linkedin，jobvite），虽然不是所有网申都石沉大海，但是网申的效率远比内推或者直接找recruiter联系低得多，直接找recruiter是个很不错的途径，有些recruiter很牛，直接会帮忙联系很多组（我当时投eBay的时候那个recruiter就帮忙联系到三个组，由于eBay是组里直接招人并且互不影响，所以三个组的面试就相当于我有三次面eBay的机会，我三个电面全过拿到了三个onsite，因为第一个组的onsite就过了且对manager印象还不错且后面还有其他公司的onsite，所以后两个组的onsite就都没面）。对于Career fair，我不太好评价，我属于不太愿意凑热闹那种人，career fair给我的唯一印象就是人太多太挤排队太长，所以我基本算是没怎么深入参加career fair。当然，还是建议不太反感的同学参加一下，毕竟对找工作只有好处没坏处，尤其是牛校（诸如CMU）的career fair还是很给力的。
+1）如何投？我的推荐顺序是内推 > 直接找recruiter > 网申，非常不建议网申（小公司除外，初期我们还是需要投一些小公司练手的，海投的途径我主要用过以下几个，indeed，Linkedin，jobvite），虽然不是所有网申都石沉大海，但是网申的效率远比内推或者直接找recruiter联系低得多，直接找recruiter是个很不错的途径，有些recruiter很牛，直接会帮忙联系很多组（我当时投eBay的时候那个recruiter就帮忙联系到三个组，由于eBay是组里直接招人并且互不影响，所以三个组的面试就相当于我有三次面eBay的机会，我三个电面全过拿到了三个onsite，因为第一个组的onsite就过了且对manager印象还不错且后面还有其他公司的onsite，所以后两个组的onsite就都没面）。对于Career fair，我不太好评价，我属于不太愿意凑热闹那种人，career fair给我的唯一印象就是人太多太挤排队太长，所以我基本算是没怎么深入参加career fair。当然，还是建议不太反感的同学参加一下，毕竟对找工作只有好处没坏处，尤其是牛校（诸如CMU）的career fair还是很给力的。
 
 2）如何找内推或者recruiter的联系方式？内推基本有两种途径找，一是找自己的学长学姐，无论是之前就认识还是在LinkedIn上现加的，一般客气一点人家还是愿意内推的，毕竟大家出来混都不容易。二是去各大论坛找内推帖，绝大多数的内推帖都还是很靠谱的，至于如何搜，“site:论坛域名 公司名+内推”屡试不爽。
 
