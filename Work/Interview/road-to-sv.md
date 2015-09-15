@@ -96,6 +96,7 @@ Sep 2 | BrightEdge 预约电话面试 | 9.11 上午 10 点
 Sep 2 | LiveRamp 发来 Code Challenge | 三天内做完
 Sep 4 | 提交 VC 的代码，做完 LR 的 OA | 等待结果
 Sep 7 | 简历已投至 9.13 日合适的 14 间公司 | 下一次 9.15 - 9.21 的
+Sep 14 | 简历已投至 9.21 日合适的 19 间公司 | 下一次 9.22 - 9.27 的
 
 
 
@@ -122,6 +123,11 @@ Sep 7 | 简历已投至 9.13 日合适的 14 间公司 | 下一次 9.15 - 9.21 �
 12. Software Development Engineer @ Yahoo
 13. Software Engineer @ cPacket Networks Inc
 14. (**Rejected**)Mobile Engineer @ Expensify
+15. Software Engineer @ Aribnb
+16. Server Software Engineer @ zazzle
+17. Systems Engineer @ Sojern
+18. Software Developer @ Epic
+19. Software Engineer @ Eventbrite (要做题，有点意思)
 
 
 关于投简历：
