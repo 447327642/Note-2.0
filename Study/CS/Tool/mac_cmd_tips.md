@@ -14,3 +14,12 @@
 ![cmd1](./_resources/cmd1.jpg)
 
 切换回来大概也就是这样，换对应路径即可
+
+## 批量删除文件
+
+    find . -name "*.Ulysses-Group.plist" -exec rm -Rf {} \;
+
+## 清除不必要的服务
+
+    launchctl list 查看服务列表
+    launchctl remove xxxx 删除xxxxx服务的自启动

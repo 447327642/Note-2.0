@@ -2,6 +2,7 @@
 
 <!-- MarkdownTOC -->
 
+- Assignments
 - Week1 9.8
 - TA 信息
 - 提交作业
@@ -11,10 +12,31 @@
 
 <!-- /MarkdownTOC -->
 
+## Assignments
+
+Week | Topic
+:---: | ---
+1 | McDowell 1.1-1.9, 2.1-2.8
+2 | McDowell 3.1-3.6, 4.1-4.12
+3 | McDowell 10.1-10.11
+4 | McDowell 5.1-5.8, 6.1-6.10
+5 | McDowell 8.1-8.14
+6 | McDowell 7.1-7.12, 11.1-11.6
+7 | Pattern Problems 1-3, Agile Scenario
+8 | Pattern Problems 4-6, PM Scenario
+9 | JQuery Project
+10 | Node.js Project
+11 | Python problem set 1.1-1.36, Web Crawler Project Assigned
+12 | Python problem set 2.1-2.17
+13 | Python problem set 3.1-3.26
+14 | Python problem set 4.1-4.5, Web Crawler Project Due
+￼
+￼
+￼
+
 ## Week1 9.8
 
 + github, shuffle 下周开始
-+ 用 andrew id 开一个新账户
 
 ## TA 信息
 
