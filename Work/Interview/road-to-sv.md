@@ -154,13 +154,11 @@ recruiter的联系方式也有两种途径，一是一般来说周围会有一�
 + !!!Google
 + OpenX(LA)
 + !!!Paypal
-+ !!Symantec
 + ! Tumblr(New York)
 + !!! Uber
 + !!! VMware
 + !! Visa
 + ! Whitepages(Seattle)
-+ Verizon(New York)
 
 ## 面试相关
 

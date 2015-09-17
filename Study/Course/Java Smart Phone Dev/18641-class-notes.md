@@ -5,6 +5,7 @@
 - Grade
 - 31 Aug. Mon
 - 2 Sep. Wed
+- 10 Sep. Thurs
 
 <!-- /MarkdownTOC -->
 
@@ -13,6 +14,8 @@
 + Assignment1 18.5/20
 	+ No class descrition on the top of class
 	+ No package structure. Give meaningful names to package
++ Assignment2 19.5/20
+	+ Abstract class should have method
 
 ## 31 Aug. Mon
 
@@ -207,7 +210,7 @@ pass by value:
 	        System.out.println(a1.x); // 10
 	    }
 	}
-	
+
 	Class H { // <- value
 	    int x;
 	    int s1(int y) {y = 10;}
@@ -304,7 +307,7 @@ Recovery mechanisms in place - that can be enacted when exception/issue occurs.
 JRE - Exception Handling system
 
 + Checked --\> System is aware of the exception...
-+ required to use a try / catch block 
++ required to use a try / catch block
 + Unchecked
 + JVM is not aware of in runtime.
 
@@ -327,7 +330,7 @@ Lesson 101 on OOP (#FeelingHumor
 
 OOD  +  Feelings
 
-+ class Parent [ What does focus and seriousness have to do with each other? One comes from your heart and the other from your brain. When both are in concert - magic happens.]() 
++ class Parent [ What does focus and seriousness have to do with each other? One comes from your heart and the other from your brain. When both are in concert - magic happens.]()
 + class ChildInstructor extends Parent implements focus, seriousness[ When I teach  with focus and seriousness I express well]()
 + class ChildStudent extends Parent implements focus, seriousness [ When I study with focus and seriousness I learn ]()
 
