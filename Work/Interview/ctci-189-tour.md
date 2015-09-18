@@ -17,7 +17,7 @@
 - Big O
 	- 例题
 - 算法题解答技巧
-	- Core Data Structures, Algorithms, and Concepts
+	- Core Data Sturctures, Algorithms, and Concepts
 	- A Problem-Solving Flow
 		- 1.Listen
 		- 2.Example
@@ -42,6 +42,11 @@
 	- Quick Sort
 	- Radix Sort
 	- Binary Search
+- Bit Manipulation
+	- Get Bit
+	- Set Bit
+	- Clear Bit
+	- Update Bit
 - 表现技巧
 - 基本面试流程
 - 部分公司准备
@@ -70,7 +75,7 @@
 7. Object-Oriented Design: 10
 8. Recursion and Dynamic Programming: 14
 9. System Design and Scalability: 8
-10. Sorting and Searching: 11 (10.7
+10. Sorting and Searching: 11 (10.7)
 11. Testing: 6
 12. C and C++: 11
 13. Java: 8
@@ -227,7 +232,7 @@ The for loop will start when `x = 2` and end when `x * x = n`, aka √n. So it r
 	void permuation(String str){
 	    permutation(str, "");
 	}
-	
+
 	void permutation(String str, String prefix){
 	    if (str.length() == 0){
 	        System.out.println(prefix);
@@ -269,7 +274,7 @@ There are 2 branches per call, and we go as deep as N, there fore the runtime is
 	        System.out.println(i + ": " + fib(i));
 	    }
 	}
-	
+
 	int fib(int n){
 	    if (n <= 0) return 0;
 	    else if (n == 1) return 1;
@@ -510,7 +515,7 @@ Most common way to represent a graph. Every vertex stores a list of adjacent ver
 	class Graph{
 	    public Node[] nodes;
 	}
-	
+
 	class Node {
 	    public String name;
 	    public Node[] children;
@@ -547,7 +552,7 @@ BFS uses a queue. In BFS, node `a` visits each of `a's` neighbors before visitin
 	    Queue queue = new Queue();
 	    root.marked = true;
 	    queue.enqueue(root);
-	
+
 	    while (!queue.isEmpty()){
 	        Node r = queue.dequeue();
 	        visit(r);
@@ -584,16 +589,16 @@ The merge method operates by copying all the elements from the target array segm
 	    int[] helper = new int[array.length];
 	    mergesort(array, helper, 0, array.length - 1)
 	}
-	
+
 	void merge(int[] array, int[] helper, int low, int middle, int high){
 	    for (int i = low; i <= high; i++){
 	        helper[i] = array[i];
 	    }
-	
+
 	    int helperLeft = low;
 	    int helperRight = middle + 1;
 	    int current = low;
-	
+
 	    while (helperLeft <= middle && helperRight <= high){
 	        if (helper[helperLeft] <= helper[helperRight]){
 	            array[current] = helper[helperLeft];
@@ -605,7 +610,7 @@ The merge method operates by copying all the elements from the target array segm
 	        }
 	        current++;
 	    }
-	
+
 	    int remaining = middle - helperLeft;
 	    for (int i = 0; i <= remaining; i++){
 	        array[current + i] = helper[helperLeft + i];
@@ -627,13 +632,13 @@ In quick sort, we pick a random element and partition the array, such that all n
 	        quickSort(arr, index, right);
 	    }
 	}
-	
+
 	int partition(int arr[], int left, int right){
 	    int pivot = arr[(left + right) / 2];
 	    while (left <= right){
 	        while (arr[left] < pivot) left++;
 	        while (arr[right] > pivot) right--;
-	
+
 	        // Swap elements, and move left and right indices
 	        if (left <= right){
 	            swap(arr, left, right);
@@ -656,7 +661,7 @@ Takes advantage of the fact that integers have finite number of bits. In radix s
 	    int low = 0;
 	    int high = a.length - 1;
 	    int mid;
-	
+
 	    while (low <= high){
 	        mid = (low + high) / 2;
 	        if (a[mid] < x){
@@ -671,10 +676,10 @@ Takes advantage of the fact that integers have finite number of bits. In radix s
 	    }
 	    return -1;
 	}
-	
+
 	int binarySearchRecursive(int[] a, int x, int low, int high){
 	    if (low > high) return -1;
-	
+
 	    int mid = (low + high) / 2;
 	    if (a[mid] < x){
 	        return binarySearchRecursive(a, x, mid + 1, high);
@@ -685,6 +690,62 @@ Takes advantage of the fact that integers have finite number of bits. In radix s
 	    else{
 	        return mid;
 	    }
+	}
+
+## Bit Manipulation
+
++ Two's Complement - 负数可以看作是最高位的 1 为负，其他位为正，相加得到最后的值
+	+ 例如 -1 = (1111) 最高位的 1 表示 -8， 剩下三位等于 7，相加后等于 -1
++ logical right shift - put a `0` in the most significant bit - `>>>`
++ arithmetic right shift - put a `1` in the most significant bit - `>>`
+
+### Get Bit
+
+Shifts 1 over by `i` bits, creating a value that looks like `00010000`. AND operation
+
+	boolean getBit(int num, int i){
+		return ((num & (1 << i)) != 0);
+	}
+
+### Set Bit
+
+Shifts 1 over by `i` bits, creating a value like `00010000`. OR operation
+
+	int setBit(int num, int i){
+		return num | (1 << i);
+	}
+
+### Clear Bit
+
+Create a number like `11101111` by creating the reverse of it (`00010000`). AND operation.
+
+	int clearBit(int num, int i){
+		int mask = ~(1 << i);
+		return num & mask;
+	}
+
+To clear all bits from the most significant bit through `i` (inclusive), we create a mask with a `1` at the ith bit(1 << i). Then we subtract 1 from it, giving us a sequence of 0s followed by i 1s. AND operation.
+
+	int clearBitsMSBthroughI(int num, int i){
+		int mask = (1 << i) - 1;
+		return num & mask;
+	}
+
+To clear bits from i through 0 (inclusive), we take a sequence of 1s (which is -1) and shift it over by 31 - i bits.
+
+	int clearBitsIthrough0(int num, int i){
+		int mask = ~(-1 >>> (31 - i));
+		return num & mask;
+	}
+
+### Update Bit
+
+Set the ith bit to a value `v`
+
+	int updateBit(int num, int i, boolean bitIs1){
+		int value = bitIs1 ? 1 : 0;
+		int mask = ~(1 << i);
+		return (num & mask) | (value << i);
 	}
 
 ---
@@ -767,3 +828,5 @@ entrepreneurial spirit, love to build stuff fast
 **必须准备**
 
 more challenging questions, core data structures, system design(backend), 提前准备与训练 HarkerRank.com
+
+

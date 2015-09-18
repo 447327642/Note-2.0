@@ -11,6 +11,7 @@
 
 ## Grade
 
++ Project1 最后提交的时候写changelog告知TA可以找回原来丢的分数
 + Assignment1 18.5/20
 	+ No class descrition on the top of class
 	+ No package structure. Give meaningful names to package
