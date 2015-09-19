@@ -5,6 +5,7 @@
 - 写在前面
 - 行动日志
 	- 已投公司列表
+- 内推公司列表
 - EOC Preparation
 	- 感兴趣公司列表
 - 面试相关
@@ -119,7 +120,7 @@ Sep 14 | 简历已投至 9.21 日合适的 19 间公司 | 下一次 9.22 - 9.27 
 8. OpenGL Software Engineer(MAC) @ NVIDIA
 9. (**Code Assignment**)Software Engineer @ BrightEdge # 100K
 10. (**Rejected**)Generalist Software Engineer @ LiveRamp # 130K
-11. Software Engineer @ Course Hero
+11. (**Rejected**)Software Engineer @ Course Hero
 12. Software Development Engineer @ Yahoo
 13. Software Engineer @ cPacket Networks Inc
 14. (**Rejected**)Mobile Engineer @ Expensify
@@ -153,8 +154,8 @@ recruiter的联系方式也有两种途径，一是一般来说周围会有一�
 		+ 请选几个和自己背景最匹配的职位，和简历发到jointableau@gmail.com
 	+ 二
 		+ tableauref@gmail.com
-+ [Uber](https://www.uber.com/Jobs) 
-	+ 一 
++ [Uber](https://www.uber.com/Jobs)
+	+ 一
 		+ 选好感兴趣的职位
 		+ 第三人称的不超过100字的介绍，擅长什么和过人之处
 		+ 针对真个职位的简历
@@ -176,7 +177,7 @@ recruiter的联系方式也有两种途径，一是一般来说周围会有一�
 		+ 如果我觉得你背景实在很拔尖， 可以额外提供top hedge funds/trading firms的内推，职位是sde或者quant sde(私底下和很多猎头都有联系，他们经常问我推荐人)。
 		+ 简历请发给 fbneitui@gmail.com， 我会尽量争取每一封邮件都回.
 + [Paypal]()
-	+ 有兴趣的请发简历到claire.sign.up@gmail.com   
+	+ 有兴趣的请发简历到claire.sign.up@gmail.com
 	+ 主题注明："paypal 内推"
 	+ 发邮件的时候最好包含一小段关于你自己经验的介绍
 + [Google](http://google.com/about/careers/search)
@@ -201,10 +202,10 @@ recruiter的联系方式也有两种途径，一是一般来说周围会有一�
 		+ Flatten Binary Tree to Linked List   https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
 		+ Remove Element 将一个01随机数列中，把1全部移到左边，要求移动次数最少
 		+ 请发送你的姓名，邮箱，简历到alexrefer2015@gmail.com，如果有Linkedin，也发过来。我会提前帮你看一下，如果可以我会帮你们内推的，主要不要再发生一内推就被据的情况！
-		+ 
+		+
 + [Groupon](https://jobs.groupon.com/careers/engineering/)
 	+ 有兴趣的同学情发简历到 bigoldcat15@gmail.com
-	+ 标题注明 "Groupon内推"	
+	+ 标题注明 "Groupon内推"
 	+ 邮件附带想投的职位
 + [Yahoo](https://yahoo.referrals.selectminds.com/)
 	+ 找到合适职位发邮件到 yoho_refer@yahoo.com
@@ -216,7 +217,7 @@ recruiter的联系方式也有两种途径，一是一般来说周围会有一�
 	+ 假如感兴趣，直接在邮件中说想投Software Engineer - Entry-Level就好。
 	+ 请用几句英文介绍下（第三人称）：预计什么时候来Twitter，工作/学术经历，专长，为什么和职位match
 + [Pocket Gems]()
-	+ pocketgemsrefer@gmail.com 
+	+ pocketgemsrefer@gmail.com
 	+ 电面题目很常规 地里面经很多 多看几篇电面肯定没问题
 + [Qualtrics]()
 	+ 要求：cs本科或硕士学历，如果毕业学校it比较强，is、ee可以尝试，其他专业除非有2年＋工作经验否则就算了；应届毕业（2015年毕业）或者 跳槽都接受；要会java，javascript，c，python中至少一种语言， 会angularjs是一个plus但不是必须的；仅招engineer岗。
@@ -234,7 +235,7 @@ recruiter的联系方式也有两种途径，一是一般来说周围会有一�
 	+ 有意者请发送简历至zhejiangsb@gmail.com
 	+ job id: (new grad SDET只需注明new grad SDET)
 + [Linkedin]()
-	+ 发邮件到我的邮箱friedrich17@126.com 
+	+ 发邮件到我的邮箱friedrich17@126.com
 	+ 另外就是一定要完善你的linkedin profile 然后把linkedin profile的public url给我
 	+ profile一定要放一张自己看着还不错的照片哦！ 脸一定要够大！！ 详情请看linkedin ceo Jeff Weiner的profile就可以
 + [Bloomberg]()

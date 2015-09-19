@@ -1,5 +1,79 @@
 # BrightEdge
 
+<!-- MarkdownTOC -->
+
+- Online Assignment
+    - Target
+    - How to run/execute the program
+    - FAQ
+- Behavior Interview
+- 电面
+- 一些题目
+
+<!-- /MarkdownTOC -->
+
+
+## Online Assignment
+
+Design and build a robust text scraper that will connect to a page on www.shopping.com / www.sears.com and return results about a given keyword. There are two queries that will be performed:
+
+### Target
+
+The package is mainly for two questions:
+
++ Query 1: Total number of results
+    + Given a keyword, such as "digital camera", return the total number of results found.
++ Query 2: Result Object
+    + Given a keyword (e.g. "digital cameras") and page number (e.g. "1"), return the results in a result object and then print results on screen. For each result, return
+        + title
+        + price
+        + vendor
+        + vendor information
+        + Shipping Price (e.g. "Free Shipping", "$3.50")
+
+This assignment is trying to test your **OOP** ability and **documentation** ability. You can use external HTML parsing tool.
+
+For "digital cameras", there should be either 40 or 80 results that return for page 1.
+
+### How to run/execute the program
+
+Encapsulate your assignment inside an executable jar (e.g. java -jar Assignment.jar ...)
+
+Handle the two queries above:
+
++ Query 1: (requires a single argument)
+    + `java -jar Assignment.jar <keyword>`
+    + (e.g. java -jar Assignment.jar "baby strollers")
++ Query 2: (requires two arguments)
+    + `java -jar Assignment.jar <keyword> <page number>`
+    + (e.g. java -jar Assignment.jar "baby strollers" 2)
+
+### FAQ
+
+> Q: Can I use external libraries for HTML parsing?
+
+A: Yes, you can.
+
+> Q: Can I display "1500+" for total number of results or does it have to be an exact count of results?
+
+A: Either one is fine
+
+> Q: I am unable to submit my assignment through this webpage. What do I do?
+
+A: Email your submission to your recruiter.
+
+> Q: How should I label my submission?
+
+A: Please include your first and last name in the file name.
+
+> Q: Can I use an API to complete the assignment?
+
+A: No, please don't use any APIs to get the results. The assignment requires you to build a web crawler
+
+> Q: What kind of documentation should I provide?
+
+A: Think about how best you can present the assignment to the grader so that he/she is best able to understand your approach. We would recommend a README file, and clear comments in your code to explain your approach to the problem.
+
 ## Behavior Interview
 
 1. 说一说你对 BrightEdge 这个公司的了解。
@@ -14,8 +88,6 @@
 
 > 说一说你对 BrightEdge 这个公司的了解
 
-
-
 ## 电面
 
 最开始是在CMU的校招上投的简历，一天就收到on campus的邮件。on campus轻松水过，一个可爱的中国妹子问了4个题:
@@ -26,7 +98,7 @@
 
 返回删好后的length。就扫一遍就完了
 
-2.m\*n的矩阵走格子，只能向下或者向右。返回总路线数量
+2.m*n的矩阵走格子，只能向下或者向右。返回总路线数量
 
 public int pathSum(int m, int n)
 
@@ -36,9 +108,8 @@ public int pathSum(int m, int n)
 
 一个无难度题 ＋ 仨leetcode原题。四个题加讲一共花了30分钟，然后妹子说她就准备了四个题...问我有什么问题。她后来说这个公司还处在start up阶段，所以非常累要有心理准备。
 
-面过了以后去做著名的coding assignment。和这个帖子说的基本一样http://www.1point3acres.com/bbs/ ... D311%26sortid%3D311只是网站不一样。做的时候是一定要用其他library分析html的，不然会死...然后其写文档也非常重要。我当作一个课程project去写了15页....
 
-结果过了两天又让我面下一轮online coding。这点比较奇怪，因为和我一起的其他童鞋都直接面behavior了，难道是我的assignment做的比较差？我更倾向于认为他们根本忘了我参加过on campus =\_=
+结果过了两天又让我面下一轮online coding。这点比较奇怪，因为和我一起的其他童鞋都直接面behavior了，难道是我的assignment做的比较差？我更倾向于认为他们根本忘了我参加过on campus
 
 下轮是个阿三哥哥。问project和background特别详细，简直查户口，用了20分钟。然后两个题：
 
@@ -75,9 +146,9 @@ Partition array
 Fibonacci number.
 
 Fibonacci number: 1, 1, 2, 3, 5, 8
-n = 0 -\> 1
-n = 1 -\> 1
-n = 2 -\> 2
+n = 0 -> 1
+n = 1 -> 1
+n = 2 -> 2
 F(n+2) = F(n+1) + F(n)
 
 三. 一道OO设计题
@@ -94,9 +165,80 @@ Question: how many regular parking are available at 2nd floor?
 2. Mirror a binary tree.
 3. implement pow(double a, int b)
 4. Find the number of ways to top point in a triangle  
-5. Some complex crawler used for the restaurant menu. 
+5. Some complex crawler used for the restaurant menu.
 6. find the most points on a straight line in a 2D graph  
 
 Applied through the career center website in the university. The first response is within a week. 1) 48-hour coding assignment: use Java to write a web scraper for a certain URL. 2) Technical phone interview: routine algorithm questions. 3) Behavioral phone interview: very common interview questions like why do you choose this company, how to handle conflict in a team. 4) Onsite interview: 2 technical interviews + a 5.5-hour coding… 
 
 First, ask you to describe your most recent project, then talk something about your self... All general behavioral questions. Finally a project, design an app to extract certain keywords to describe a random webpage. For example, an amazon page selling a microwave, the result should be like: microwave GT200(model) 100 dollar.  
+
+作业完成后进入电面的环节。
+
+面试的是一个烙印，英语爆烂，烂到完全听不懂他对公司的介绍。大约听完几分钟的天书后，我们正式进入了技术问题的部分。
+
+第一题：
+
+String permutation，依照之前在cracking coding interview的方法迅速写了一个递归的方法。
+
+不过后来指出这个对于有duplicate不太好。于是我告诉他用hashset存放最后的结果可以免除重复。但是后来他又说有没有其他方法。
+
+于是我依稀记得leetcode上的permutation 2就是讲duplicate怎么处理的，于是用dfs+backtracking的方法重新写了一个可以去除duplicate的版本。同时针对这个算法还争论了一番，最后烙印表示应该是正确的。
+
+第二题：
+
+leetcode和cracking coding interview都有的原题，如何判断一个Binary Tree是不是Binary Search Tree。由于训练有素，很快就完成了。
+
+第三题：
+
+尼玛居然还有第三题，而且还是个design的题目，设计一个parking lot。这是一个非常常见的设计题目，stackoverflow有一个帖子对这个题目描述的非常好，可以参考一下。
+
+BrightEdge：
+
+Round 2：tech电面。一名小印。
+第1题：Fibonacci数列。当时还问recursive的复杂度，我想了半天答了O(n)，不过应
+该是O(2^n)才对。
+第2题：Leetcode原题：如何判断一个BST是否valid。
+Round 3：behavioral电面。
+
+LinkedIn：
+
+Round 0：HR打电话瞎聊一通。
+Round 1：tech电面1。一名老印和一名小印。
+第1题：Leetcode原题：由一个binary tree的inorder及preorder traversal结果，重
+构原binary tree。
+第2题：Leetcode原题：一个已排序的数组中查找某给定element重复的个数。
+
+Round 2：tech电面2。国人大哥。
+第1题：level sum，算是deep iterator的变种。一个多重nested array，例如{a,{b,c
+},{{d},e}}，返回level sum = a + 2 * (b + c) + 3 * d + 2 * e。
+第2题：First Common Ancestor with parent pointer。What if the parent pointer
+is not available?
+
+简单说来三道题目：
+1. reverse linkedlist                        CC原题不能更多
+2. all characters combinations          leetcode原题，不能更多，就是
+combinations的变形
+3. design parking lot
+
+
+第一题我说，俩方法，你要哪个？然后，因为面试官是烙印，真心没有听太清，意思大
+概就是，你开始就行了。然后我就开始了。直接用了最简单的iteration的方法做了。
+给Node，有next指向。输入是head，reverse即可。
+第二题我说，（我真的记得，前两天还专门练了一下下，但是，还是忘了），应该这样
+这样，就是不断减少一个字符，排序剩下的，但是，我总以为是DFS，这段时间做DFS做
+的有点凶，什么都爱往DFS上套。（PS：求问各位一个问题，你们面试的时候说方法的
+时候，就说DFS还是说全名？Depth first searching？） 我反正都有说。然后，然后
+，关键的来了，在答案的帮助下，我终于找到了，终于找到了。不过输入是char array
+，他说随意，我说，好吧，那就array吧，然后我array，存在了ArrayList<ArrayList<
+String>>中，中间好像也没有toString()，反正就这样了。开始真的没有做对，还想的
+DFS，然后我俩的交流有了一点点尴尬，我说，给我one more minute， 终于，找到了
+答案，思路彻底清晰起来了。（大神们轻拍，**这里只是求第一轮顺利通过。）然后，
+解释了半天，小哥应该是听懂了。欢快地pass了。
+第三题我直接开的CC讲的，这两天刚刚起步看design，完全没思路，昨天看了一晚上的
+21点的设计。经典题目就是parking lot，反正我就刚刚开始看design，也答得很差劲
+。各位看官，有懂得，能不能给发个链接或者书籍或者什么博客或者什么主页或者什么
+总结？关于design的东西的？CC的design应该还是不错的，亚麻不也是考parking lot
+么？好像还有什么购物系统，看到之前的面经上有说的。CTCI的作者也出了一个针对PM
+的书籍，这个对design有多少帮助呢？不知道，有看过的留个言啥的呗~~~
+然后，设计要求见pdf，主要就是两层，各种size的车，记录时间，确定能否停靠。还
+是不难。但是，对于我这个刚看design一天的人，还是稍稍有一点难度的。
