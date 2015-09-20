@@ -3,8 +3,7 @@
 <!-- MarkdownTOC -->
 
 - Online Assignment
-    - Target
-    - How to run/execute the program
+    - Word Density Analysis
     - FAQ
 - Behavior Interview
 - 电面
@@ -15,38 +14,55 @@
 
 ## Online Assignment
 
-Design and build a robust text scraper that will connect to a page on www.shopping.com / www.sears.com and return results about a given keyword. There are two queries that will be performed:
++ Grading of the assignment will be based on the following:
+    + Satisfaction of the requirements specified on the following page
+    + Detail orientation
+    + Complete documentation presenting the approach and results
++ You are required to submit the assignment within 1 week(s) from the time the assignment email was sent to you.
++ Once you have started the assignment (by clicking the "Begin Assignment" button below), the upload option will be available only for 48 hours (2 days). To be fair to all applicants, we cannot accept late assignments.
++ It is more important to be complete and thorough rather than to turn in the assignment quickly (unless you are close to missing the deadline).
++ Be sure to upload all the deliverables specified in the next page.
 
-### Target
+### Word Density Analysis
 
-The package is mainly for two questions:
+Our Objective:
 
-+ Query 1: Total number of results
-    + Given a keyword, such as "digital camera", return the total number of results found.
-+ Query 2: Result Object
-    + Given a keyword (e.g. "digital cameras") and page number (e.g. "1"), return the results in a result object and then print results on screen. For each result, return
-        + title
-        + price
-        + vendor
-        + vendor information
-        + Shipping Price (e.g. "Free Shipping", "$3.50")
++ Evaluate core functionality and exception handling (completeness of code)
++ Design on how best to determine relevance, and how best to avoid all the clutter on a busy page
++ OOP
++ Ability to articulate how you built your solution
 
-This assignment is trying to test your **OOP** ability and **documentation** ability. You can use external HTML parsing tool.
+Expected Deliverables:
 
-For "digital cameras", there should be either 40 or 80 results that return for page 1.
++ Executable Jar file or Python files
++ Source Code
++ Documentation - please include examples of sample output from running your program
 
-### How to run/execute the program
+---
 
-Encapsulate your assignment inside an executable jar (e.g. java -jar Assignment.jar ...)
+Given any page (URL), be able to classify the page, and return a list of relevant topics.
 
-Handle the two queries above:
+We'd like to have you build it generically, but for testing purposes, please consider the following URLs.
 
-+ Query 1: (requires a single argument)
-    + `java -jar Assignment.jar <keyword>`
-    + (e.g. java -jar Assignment.jar "baby strollers")
-+ Query 2: (requires two arguments)
-    + `java -jar Assignment.jar <keyword> <page number>`
-    + (e.g. java -jar Assignment.jar "baby strollers" 2)
++ [http://www.amazon.com/Cuisinart-CPT-122-Compact-2-Slice-Toaster/dp/B009GQ034C/ref=sr_1_1?s=kitchen&ie=UTF8&qid=1431620315&sr=1-1&keywords=toaster](http://www.amazon.com/Cuisinart-CPT-122-Compact-2-Slice-Toaster/dp/B009GQ034C/ref=sr_1_1?s=kitchen&ie=UTF8&qid=1431620315&sr=1-1&keywords=toaster)
++ [http://blog.rei.com/camp/how-to-introduce-your-indoorsy-friend-to-the-outdoors/](http://blog.rei.com/camp/how-to-introduce-your-indoorsy-friend-to-the-outdoors/)
++ [http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/](http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/)
+
+
+Input:
+
+Any URL (for testing purposes, please consider the URLs above)
+
+Output:
+
++ List of common topics that best describe the contents of that page
++ e.g. 2-Slice Toaster, Cuisinart CPT-122, Compact toaster
+
+How to run/execute the program:
+
++ Encapsulate your assignment inside an executable jar if you've implemented in Java (e.g. java -jar Assignment.jar ...)
++ Ability to handle the following execution:
+    + java -jar Assignment.jar (e.g. java -jar Assignment.jar "http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/")
 
 ### FAQ
 
@@ -54,9 +70,9 @@ Handle the two queries above:
 
 A: Yes, you can.
 
-> Q: Can I display "1500+" for total number of results or does it have to be an exact count of results?
+> Q: Can I use external libraries for density collection or analysis?
 
-A: Either one is fine
+A: No, this is not allowed.
 
 > Q: I am unable to submit my assignment through this webpage. What do I do?
 
