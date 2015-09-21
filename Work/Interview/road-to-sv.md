@@ -98,6 +98,7 @@ Sep 2 | LiveRamp 发来 Code Challenge | 三天内做完
 Sep 4 | 提交 VC 的代码，做完 LR 的 OA | 等待结果
 Sep 7 | 简历已投至 9.13 日合适的 14 间公司 | 下一次 9.15 - 9.21 的
 Sep 14 | 简历已投至 9.21 日合适的 19 间公司 | 下一次 9.22 - 9.27 的
+Sep 21 | 简历已投至 9.28 日合适的 22 间公司 | 下一次 9.29 - 10.6 的
 
 
 
@@ -129,6 +130,9 @@ Sep 14 | 简历已投至 9.21 日合适的 19 间公司 | 下一次 9.22 - 9.27 
 17. Systems Engineer @ Sojern
 18. Software Developer @ Epic
 19. Software Engineer @ Eventbrite (要做题，有点意思)
+20. Software Engineer, New College Grad @ Medallia
+21. Software Engineer - Computer Vision @ Samsung
+22. Software Engineer - Android and Embedded Systems/IOT, Wearables, Home Automation @ Samsung
 
 
 关于投简历：

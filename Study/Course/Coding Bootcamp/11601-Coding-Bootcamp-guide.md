@@ -18,8 +18,8 @@
 Week | Topic
 :---: | ---
 1(done) | McDowell 1.1-1.9, 2.1-2.8
-2 | McDowell 3.1-3.6, 4.1-4.12
-3 | McDowell 10.1-10.11
+2(done) | McDowell 3.1-3.6, 4.1-4.12
+3(done) | McDowell 10.1-10.11
 4 | McDowell 5.1-5.8, 6.1-6.10
 5 | McDowell 8.1-8.14
 6 | McDowell 7.1-7.12, 11.1-11.6
