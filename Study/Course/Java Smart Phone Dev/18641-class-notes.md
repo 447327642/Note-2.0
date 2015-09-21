@@ -6,6 +6,7 @@
 - 31 Aug. Mon
 - 2 Sep. Wed
 - 10 Sep. Thurs
+- 16 Sep.
 
 <!-- /MarkdownTOC -->
 
@@ -17,6 +18,7 @@
 	+ No package structure. Give meaningful names to package
 + Assignment2 19.5/20
 	+ Abstract class should have method
++ Project1 Unit1 20/20
 
 ## 31 Aug. Mon
 
@@ -307,7 +309,7 @@ Recovery mechanisms in place - that can be enacted when exception/issue occurs.
 
 JRE - Exception Handling system
 
-+ Checked --\> System is aware of the exception...
++ Checked --> System is aware of the exception...
 + required to use a try / catch block
 + Unchecked
 + JVM is not aware of in runtime.
@@ -335,3 +337,54 @@ OOD  +  Feelings
 + class ChildInstructor extends Parent implements focus, seriousness[ When I teach  with focus and seriousness I express well]()
 + class ChildStudent extends Parent implements focus, seriousness [ When I study with focus and seriousness I learn ]()
 
+## 16 Sep.
+
+
+Project 1 - Unit 1
+1. Loading entire description of FordWagon ZTW --> Memory.
+2. Configuring one car (is not to be done in this unit).
+3. no static.
+4. Model - Automotive - OptionSet and Option
+5. Option is a inner class of OptionSet
+6. Encapsulate
+	all properties in every class.
+	make all methods and constructors of Option and OptionSet class protected.
+	inner class should be private or protected?
+	implementation of an API
+7. util - FileIO - instance methods - (3 methods)
+8. driver - create a separate package.
+9. readibility - pl. use conventions that I have mentioned earlier.
+10. Document and code all methods in Automobile, OptionSet and Option Class
+11. In FileIO - building auto from a file - make sure you are only using public
+methods of automobile class.
+
+Abstract classes and Interfaces
+Abstract class - Contract (abstract methods) to be implemented by different classes in same family
+(using extends)
+..cannot be instantiated.
+..can only extend one class
+
+Interface - Contract to be implemented by different classes (API) in different family (using implements).
+..cannot be instantiated.
+..multiple implementations
+
+Linkages between classes across different family is created.
+How APIs are created?
+
+Generics
+C++ influence - Java
+GJ Compiler - Pizza. -
+
+	Collection API - Object.
+		ArrayList - related or unrelated
+		Method overloading - add two numbers. -
+	Templates - A level of genericity where common functions can be defined.
+	Generic class definition - that can apply to common types (where inheritance,
+	abstract classes or interfaces do not fit).
+	Implementation in Java -
+		Pass a type of class in runtime to a Generic type (where common operations are implemented).
+		Generic type {
+			add(t1, t2) - t1 and t2 are defined in runtime.
+		}
+	Template can receive a class definition in runtime.
+	class type as a variable.
