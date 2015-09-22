@@ -31,7 +31,15 @@ Week | Topic
 12 | Python problem set 2.1-2.17
 13 | Python problem set 3.1-3.26
 14 | Python problem set 4.1-4.5, Web Crawler Project Due
-￼
+
+## Shuffle 1
+
+**Me As Interviewer**
+
+
+
+**Me As Interviewee**
+
 ## Week1 9.8
 
 + github, shuffle 下周开始
@@ -77,8 +85,8 @@ Meanwhile, we do encourage you to post your problem on piazza first, your classm
     + 每周作业
     + 周二课堂练习(除非提前24小时请假才可以补)
 + Peer Technical Interviews: 33% (no later than wednesday 3pm)
-    + 每周 administer 2 peer technical interviews
-    + 每周被 interview 2 次
+    + 每周 administer 1 peer technical interviews
+    + 每周被 interview 1 次
     + 问题和人员均随机
     + 没做的话需要写解释
     + 没有回应要告诉 TA

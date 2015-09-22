@@ -3,6 +3,7 @@
 <!-- MarkdownTOC -->
 
 - Grade
+- TA 信息
 - 31 Aug. Mon
 - 2 Sep. Wed
 - 10 Sep. Thurs
@@ -19,6 +20,16 @@
 + Assignment2 19.5/20
 	+ Abstract class should have method
 + Project1 Unit1 20/20
+
+## TA 信息
+
+sjdhruv@andrew.cmu.edu
+
+I will be your TA for Java for Smart Phones Development for fall 2015. I will be grading your assignments for mini 1 and mini 2(not the project). You can reach out to me on the current mail address if you face any issues during the course.
+
+Welcome to the course. Hope you have a great fall semester :)
+
+Suril Dhruv
 
 ## 31 Aug. Mon
 
