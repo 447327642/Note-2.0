@@ -1,58 +1,63 @@
-# CMU 出发前准备
+# CMU 日常生活
 
-<!-- MarkdownTOC -->
+## CIT Around the World
 
-- 电话套餐
-    - 中美区别
-    - 运营商比较
-    - 各类套餐比较
-        - 1) MobileShared Plan（便宜！麻烦！）
-        - 2) 个人套餐（简易！贵！）
-        - 3) 预付套餐（价格中等！信号差！简易！）
-        - 4) 万人团购伐木类套餐（便宜！信号好！简易！）
-        - 你的手机能不能在美国用？
-- 疫苗表翻译对照
-- 驾照
-- 经验分享
-- Course requirements
-    - Restrictions
-- 美国留学需要注意事项
-    - 日常英语
-    - 入乡随俗
-        - 联系工具
-        - 身份证明
-        - 美国朋友
-        - 饮食
-        - 室友合约
-        - 教堂
-    - 力学笃行
-        - 选课
-        - 勤问问题
-        - Office hours
-        - 学术论文
-        - 小组项目
-        - 别作弊
-    - 独立自主
-        - 车
-        - 信用卡
-    - 得心应手
-        - 工作和实习
-        - 派对
-- 不同校区的生活体验
-    - 匹兹堡
-    - ETC
-- 行李打包的原则
-    - 带和不带
-- 留美后留下工作或拿到绿卡
-    - 工作
-    - 绿卡流程
-- 出国留学学到了什么
-    - 德国
-    - 美国
-    - 法国
-    - 俄罗斯
+和 Vanya 一起代表 JIE 去参加座谈会
 
-<!-- /MarkdownTOC -->
+The Around the World with CIT event as Carnival was a success.  The goal of this event is to a) inform attendees about the different types of programs we have across the world and b) help dispel any myths about either the locations where these programs are located or about the quality of the education at those locations.  The audience was impressed by our students and learned a lot about our international programs.  We have decided to replicate the program during Ceilidh Weekend.   As last time, it will be panel discussion with students from our various programs around the world.  Jim will serve as the moderator. 
+ 
+We are hoping to include a student from Rwanda, Silicon Valley, Portugal, and SYSU.  Is there a dynamic student whom you would recommend we invite to serve as the representative of your program?  The event will take place on Saturday, October 10th from 2  – 3:30 p.m. in the Tung Au Lab, on the first floor of Porter Hall.
+
+## 购物清单
+
++ 相机
++ 笔记本
+
+## 医保事宜
+
+Local Hospitals and Urgent-Care Clinics
+
+When UHS is closed: Physician on-call services are available until 11:30pm Monday - Friday, and from 7am - 11:30pm on weekends. Call 412-268-2157, follow the instructions for reaching the physician on-call, and identify yourself as a CMU student.
+
+Hospitals
+
++ [Children's Hospital of Pittsburgh](http://www.chp.edu/CHP/Home)
++ [Magee-Womens Hospital](http://www.upmc.com/HospitalsFacilities/Hospitals/Magee/Pages/Home.aspx)
++ [UPMC Eye and Ear Institute](http://www.upmc.com/Services/services/Pages/ServicesAtoZ.aspx)
++ [UPMC Montefiore](http://www.upmc.com/HospitalsFacilities/Hospitals/upmc-montefiore/Pages/default.aspx)
++ [UPMC Presbyterian](http://www.upmc.com/HospitalsFacilities/Hospitals/Presbyterian/Pages/default.aspx)
++ [UPMC Shadyside](http://www.upmc.com/HospitalsFacilities/Hospitals/Shadyside/Pages/default.aspx)
++[The Western Pennsylvania Hospital](http://www.wpahs.com/wph/patient_info/directions.html)
+
+Urgent Care Facilities
+
++ [MedExpress Urgent Care](http://medexpress.com/local-centers/pennsylvania/bloomfield.aspx)
++ [UMPC Urgent Care at Shadyside](http://www.upmc.com/HospitalsFacilities/urgent-care/Pages/upmc-urgent-care.aspx)
+
+==
+Dear Students,
+
+You may be wondering why Aetna is asking you to provide your Social Security number (or other tax identification number). While you are wise to question whenever a third party is requesting such private information from you, in this instance, there is a reason. Beginning this year, health plans are required to send the Internal Revenue Service (IRS) information about their members, including the member Social Security number (or other tax identification number). This is one of the requirements of the Affordable Care Act (ACA).
+
+The ACA requires that everyone have qualifying insurance, qualify for an exemption, or potentially pay a tax penalty. Further information about this requirement can be found at:
+
+http://www.irs.gov/Affordable-Care-Act/Individuals-and-Families
+
+http://www.aetna.com/health-reform-connection/reform-explained/carrier-employer-reporting-requirements.html
+
+The IRS cross-checks the information in tax returns against the information health insurance plans are required to submit for every person they cover. This IRS review will confirm that you have the required coverage and don’t have to pay a tax penalty.
+
+Many insurers, including Aetna, have been phasing out the use of SSNs for member identification. However, with the ACA requirements, health insurance plans will now be sending letters or otherwise reaching out to plan members asking for that information if they don’t already have it.
+
+What if I don’t have a Social Security number or other tax identification number?
+
+You can disregard the letter, however, please note that Aetna is required by the ACA to request the information three times. If no response is received after the third letter, Aetna will provide the member’s date of birth.
+
+What if I have additional questions?
+
+Please contact Aetna Student Health at 1-877-410-6560.
+
+Note: this information is not meant as legal or tax advice. Please talk to your legal or tax advisor about any questions.
 
 ## 电话套餐
 
@@ -1581,3 +1586,5 @@ H1B身份I-140提交者：可以给配偶提供H4身份合法居留，并有资�
 + 想要的东西要争取，不要等待
 + 多读书，谈论游戏可以找到聊友，谈论艺术，音乐，文学可以找到朋友
 + 不要自卑，歧视给的自卑的人，也不要怕被嘲笑，没有人嘲笑你外语说的不好，但多的是人嘲笑你根本不敢说
+
+
