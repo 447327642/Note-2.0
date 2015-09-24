@@ -863,6 +863,116 @@ MapReduce allows us to do a lot of processing in parallel, which makes processin
 
 ### --------------------
 
+## 12.Testing
+
+**What the Interviewer Is Looking For**
+
++ Big Picture Understanding
++ Knowing How the Pieces Fit Together
++ Organization
++ Practicality
+
+**TEsting a Real World Object**
+
+1. Who will use it? And why?
+2. What are the use cases?
+3. What are the bounds of use?
+4. What are the stress / failure conditions?
+5. How would you perform the testing?
+
+**Testing a Piece of Software**
+
+1. Are we doing Black Box Testing or White Box Tesing?
+2. Who will use it? And why?
+3. What are the use cases?
+4. What are the bounds of use?
+5. What are the stress conditions / failure conditions
+6. What are the test cases? How would you perform the testing?
+
+**Testing a Function**
+
+1. Define the test cases
+	+ The normal case
+	+ The extremes
+	+ Nulls and "illegal" input
+	+ Strange input
+2. Define the expected result
+3. Write test code
+
+**Troubleshooting Questions**
+
+1. Understand the Scenario
+2. Break Down the Problem
+3. Create Specific, Manageable Tests
+
+### --------------------
+
+## 13.C++
+
++ Classes and Inheritance
++ Constructors and Destructors
++ Virutal Functions
++ Virtual Destructor
++ Default Values
++ Operator Overloading
++ Pointer and References
++ Templates
+
+### --------------------
+
+## 14.Java
+
++ Overlading vs. Overriding
+	+ Overloading is a term used to describe when two methods have the same name but differ in the type or number of arguments
+	+ Overriding occurs when a method shares the same name and function signature as another method in its super class
++ ArrayList
+	+ ArrayList<String> myArr = new ArrayList<String>();
+	+ myArr.add("one");
+	+ System.out.println(myArr.get(0));
++ Vector
+	+ Vector<String> myVect = new Vector<String>();
+	+ myVect.add("one");
+	+ System.out.println(myVect.get(0));
++ LinkedList
+	+ LinkedList<String> myLinkedList = new LinkedList<String>();
+	+ myLinkedList.addFirst("two");
+	+ myLinkedList.addFirst("one");
+	+ Iterator<String> iter = myLinkedList.iterator();
+	+ while (iter.hashNext()) { System.out.println(iter.next()); }
++ HashMap
+	+ HashMap<String, String> map = new HashMap<String, String>();
+	+ map.put("one", "uno");
+	+ map.put("two", "dos");
+	+ System.out.println(map.get("one")); 
+	
+### Questions
+	
+> Private Constructor: In terms of inheritance, what is the effect of keeping
+
+This has direct implications for inheritance, since a subclass calls its parent's constructor. The class A an be inherited, but only by its own or its parent's inner classes.
+	
+> Return from Finally: In java, does the `finally` block get executed if we insert a return statements inside the try block of a `try-catch-finally`?
+
+Yes, it will get executed. The `finally` block gets executed when the `try` block exits.
+
+There are some cases in which the `finally` block will not get executed, such as the following:
+
++ If the virtual machine exits during try/catch block execution
++ If the thread which is executing during the try/catch block gets killed
+
+> Final, etc.: What is the difference between final, finally, and finalize?
+
++ final - control whether a variable, method, or class is "change-able"
++ finally - used in a try/catch block to ensure that a segment of code is always executed
++ finalize() - called by garbage collector once it determines that no more references exist.
+
+> Generics vs. Templates: Explain the difference between templates in C++ and generics in Java?
+
+
+> 	TreeMap, HashMap, LinkedHashMap: Explain the differences between these three. Provide an example of when each one would be best
+
+### --------------------
+
 ## Behavioral Questions
 
 ### Interview Preparation Grid
