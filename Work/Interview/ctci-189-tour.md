@@ -3,6 +3,51 @@
 <!-- MarkdownTOC -->
 
 - 任务列表
+	- --------------------
+- 1.Big O
+	- 例题
+	- --------------------
+- 2.Arrays and Strings
+	- Hash Tables
+	- --------------------
+- 3.Linked List
+	- The "Runner" Technique
+	- --------------------
+- 4.Stacks and Queues
+	- --------------------
+- 5.Trees and Graphs
+	- Binary Tree Traversal
+	- Binary Heaps (Min-Heaps and Max-Heaps)
+	- Tries(Prefix Trees)
+	- Graphs
+	- Graph Search
+	- --------------------
+- 6.Sorting and Searching
+	- Merge Sort
+	- Quick Sort
+	- Radix Sort
+	- Binary Search
+	- --------------------
+- 7.Bit Manipulation
+	- Get Bit
+	- Set Bit
+	- Clear Bit
+	- Update Bit
+	- --------------------
+- 8.Math and Logic Puzzles
+	- Prime Numbers
+		- Divisibility
+		- Check for Primality
+	- Probability
+	- Start Talking
+	- --------------------
+- 9.Recursion and Dynamic Programming
+	- Recursive vs. Iterative Solutions
+	- Dynamic Programming & Memorization
+	- --------------------
+- 10.Object-Oriented Design
+	- Step1: Handle Ambiguity
+	- --------------------
 - Behavioral Questions
 	- Interview Preparation Grid
 		- 细致准备重点项目
@@ -14,8 +59,7 @@
 	- 回答问题技巧
 		- Nugget First
 		- S.A.R. (Situation, Action, Result)
-- Big O
-	- 例题
+	- --------------------
 - 算法题解答技巧
 	- Core Data Sturctures, Algorithms, and Concepts
 	- A Problem-Solving Flow
@@ -26,38 +70,11 @@
 		- 5.Walk Through
 		- 6.Implement
 		- 7.Test
-- Arrays and Strings
-	- Hash Tables
-- Linked List
-	- The "Runner" Technique
-- Stacks and Queues
-- Trees and Graphs
-	- Binary Tree Traversal
-	- Binary Heaps (Min-Heaps and Max-Heaps)
-	- Tries(Prefix Trees)
-	- Graphs
-	- Graph Search
-- Sorting and Searching
-	- Merge Sort
-	- Quick Sort
-	- Radix Sort
-	- Binary Search
-- Bit Manipulation
-	- Get Bit
-	- Set Bit
-	- Clear Bit
-	- Update Bit
-- Math and Logic Puzzles
-	- Prime Numbers
-		- Divisibility
-		- Check for Primality
-	- Probability
-	- Start Talking
-- Recursion and Dynamic Programming
-	- Recursive vs. Iterative Solutions
-	- Dynamic Programming & Memorization
+	- --------------------
 - 表现技巧
+	- --------------------
 - 基本面试流程
+	- --------------------
 - 部分公司准备
 	- Microsoft
 	- Amazon
@@ -82,9 +99,9 @@
 5. Bit Manipulation: 8
 6. Math and Logic Puzzles: 10
 7. Object-Oriented Design: 10
-8. Recursion and Dynamic Programming: 14
+8. **Recursion and Dynamic Programming**: 14
 9. System Design and Scalability: 8
-10. Sorting and Searching: 11 (10.7)
+10. **Sorting and Searching**: 11 (10.7)
 11. Testing: 6
 12. C and C++: 11
 13. Java: 8
@@ -93,95 +110,9 @@
 16. Moderate: 26
 17. Hard: 26
 
-## Behavioral Questions
+### --------------------
 
-### Interview Preparation Grid
-
-针对每个 project，列出以下几个方面的相关总结关键词，一定要是**特别精炼的短语**，不要长篇大论的句子：
-
-+ Challenges
-+ Mistakes/Failures
-+ Enjoyed
-+ Leadership
-+ Conflicts
-+ What You'd Do Differently
-
-#### 细致准备重点项目
-
-两三个 project 要重点准备，除了上面提到的方面，还需要能够细致介绍：
-
-+ Technical decisions
-+ Choices of technologies(tradeoff)
-
-### 常见面试问题
-
-> Tell me about yourself
-
-可以按照如下的方式组织准备
-
-1. **Current Role [Headline Only]**: I'm a graduate student in Carnegie Mellon University majored in Electrical and Computer Engineering.
-2. **College**: I majored in Software Engineering for my undergraduate and had a 6-month internship in Microsoft.
-3. **Current Role [Details]**: Learning both the software and the hardware, I know how to write great code on different platforms, especially computer vision and machine learning.
-4. **Outside of Work**: Outside of work, I've been working on mobile app development. One of my app named League of Legends Wiki has over 700K downloads with an average rating of 4.5 out of 5.
-5. **Wrap Up**: I'm looking for a full time job as I'll get my master degree next year and your company caught my eye. I've always been interested in creating something new so I'd like to talk more with you about the xxx position in your company.
-
-注意见缝插针描述自己的闪光点，让人感兴趣和印象深刻。
-
-> What are your weaknesses
-
-回答技巧：实话实话，不要装逼。点明缺点之后重点强调自己是如何克服的。
-
-个人参考答案：Sometimes, I may lose focus on the whole project while plunge into very detailed problems. It's not bad to spend more time finding the best solution. But it may be better to finish the most critical part first. As it is, I'll draw the whole design on paper and put it just in front of the monitor so that I can easily find out what I should focus on.
-
-### 问面试官的问题
-
-大概有三类问题
-
-#### Genuine Questions
-
-跟公司，工作有关的问题，例如
-
-1. What brought you to this company?
-2. What has been most challenging for you?
-3. Do you have program managers? If there is a conflicts between developer and managers, how do you solve it?
-
-#### Insightful Questions
-
-这类问题通常需要对公司有比较深入的研究，例如
-
-1. I noticed that you use technology X. How do you handle problem Y?
-2. Why did this product choose to use technology X over technology Y?
-
-#### Passion Questions
-
-展现激情和学习兴趣
-
-1. I'm very interested in machine learning, and I'd love to learn more about it. What opportunities are there at this company to learn about this?
-2. I'm not familiar with technology X, but it sounds like a very interesting solution. Could you tell me a bit more about how it works?
-
-### 回答问题技巧
-
-+ 不要过多涉及细节，而是用数据对比或者面试官能听懂的内容来介绍
-+ 多说 I 而不是 We，说自己扮演的角色和所做的工作
-+ 结构式问题回答
-
-#### Nugget First
-
-开门见山，先用一句话概括，然后再逐步推进到细节部分
-
-#### S.A.R. (Situation, Action, Result)
-
-+ outline the situation
-+ explain the actions you took
-+ describe the result
-
-**Action 部分是最需要着力的地方，逻辑清晰，分点叙述，主要不要涉及过多细节**。
-
-精雕细琢故事部分，字里行间体现出自己的一些特质，如：Initiative/Leadership, Empathy, Compassion, Humility, Teamwork/Helpfulness
-
----
-
-## Big O
+## 1.Big O
 
 需要了解如何分析 Time Complexity 以及 Space Complexity.
 
@@ -315,112 +246,9 @@ There are 2 branches per call, and we go as deep as N, there fore the runtime is
 
 O(a/b). The variable count will eventually equal 1/b. The while loop iterates count times. Therefore, it iterates a/b times.
 
----
+### --------------------
 
-## 算法题解答技巧
-
-+ 掌握基本的数据结构，算法及概念
-+ Most interviewers won't ask about specific algorithms for binary tree balancing or other complex algorithms(他们可能自己都不太记得了，因为不常用)
-
-### Core Data Sturctures, Algorithms, and Concepts
-
-+ Data Structures
-	+ Linked Lists
-	+ Trees, Tries, & Graphs
-	+ Stacks & Queues
-	+ Heaps
-	+ Vectors / ArrayLists
-	+ **(!)Hash Tables**
-+ Algorithms
-	+ Breadth-First Search
-	+ Depth-First Search
-	+ Binary Search
-	+ Merge Sort
-	+ Quick Sort
-+ Concepts
-	+ Bit Manipulation
-	+ Memory (Stack vs. Heap)
-	+ Recursion
-	+ Dynamic Programming
-	+ Big O Time & Space
-
-### A Problem-Solving Flow
-
-**BUD Optimization**: **B**ottlenecks, **U**nnecessary Work, **D**uplicated Work
-
-A bottleneck is a part of your algorithm that slows down the overall runtime. There are two common ways this occurs:
-
-+ You have one-time work that slows down your algorithm.
-+ You have a chunk of work that's done repeatedly, like searching.
-
-#### 1.Listen
-
-**Pay very close attention** to any information in the problem description. You probably need it all for an optimal algorithm.
-
-+ record **unique** information
-+ use all the information in the problem
-+ write the pertinent information on the whiteboard
-
-#### 2.Example
-
-Most examples are too small or are special cases. **Debug your example**. Is there any way it's a special case? Is it big enough?
-
-Go to the whiteboard and draw an example:
-
-+ Specific: use real numbers or strings
-+ Sufficiently large
-+ Not a special case
-
-Try to make the best example you can.
-
-#### 3.Brute Force
-
-Get a brute-force solution as soon as possible. Don't worry about developing an efficient algorithm yet. State a naive algorithm and its runtime, then optimize from there. Don't code yet though!
-
-#### 4.Optimize
-
-Walk through your brute force with **BUD optimization** and try some of these ideas:
-
-+ Look for any unused info. You usually need all the information in a problem.
-+ Solve it manually on an example, then reverse engineer your thought process. How did you solve it?
-+ Solve it "incorrectly" and then think about why the algorithm fails. Can you fix those issues?
-+ Make a time vs. space tradeoff. Hash tables are especially useful!
-+ Precompute information. Is there a way that you can reorganize the data(sorting, etc.) or compute some values upfront that will help save time in the long run?
-+ Use a hash table. Hash tables are widely used in interview questions and should be at the top of your mind.
-+ Think about the best conceivable runtime.
-
-#### 5.Walk Through
-
-Now that you have an optimal solution, **walk through your approach in detail**. Make sure you understand each detail before you start coding.
-
-Whiteboard coding is slow, very slow. You need to make sure that you get it as close to "perfect" int he beginning as possible.
-
-#### 6.Implement
-
-Your goal is to **write beautiful code**. Modularize your code from the beginning and refactor to clean up anything that isn't beautiful.
-
-**Keep talking!** Your interviewer wants to hear how you approach the problem.
-
-Beautiful code means:
-
-+ **Modularized code**: good coding style & make things easier for you.
-+ **Error checks**: add a `todo` and then just explain out loud what you'd like to test.
-+ **Use other classes/structs where appropriate**: e.g. points in 2 or 3 dimension
-+ **Good variable names**
-
-#### 7.Test
-
-Test in this order:
-
-1. Conceptual test. Walk through your code like you would for a detailed code review.
-2. Unusual or non-standard code.
-3. Hot spots, like arithmetic and null nodes.
-4. Small test cases. It's much faster than a big test case and just as effective.
-5. Special cases and edge cases.
-
-And when you find bugs, **fix them carefully!**
-
-## Arrays and Strings
+## 2.Arrays and Strings
 
 ### Hash Tables
 
@@ -430,7 +258,9 @@ If the number of collisions is very high, the worst case runtime is O(N), where 
 
 可以用一个数组，数组的每个元素是一个链表来实现。
 
-## Linked List
+### --------------------
+
+## 3.Linked List
 
 When you're discussing a linked list in an interview, you must understand whether it is a singly linked list or a doubly linked list.
 
@@ -438,14 +268,18 @@ When you're discussing a linked list in an interview, you must understand whethe
 
 The "runner"(or second pointer) technique is used in many linked list problems. The runner technique means that you iterate through the linked list with two pointers simultaneously, with one ahead. The "fast" node might be ahead by a fixed amount, or it might be hopping multiple nodes for each one node that "slow" node iterates through.
 
-## Stacks and Queues
+### --------------------
+
+## 4.Stacks and Queues
 
 + Stack - LIFO
 + Queue - FIFO
 
 Both can be implemented by linked list
 
-## Trees and Graphs
+### --------------------
+
+## 5.Trees and Graphs
 
 Tree and graph questions are rife with ambiguous details and incorrect assumptions. Be sure to watch out for the following issues and seek clarification when necessary
 
@@ -580,7 +414,9 @@ If you are asked to implement BFS, the key thing to remember is the use of the q
 
 Bidirectional search is used to find the shortest path between a source and destination node. It operates by essentially running two simultaneous breadth-first searches, on from each node. When their searches collide, we have found a path.
 
-## Sorting and Searching
+### --------------------
+
+## 6.Sorting and Searching
 
 + Bubble Sort | Runtime: O(n^2) | Memory: O(1)
 + Selection Sort | Runtime: O(n^2) | Memory: O(1)
@@ -701,7 +537,9 @@ Takes advantage of the fact that integers have finite number of bits. In radix s
 	    }
 	}
 
-## Bit Manipulation
+### --------------------
+
+## 7.Bit Manipulation
 
 + Two's Complement - 负数可以看作是最高位的 1 为负，其他位为正，相加得到最后的值
 	+ 例如 -1 = (1111) 最高位的 1 表示 -8， 剩下三位等于 7，相加后等于 -1
@@ -757,7 +595,9 @@ Set the ith bit to a value `v`
 		return (num & mask) | (value << i);
 	}
 
-## Math and Logic Puzzles
+### --------------------
+
+## 8.Math and Logic Puzzles
 
 ### Prime Numbers
 
@@ -800,7 +640,9 @@ P(A or B) = P(A) + P(B) - P(A and B)
 
 Don't panic when you get a brainteaser. Like algorithm questions, interviewers want to see how you tackle a problem; they don't expect you to immediately know the anser. Start talking, and show the interviewer how you approach a problem.
 
-## Recursion and Dynamic Programming
+### --------------------
+
+## 9.Recursion and Dynamic Programming
 
 + Recursive solutions, by definition, are built off of solutions to subproblems.
 + The bottom-upa approach is ofent the most intuitive. Start with simple case.
@@ -874,16 +716,266 @@ Just store afew variables
 
 ---
 
+### --------------------
+
+## 10.Object-Oriented Design
+
+1. Step1: Handle Ambiguity
+	+ make assumptions & ask clarifying questions
+	+ **who** is going to use it and **how** they are going to use it
+	+ who, what, where, when, how, why
+2. Define the core objects
+	Suppose we are designing for a restaurant. Our core objects might be things like `Table`, `Guest`, `Party`, `Order`, `Meal`, `Employee`, `Server`, and `Host`.
+3. Analyze Relationships
+4. Investigate Actions
+
+### Design Patterns
+
+Singleton and Factory Method design patterns are widely used in intervies.
+
+#### Singleton Class
+
+Ensures that a class has only on instance and ensures access to the instance through the application. It can be useful in cases where you have a "global" object with exactly one instance.
+
+```java
+public class Restaurant{
+	private static Restaurant _instance = null;
+	protected Restaurant() {...}
+	public static Restaurant getInstance(){
+		if (_instance == null){
+			_instance = new Restaurant();
+		}
+		return _instance;
+	}
+}
+```
+
+#### Factory Method
+
+Offers an interface for creating an instance of a class, with its subclasses deciding which class to instantiate.
+
+```java
+public class CardGame {
+	public static CardGame createCardGame(GameType type){
+		if (type == GameType.Poker) {
+			return new PokerGame();
+		}
+		else if (type == GameType.BlackJack) {
+			return new BlackJackGame();
+		}
+		return null;
+	}
+}
+```
+### --------------------
+
+## Behavioral Questions
+
+### Interview Preparation Grid
+
+针对每个 project，列出以下几个方面的相关总结关键词，一定要是**特别精炼的短语**，不要长篇大论的句子：
+
++ Challenges
++ Mistakes/Failures
++ Enjoyed
++ Leadership
++ Conflicts
++ What You'd Do Differently
+
+#### 细致准备重点项目
+
+两三个 project 要重点准备，除了上面提到的方面，还需要能够细致介绍：
+
++ Technical decisions
++ Choices of technologies(tradeoff)
+
+### 常见面试问题
+
+> Tell me about yourself
+
+可以按照如下的方式组织准备
+
+1. **Current Role [Headline Only]**: I'm a graduate student in Carnegie Mellon University majored in Electrical and Computer Engineering.
+2. **College**: I majored in Software Engineering for my undergraduate and had a 6-month internship in Microsoft.
+3. **Current Role [Details]**: Learning both the software and the hardware, I know how to write great code on different platforms, especially computer vision and machine learning.
+4. **Outside of Work**: Outside of work, I've been working on mobile app development. One of my app named League of Legends Wiki has over 700K downloads with an average rating of 4.5 out of 5.
+5. **Wrap Up**: I'm looking for a full time job as I'll get my master degree next year and your company caught my eye. I've always been interested in creating something new so I'd like to talk more with you about the xxx position in your company.
+
+注意见缝插针描述自己的闪光点，让人感兴趣和印象深刻。
+
+> What are your weaknesses
+
+回答技巧：实话实话，不要装逼。点明缺点之后重点强调自己是如何克服的。
+
+个人参考答案：Sometimes, I may lose focus on the whole project while plunge into very detailed problems. It's not bad to spend more time finding the best solution. But it may be better to finish the most critical part first. As it is, I'll draw the whole design on paper and put it just in front of the monitor so that I can easily find out what I should focus on.
+
+### 问面试官的问题
+
+大概有三类问题
+
+#### Genuine Questions
+
+跟公司，工作有关的问题，例如
+
+1. What brought you to this company?
+2. What has been most challenging for you?
+3. Do you have program managers? If there is a conflicts between developer and managers, how do you solve it?
+
+#### Insightful Questions
+
+这类问题通常需要对公司有比较深入的研究，例如
+
+1. I noticed that you use technology X. How do you handle problem Y?
+2. Why did this product choose to use technology X over technology Y?
+
+#### Passion Questions
+
+展现激情和学习兴趣
+
+1. I'm very interested in machine learning, and I'd love to learn more about it. What opportunities are there at this company to learn about this?
+2. I'm not familiar with technology X, but it sounds like a very interesting solution. Could you tell me a bit more about how it works?
+
+### 回答问题技巧
+
++ 不要过多涉及细节，而是用数据对比或者面试官能听懂的内容来介绍
++ 多说 I 而不是 We，说自己扮演的角色和所做的工作
++ 结构式问题回答
+
+#### Nugget First
+
+开门见山，先用一句话概括，然后再逐步推进到细节部分
+
+#### S.A.R. (Situation, Action, Result)
+
++ outline the situation
++ explain the actions you took
++ describe the result
+
+**Action 部分是最需要着力的地方，逻辑清晰，分点叙述，主要不要涉及过多细节**。
+
+精雕细琢故事部分，字里行间体现出自己的一些特质，如：Initiative/Leadership, Empathy, Compassion, Humility, Teamwork/Helpfulness
+
+### --------------------
+
+## 算法题解答技巧
+
++ 掌握基本的数据结构，算法及概念
++ Most interviewers won't ask about specific algorithms for binary tree balancing or other complex algorithms(他们可能自己都不太记得了，因为不常用)
+
+### Core Data Sturctures, Algorithms, and Concepts
+
++ Data Structures
+	+ Linked Lists
+	+ Trees, Tries, & Graphs
+	+ Stacks & Queues
+	+ Heaps
+	+ Vectors / ArrayLists
+	+ **(!)Hash Tables**
++ Algorithms
+	+ Breadth-First Search
+	+ Depth-First Search
+	+ Binary Search
+	+ Merge Sort
+	+ Quick Sort
++ Concepts
+	+ Bit Manipulation
+	+ Memory (Stack vs. Heap)
+	+ Recursion
+	+ Dynamic Programming
+	+ Big O Time & Space
+
+### A Problem-Solving Flow
+
+**BUD Optimization**: **B**ottlenecks, **U**nnecessary Work, **D**uplicated Work
+
+A bottleneck is a part of your algorithm that slows down the overall runtime. There are two common ways this occurs:
+
++ You have one-time work that slows down your algorithm.
++ You have a chunk of work that's done repeatedly, like searching.
+
+#### 1.Listen
+
+**Pay very close attention** to any information in the problem description. You probably need it all for an optimal algorithm.
+
++ record **unique** information
++ use all the information in the problem
++ write the pertinent information on the whiteboard
+
+#### 2.Example
+
+Most examples are too small or are special cases. **Debug your example**. Is there any way it's a special case? Is it big enough?
+
+Go to the whiteboard and draw an example:
+
++ Specific: use real numbers or strings
++ Sufficiently large
++ Not a special case
+
+Try to make the best example you can.
+
+#### 3.Brute Force
+
+Get a brute-force solution as soon as possible. Don't worry about developing an efficient algorithm yet. State a naive algorithm and its runtime, then optimize from there. Don't code yet though!
+
+#### 4.Optimize
+
+Walk through your brute force with **BUD optimization** and try some of these ideas:
+
++ Look for any unused info. You usually need all the information in a problem.
++ Solve it manually on an example, then reverse engineer your thought process. How did you solve it?
++ Solve it "incorrectly" and then think about why the algorithm fails. Can you fix those issues?
++ Make a time vs. space tradeoff. Hash tables are especially useful!
++ Precompute information. Is there a way that you can reorganize the data(sorting, etc.) or compute some values upfront that will help save time in the long run?
++ Use a hash table. Hash tables are widely used in interview questions and should be at the top of your mind.
++ Think about the best conceivable runtime.
+
+#### 5.Walk Through
+
+Now that you have an optimal solution, **walk through your approach in detail**. Make sure you understand each detail before you start coding.
+
+Whiteboard coding is slow, very slow. You need to make sure that you get it as close to "perfect" int he beginning as possible.
+
+#### 6.Implement
+
+Your goal is to **write beautiful code**. Modularize your code from the beginning and refactor to clean up anything that isn't beautiful.
+
+**Keep talking!** Your interviewer wants to hear how you approach the problem.
+
+Beautiful code means:
+
++ **Modularized code**: good coding style & make things easier for you.
++ **Error checks**: add a `todo` and then just explain out loud what you'd like to test.
++ **Use other classes/structs where appropriate**: e.g. points in 2 or 3 dimension
++ **Good variable names**
+
+#### 7.Test
+
+Test in this order:
+
+1. Conceptual test. Walk through your code like you would for a detailed code review.
+2. Unusual or non-standard code.
+3. Hot spots, like arithmetic and null nodes.
+4. Small test cases. It's much faster than a big test case and just as effective.
+5. Special cases and edge cases.
+
+And when you find bugs, **fix them carefully!**
+
+### --------------------
+
 ## 表现技巧
 
 + Whiteboards ten to encourage candidates to speak more and explain their thought process.
 + Getting a hard question isn't a bad thing.
 + If you haven't heard back from a company within 3-5 business days after your interview(1 week after on-site), check in (politely) with your recruiter.
+### --------------------
 
 ## 基本面试流程
 
 + (1-2)phone-screen interview
 + (3-6)on-site
+
+
+### --------------------
 
 ## 部分公司准备
 
