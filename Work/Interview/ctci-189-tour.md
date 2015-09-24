@@ -968,8 +968,31 @@ There are some cases in which the `finally` block will not get executed, such as
 
 > Generics vs. Templates: Explain the difference between templates in C++ and generics in Java?
 
+The implementation of Java generics is rooted in an idea of "type erasure". This technique eliminates the parameterized types when source code is translated to the Java Virtual Machine (JVM) byte code.
 
-> 	TreeMap, HashMap, LinkedHashMap: Explain the differences between these three. Provide an example of when each one would be best
+The use of Java generics didn't really change much about our capabilities; it just made things a bit prettier. For this reason, Java generics are sometimes called "syntactic sugar"
+
+In C++, templates are essentially a glorified macro set, with the compiler creating a new copy of the template code for each type.
+
+> TreeMap, HashMap, LinkedHashMap: Explain the differences between these three. Provide an example of when each one would be best
+
++ `HashMap` offers O(1) lookup and insertion. It is implemented by an array of linked lists.
++ `TreeMap` offers O(log N) lookup and insertion. Keys are ordered. It is implemented by a Red-Black Tree.
++ `LinkedHashMap` offers O(1) lookup and insertion. Keys are ordered by their insertion order. It is implemented by doubly-linked buckets.
+
+> Object Reflection: Explain what object reflection is in Java and why it is useful.
+
+Provides a way to get relfective information about Java classes and objects, and perform operations such as:
+
++ Getting information about the methods and fields present inside the class at runtime.
++ Creating a new instance of a class
++ Getting and setting the object fields directly by getting field reference, regardless of what the access modifier is.
+
+Three main reasons why Object Reflection is Useful:
+
+1. It can help you observe or manipulate the runtime behavior of applications
+2. It can help you debug or test programs, as you have direct access to methods, constructors, and fields.
+3. You can call methods by name when you don't know the method in advance.
 
 ### --------------------
 
