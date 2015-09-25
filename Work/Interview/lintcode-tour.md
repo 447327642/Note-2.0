@@ -1,6 +1,6 @@
 # LintCode 思路及个人想法
 
-用 python 来进行解答
+用 python/java 来进行解答
 
 <!-- MarkdownTOC -->
 
@@ -62,14 +62,35 @@
 - @ 子数组之和(为零)
 - @ 子数组之和(为 K)
 - @ 最接近零的子数组和
-- @ 数组剔除元素后的乘积
+- @ Cosine Similarity
+- @ 岛屿的个数
+- @ 子树
+- @ 最长上升连续子序列
+- @ 有效回文串
 - ---- 未做完 ----
+- @ 数组剔除元素后的乘积
 - @ 将整数A转换为B
 - @ 排列序号
 - @ 判断数独是否合法
 - @ 分割回文串
 - ---- 中等题 ----
+- @ 罗马数字转整数
+- @ 整数转罗马数字
+- @ 排序矩阵中的从小到大第k个数
+- @ 简化路径
 - @ 最长公共子串
+- @ 寻找缺失的数
+- @ 最多有多少个点在一条直线上
+- @ Maximal Square
+- @ 和为零的子矩阵
+- @ 连续子数组求和
+- @ 逆波兰表达式求值
+- @ 下一个排列
+- @ 最长回文子串
+- @ 和大于S的最小子数组
+- ---- 未做完 ----
+- @ 连续子数组求和 II
+- @ nuts 和 bolts 的问题
 - ---- 困难题 ----
 
 <!-- /MarkdownTOC -->
@@ -144,7 +165,6 @@ class Solution:
 **题解**
 
 用枚举的办法会超时以及超过时间限制，所以必须使用二分来进行查找和判断，注意二分的写法
-
 
 
 ```python
@@ -3174,6 +3194,309 @@ public:
 
 ---
 
+## @ Cosine Similarity
+
+Cosine similarity is a measure of similarity between two vectors of an inner product space that measures the cosine of the angle between them. The cosine of 0° is 1, and it is less than 1 for any other angle.
+
+See wiki: Cosine Similarity
+
+Given two vectors A and B with the same size, calculate the cosine similarity.
+
+Return 2.0000 if cosine similarity is invalid (for example A = [0] and B = [0]).
+
+样例
+
+    Given A = [1, 2, 3], B = [2, 3 ,4].
+    Return 0.9926.
+    Given A = [0], B = [0].
+    Return 2.0000
+
+**题解**
+
+```java
+class Solution {
+    /**
+     * @param A: An integer array.
+     * @param B: An integer array.
+     * @return: Cosine similarity.
+     */
+    public double cosineSimilarity(int[] A, int[] B) {
+        if ( A.length != B.length){
+            return 2.0000;
+        }
+
+        double up = 0.0;
+        double down1 = 0.0;
+        double down2 = 0.0;
+
+        for (int i = 0; i < A.length; i++){
+            up += A[i] * B[i];
+            down1 += A[i] * A[i];
+            down2 += B[i] * B[i];
+        }
+
+        if (down1 == 0 || down2 == 0){
+            return 2.0000;
+        }
+
+        return up / (Math.sqrt(down1*down2));
+    }
+}
+```
+
+---
+
+## @ 岛屿的个数
+
+给一个01矩阵，求不同的岛屿的个数。
+
+0代表海，1代表岛，如果两个1相邻，那么这两个1属于同一个岛。我们只考虑上下左右为相邻。
+
+DFS
+
+**题解**
+
+Use DFS to find the number of connected components of the graph. One full DFS traversal of a node yields a connected component, which could be viewed as an island containing adjacent nodes (by left,right,up and down). Then we could traverse other isolated node excluded from this connected component, in the same manner.
+
+```java
+public class Solution {
+    /**
+     * @param grid a boolean 2D matrix
+     * @return an integer
+     */
+    public int numIslands(boolean[][] grid) {
+        if(grid == null || grid.length == 0) {
+            return 0;
+        }
+
+        final int N = grid.length;
+        final int M = grid[0].length;
+        final boolean visited[][] = new boolean[N][M];
+        int count = 0;
+
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+
+                if(grid[i][j] && !visited[i][j]) {
+                    dfs(grid, i, j, visited);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private void dfs(boolean[][] grid, int i, int j, boolean[][] visited) {
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) {
+            return;
+        } else if (visited[i][j] || !grid[i][j] ) {
+            return;
+        }
+
+        visited[i][j] = true;
+        dfs(grid, i - 1, j, visited);
+        dfs(grid, i + 1, j, visited);
+        dfs(grid, i, j - 1, visited);
+        dfs(grid, i, j + 1, visited);
+    }
+}
+
+```
+
+---
+
+## @ 子树
+
+有两个不同大小的二进制树： T1 有上百万的节点； T2 有好几百的节点。请设计一种算法，判定 T2 是否为 T1的子树。
+
+样例
+
+下面的例子中 T2 是 T1 的子树：
+
+           1                3
+          / \              /
+    T1 = 2   3      T2 =  4
+            /
+           4
+
+下面的例子中 T2 不是 T1 的子树：
+
+           1               3
+          / \               \
+    T1 = 2   3       T2 =    4
+            /
+           4
+
+注意
+
+若 T1 中存在从节点 n 开始的子树与 T2 相同，我们称 T2 是 T1 的子树。也就是说，如果在 T1 节点 n 处将树砍断，砍断的部分将与 T2 完全相同。
+
+**题解**
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param T1, T2: The roots of binary tree.
+     * @return: True if T2 is a subtree of T1, or false.
+     */
+    public boolean isSubtree(TreeNode T1, TreeNode T2) {
+        if(T2 == null)
+            return true;
+        else if(T1 == null)
+            return false;
+        else return isSameTree(T1, T2) || isSubtree(T1.left, T2) || isSubtree(T1.right, T2);
+    }
+
+    public boolean isSameTree(TreeNode T1, TreeNode T2) {
+        if(T1 == null && T2 == null)
+            return true;
+        if(T1 == null || T2 == null)
+            return false;
+        if(T1.val != T2.val)
+            return false;
+        return isSameTree(T1.left,T2.left) && isSameTree(T1.right, T2.right);
+    }
+}
+
+```
+
+---
+
+
+## @ 最长上升连续子序列
+
+给定一个整数数组（下标从 0 到 n-1， n 表示整个数组的规模），请找出该数组中的最长上升连续子序列。（最长上升连续子序列可以定义为从右到左或从左到右的序列。）
+
+样例
+
+    给定 [5, 4, 2, 1, 3], 其最长上升连续子序列（LICS）为 [5, 4, 2, 1], 返回 4.
+    给定 [5, 1, 2, 3, 4], 其最长上升连续子序列（LICS）为 [1, 2, 3, 4], 返回 4.
+
+**题解**
+
+题目只要返回最大长度，注意此题中的连续递增指的是双向的，即可递增也可递减。简单点考虑可分两种情况，一种递增，另一种递减，跟踪最大递增长度，最后返回即可。也可以在一个 for 循环中搞定，只不过需要增加一布尔变量判断之前是递增还是递减。
+
+```java
+public class Solution {
+    /**
+     * @param A an array of Integer
+     * @return  an integer
+     */
+    public int longestIncreasingContinuousSubsequence(int[] A) {
+        if (A == null || A.length == 0) return 0;
+
+        int start = 0, licsMax = 1;
+        boolean ascending = false;
+        for (int i = 1; i < A.length; i++) {
+            // ascending order
+            if (A[i - 1] < A[i]) {
+                if (!ascending) {
+                    ascending = true;
+                    start = i - 1;
+                }
+            } else if (A[i - 1] > A[i]) {
+            // descending order
+                if (ascending) {
+                    ascending = false;
+                    start = i - 1;
+                }
+            } else {
+                start = i - 1;
+            }
+            licsMax = Math.max(licsMax, i - start + 1);
+        }
+
+        return licsMax;
+    }
+}
+
+```
+
+---
+
+## @ 有效回文串
+
+给定一个字符串，判断其是否为一个回文串。只包含字母和数字，忽略大小写。
+
+样例
+
+    "A man, a plan, a canal: Panama" 是一个回文。
+    "race a car" 不是一个回文。
+
+注意
+
+你是否考虑过，字符串有可能是空字符串？这是面试过程中，面试官常常会问的问题。
+
+在这个题目中，我们将空字符串判定为有效回文。
+
+挑战
+
+O(n) 时间复杂度，且不占用额外空间。
+
+**题解**
+
+两步走：
+
+1. 找到最左边和最右边的第一个合法字符(字母或者字符)
+2. 一致转换为小写进行比较
+
+字符的判断尽量使用语言提供的 API
+
+```java
+public class Solution {
+    /**
+     * @param s A string
+     * @return Whether the string is a valid palindrome
+     */
+    public boolean isPalindrome(String s) {
+        if (s == null || s.isEmpty()) return true;
+
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            // find left alphanumeric character
+            if (!Character.isLetterOrDigit(s.charAt(l))) {
+                l++;
+                continue;
+            }
+            // find right alphanumeric character
+            if (!Character.isLetterOrDigit(s.charAt(r))) {
+                r--;
+                continue;
+            }
+            // case insensitive compare
+            if (Character.toLowerCase(s.charAt(l)) == Character.toLowerCase(s.charAt(r))) {
+                l++;
+                r--;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+```
+
+---
+
+
+
+
+## ---- 未做完 ----
+
+
 ## @ 数组剔除元素后的乘积
 
 给定一个整数数组A。
@@ -3195,10 +3518,6 @@ public:
 ```
 
 ---
-
-
-## ---- 未做完 ----
-
 
 
 
@@ -3300,6 +3619,228 @@ public:
 
 ## ---- 中等题 ----
 
+## @ 罗马数字转整数
+
+给定一个罗马数字，将其转换成整数。
+
+返回的结果要求在1到3999的范围内。
+
+样例
+
+    IV -> 4
+    XII -> 12
+    XXI -> 21
+    XCIX -> 99
+
+
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param s Roman representation
+     * @return an integer
+     */
+    public int romanToInt(String s) {
+         if (s == null) {
+            return 0;
+        }
+
+        // bug 1: forget new.
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        int len = s.length();
+        int num = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            int cur = map.get(s.charAt(i));
+            if (i < len - 1 && cur < map.get(s.charAt(i + 1))) {
+                num -= cur;
+            } else {
+                num += cur;
+            }
+        }
+
+        return num;
+    }
+}
+
+```
+
+---
+
+## @ 整数转罗马数字
+
+给定一个整数，将其转换成罗马数字。
+
+返回的结果要求在1-3999的范围内。
+
+样例
+
+    4 -> IV
+    12 -> XII
+    21 -> XXI
+    99 -> XCIX
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param n The integer
+     * @return Roman representation
+     */
+    public String intToRoman(int n) {
+        if(n <= 0) {
+            return "";
+        }
+        int[] nums = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        StringBuilder res = new StringBuilder();
+        int digit=0;
+        while (n > 0) {
+            int times = n / nums[digit];
+            n -= nums[digit] * times;
+            for ( ; times > 0; times--) {
+                res.append(symbols[digit]);
+            }
+            digit++;
+        }
+        return res.toString();
+    }
+}
+
+```
+
+---
+
+
+## @ 排序矩阵中的从小到大第k个数
+
+在一个排序矩阵中找从小到大的第 k 个整数。
+
+排序矩阵的定义为：每一行递增，每一列也递增。
+
+样例
+
+给出 k = 4 和一个排序矩阵：
+
+    [
+      [1 ,5 ,7],
+      [3 ,7 ,8],
+      [4 ,8 ,9],
+    ]
+
+返回 5。
+
+挑战
+
+使用O(k log n)的方法，n为矩阵的宽度和高度中的最大值。
+
+**题解**
+
+用优先队列
+
+```java
+public class Solution {
+    /**
+     * @param matrix: a matrix of integers
+     * @param k: an integer
+     * @return: the kth smallest number in the matrix
+     */
+    public int kthSmallest(final int[][] matrix, int k) {
+        int m = matrix.length, n = matrix[0].length;
+        boolean[][] visited = new boolean[m][n];
+
+        PriorityQueue<int[]> queue = new PriorityQueue<int[]>(k, new Comparator<int[]>(){
+            public int compare(int[] a, int[]b){
+                return matrix[a[0]][a[1]] - matrix[b[0]][b[1]];
+            }
+        });
+        queue.add(new int[]{0,0});
+        visited[0][0] = true;
+        while(k > 1){
+            int[] res = queue.poll();
+            k--;
+            int x = res[0];
+            int y = res[1];
+            if(x+1 < m && visited[x+1][y] == false){
+                queue.add(new int[]{x+1, y});
+                visited[x+1][y] = true;
+            }
+
+            if(y+1 < n && visited[x][y+1] == false){
+                queue.add(new int[]{x, y+1});
+                visited[x][y+1] = true;
+            }
+        }
+        int[] res = queue.poll();
+        return matrix[res[0]][res[1]];
+    }
+}
+
+```
+
+---
+
+## @ 简化路径
+
+给定一个文档(Unix-style)的完全路径，请进行路径简化。
+
+样例
+
+    "/home/", => "/home"
+    "/a/./b/../../c/", => "/c"
+
+挑战
+
++ 你是否考虑了 路径 = "/../" 的情况？在这种情况下，你需返回"/"。
++ 此外，路径中也可能包含双斜杠'/'，如 "/home//foo/"。 在这种情况下，可忽略多余的斜杠，返回 "/home/foo"。
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param path the original path
+     * @return the simplified path
+     */
+    public String simplifyPath(String path) {
+        String result = "/";
+        String[] stubs = path.split("/+");
+        ArrayList<String> paths = new ArrayList<String>();
+        for (String s : stubs){
+            if(s.equals("..")){
+                if(paths.size() > 0){
+                    paths.remove(paths.size() - 1);
+                }
+            }
+            else if (!s.equals(".") && !s.equals("")){
+                paths.add(s);
+            }
+        }
+        for (String s : paths){
+            result += s + "/";
+        }
+        if (result.length() > 1)
+            result = result.substring(0, result.length() - 1);
+        return result;
+    }
+}
+
+```
+
+---
+
+
+
 ## @ 最长公共子串
 
 给出两个字符串，找到最长公共子串，并返回其长度。
@@ -3350,9 +3891,615 @@ public:
     }
 };
 
+```
+
+---
+
+## @ 寻找缺失的数
+
+给出一个包含 0 .. N 中 N 个数的序列，找出0 .. N 中没有出现在序列中的那个数。
+
+样例
+
+N = 4 且序列为 [0, 1, 3] 时，缺失的数为2。
+
+注意
+
+可以改变序列中数的位置。
+
+挑战
+
+在数组上原地完成，使用O(1)的额外空间和O(N)的时间。
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @return: an integer
+     */
+    public int findMissing(int[] nums) {
+        int length = nums.length;
+        int sum = length * (length + 1) / 2;
+
+        for (int i = 0; i < length; i++){
+            sum -= nums[i];
+        }
+
+        return sum;
+    }
+}
+```
+
+---
+
+## @ 最多有多少个点在一条直线上
+
+给出二维平面上的n个点，求最多有多少点在同一条直线上。
+
+样例
+
+给出4个点：(1, 2), (3, 6), (0, 0), (1, 3)。
+
+一条直线上的点最多有3个。
+
+**题解**
+
+取定一个点(xk,yk), 遍历所有节点(xi, yi), 然后统计斜率相同的点数，并求取最大值即可
+
+```java
+
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    /**
+     * @param points an array of point
+     * @return an integer
+     */
+    public int maxPoints(Point[] points) {
+        if(points == null || points.length == 0)
+            return 0;
+
+        HashMap<Double, Integer> result = new HashMap<Double, Integer>();
+        int max=0;
+
+        for(int i=0; i < points.length; i++){
+            int duplicate = 1;//
+            int vertical = 0;
+            for(int j=i+1; j<points.length; j++){
+                //handle duplicates and vertical
+                if(points[i].x == points[j].x){
+                    if(points[i].y == points[j].y){
+                        duplicate++;
+                    }else{
+                        vertical++;
+                    }
+                }else{
+                    double slope = points[j].y == points[i].y ? 0.0
+                            : (1.0 * (points[j].y - points[i].y))
+                            / (points[j].x - points[i].x);
+
+                    if(result.get(slope) != null){
+                        result.put(slope, result.get(slope) + 1);
+                    }else{
+                        result.put(slope, 1);
+                    }
+                }
+            }
+
+            for(Integer count: result.values()){
+                if(count+duplicate > max){
+                    max = count+duplicate;
+                }
+            }
+
+            max = Math.max(vertical + duplicate, max);
+            result.clear();
+        }
+
+
+        return max;
+    }
+}
+
 
 ```
 
+---
+
+## @ Maximal Square
+
+Given a 2D binary matrix filled with 0's and 1's, find the largest square containing all 1's and return its area.
+
+样例
+
+For example, given the following matrix:
+
+    1 0 1 0 0
+    1 0 1 1 1
+    1 1 1 1 1
+    1 0 0 1 0
+
+Return 4.
+
+**题解**
+
+动态规划（Dynamic Programming）
+
+状态转移方程：
+
+    dp[x][y] = min(dp[x - 1][y - 1], dp[x][y - 1], dp[x - 1][y]) + 1
+
+上式中，`dp[x][y]`表示以坐标(x, y)为右下角元素的全1正方形矩阵的最大长度（宽度）
+
+```java
+public class Solution {
+    /**
+     * @param matrix: a matrix of 0 and 1
+     * @return: an integer
+     */
+    public int maxSquare(int[][] matrix) {
+        // write your code here
+        if (matrix == null || matrix.length == 0) {
+            return 0;
+        }
+
+        int[][] dp = new int[matrix.length][matrix[0].length];
+        int max = 0;
+
+        for (int i = 0; i < matrix.length; i++) {
+            dp[i][0] = matrix[i][0] == 1 ? 1 : 0;
+            max = Math.max(max, dp[i][0]);
+        }
+
+        for (int j = 0; j < matrix[0].length; j++) {
+            dp[0][j] = matrix[0][j] == 1 ? 1 : 0;
+            max = Math.max(max, dp[0][j]);
+        }
+
+
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                dp[i][j] = matrix[i][j] == 1 ?
+                Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1 : 0;
+                max = Math.max(max, dp[i][j]);
+            }
+        }
+
+        return (int)Math.pow(max, 2);
+    }
+}
+
+```
+
+---
+
+## @ 和为零的子矩阵
+
+给定一个整数矩阵，请找出一个子矩阵，使得其数字之和等于0.输出答案时，请返回左上数字和右下数字的坐标。
+
+样例
+
+给定矩阵
+
+    [
+      [1 ,5 ,7],
+      [3 ,7 ,-8],
+      [4 ,-8 ,9],
+    ]
+
+返回 [(1,1), (2,2)]
+
+挑战
+
+O(n3) 时间复杂度。
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param matrix an integer matrix
+     * @return the coordinate of the left-up and right-down number
+     */
+    public int[][] submatrixSum(int[][] matrix) {
+        int[][] result = new int[2][2];
+        int M = matrix.length;
+        if (M == 0) return result;
+        int N = matrix[0].length;
+        if (N == 0) return result;
+        // pre-compute: sum[i][j] = sum of submatrix [(0, 0), (i, j)]
+        int[][] sum = new int[M+1][N+1];
+        for (int j=0; j<=N; ++j) sum[0][j] = 0;
+        for (int i=1; i<=M; ++i) sum[i][0] = 0;
+        for (int i=0; i<M; ++i) {
+            for (int j=0; j<N; ++j)
+                sum[i+1][j+1] = matrix[i][j] + sum[i+1][j] + sum[i][j+1] - sum[i][j];
+        }
+        for (int l=0; l<M; ++l) {
+            for (int h=l+1; h<=M; ++h) {
+                Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+                for (int j=0; j<=N; ++j) {
+                    int diff = sum[h][j] - sum[l][j];
+                    if (map.containsKey(diff)) {
+                        int k = map.get(diff);
+                        result[0][0] = l;   result[0][1] = k;
+                        result[1][0] = h-1; result[1][1] = j-1;
+                        return result;
+                    } else {
+                        map.put(diff, j);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
+
+```
+
+---
+
+## @ 连续子数组求和
+
+给定一个整数数组，请找出一个连续子数组，使得该子数组的和最大。输出答案时，请分别返回第一个数字和最后一个数字的值。（如果两个相同的答案，请返回其中任意一个）
+
+样例
+
+给定 [-3, 1, 3, -3, 4], 返回[1,4].
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param A an integer array
+     * @return  A list of integers includes the index of the first number and the index of the last number
+     */
+    public ArrayList<Integer> continuousSubarraySum(int[] A) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if (A == null || A.length == 0) {
+            return res;
+        }
+        int sum = A[0];
+        int max = sum;
+        int start = 0, end = 0;
+        res.add(0);
+        res.add(0);
+        for (int i = 1; i < A.length; i++) {
+            if (sum > max) {
+                res.set(0, start);
+                res.set(1, i-1);
+                max = sum;
+            }
+            if (sum < 0) {
+                sum = 0;
+                start = i;
+                end = i;
+            }
+            sum += A[i];
+        }
+        if (sum > max) {
+            res.set(0, start);
+            res.set(1, A.length-1);
+        }
+        return res;
+    }
+}
+
+```
+
+---
+
+
+## @ 逆波兰表达式求值
+
+求逆波兰表达式的值。
+
+在逆波兰表达法中，其有效的运算符号包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰计数表达。
+
+样例
+
+    ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
+    ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
+
+**题解**
+
+```java
+
+```
+
+---
+
+## @ 下一个排列
+
+给定一个若干整数的排列，给出按正数大小进行字典序从小到大排序后的下一个排列。
+
+如果没有下一个排列，则输出字典序最小的序列。
+
+样例
+
+左边是原始排列，右边是对应的下一个排列。
+
+    1,2,3 → 1,3,2
+    3,2,1 → 1,2,3
+    1,1,5 → 1,5,1
+
+挑战
+
+不允许使用额外的空间。
+
+**题解**
+
+下面简要介绍一下字典序算法：
+
+1. 从后往前寻找索引满足 a[k] < a[k + 1], 如果此条件不满足，则说明已遍历到最后一个。
+2. 从后往前遍历，找到第一个比a[k]大的数a[l], 即a[k] < a[l].
+3. 交换a[k]与a[l].
+4. 反转k + 1 ~ n之间的元素。
+
+由于这道题中规定对于[4,3,2,1], 输出为[1,2,3,4], 故在第一步稍加处理即可。
+
+```java
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @return: return nothing (void), do not return anything, modify nums in-place instead
+     */
+    public void nextPermutation(int[] nums) {
+        if (nums == null || nums.length <= 1) {
+            return;
+        }
+        // step1: find nums[i] < nums[i + 1]
+        int i = 0;
+        for (i = nums.length - 2; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) {
+                break;
+            } else if (i == 0) {
+                // reverse nums if reach maximum
+                reverse(nums, 0, nums.length - 1);
+                return;
+            }
+        }
+        // step2: find nums[i] < nums[j]
+        int j = 0;
+        for (j = nums.length - 1; j > i; j--) {
+            if (nums[i] < nums[j]) {
+                break;
+            }
+        }
+        // step3: swap betwenn nums[i] and nums[j]
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+        // step4: reverse between [i + 1, n - 1]
+        reverse(nums, i + 1, nums.length - 1);
+
+        return;
+    }
+
+    private void reverse(int[] nums, int start, int end) {
+        for (int i = start, j = end; i < j; i++, j--) {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+    }
+}
+
+```
+
+---
+
+## @ 最长回文子串
+
+给出一个字符串（假设长度最长为1000），求出它的最长回文子串，你可以假定只有一个满足条件的最长回文串。
+
+样例
+
+给出字符串 "abcdzdcab"，它的最长回文子串为 "cdzdc"。
+
+挑战
+
+O(n2) 时间复杂度的算法是可以接受的，如果你能用 O(n) 的算法那自然更好。
+
+**题解**
+
+这个方法其实很直观，就是从头扫描到尾部，每一个字符以它为中心向2边扩展，扩展到不能扩展为止（有不同的字符），返回以每一个字符为中心的回文，然后不断更新最大回文并返回之。
+
+算法简单，而且复杂度为O(n^2),空间复杂度为O(1)
+
+推荐面试使用这一种方法。据说有的公司如EBAY会拒掉动规的解法. ORZ.. 其实主页君比较心水第二种解法啊，多优美，第三种解法虽然消耗更少，但没有什么普适性。
+
+```java
+public class Solution {
+    /**
+     * @param s input string
+     * @return the longest palindromic substring
+     */
+    public String longestPalindrome(String s) {
+        if (s == null) {
+            return null;
+        }
+
+        String ret = null;
+
+        int len = s.length();
+        int max = 0;
+        for (int i = 0; i < len; i++) {
+            String s1 = getLongest(s, i, i);
+            String s2 = getLongest(s, i, i + 1);
+
+            if (s1.length() > max) {
+                max = Math.max(max, s1.length());
+                ret = s1;
+            }
+
+            if (s2.length() > max) {
+                max = Math.max(max, s2.length());
+                ret = s2;
+            }
+        }
+
+        return ret;
+    }
+
+    public String getLongest(String s, int left, int right) {
+        int len = s.length();
+        while (left >= 0 && right < len) {
+            // when i is in the center.
+            if (s.charAt(left) != s.charAt(right)) {
+                break;
+            }
+
+            left--;
+            right++;
+        }
+
+        return s.substring(left + 1, right);
+    }
+}
+
+```
+
+---
+
+## @ 和大于S的最小子数组
+
+给定一个由 n 个整数组成的数组和一个正整数 s ，请找出该数组中满足其和 ≥ s 的最小长度子数组。如果无解，则返回 -1。
+
+样例
+
+给定数组 [2,3,1,2,4,3] 和 s = 7, 子数组 [4,3] 是该条件下的最小长度子数组。
+
+挑战
+
+如果你已经完成了O(n)时间复杂度的编程，请再试试 O(n log n)时间复杂度。
+
+**题解**
+
+two pointers.当当前sum已经满足条件后，将start往后移至不满足条件的index为止，再更新结果。复杂度O(n)。
+
+```java
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @param s: an integer
+     * @return: an integer representing the minimum size of subarray
+     */
+    public int minimumSize(int[] nums, int s) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int res = -1;
+        int sum = 0;
+        int start = 0;
+        for (int end = 0; end < nums.length; end++) {
+            sum += nums[end];
+            if (sum >= s) {
+                if (start == end) {
+                    res = 1;
+                    break;
+                }
+                while (start < end && sum - nums[start] >= s) {
+                    sum -= nums[start];
+                    start++;
+                }
+                res = res == -1 ? end - start + 1 : Math.min(res, end - start + 1);
+            }
+        }
+        return res == -1 ? -1 : res;
+    }
+}
+
+```
+
+---
+
+
+## ---- 未做完 ----
+
+## @ 连续子数组求和 II
+
+给定一个整数数组，请找出一个连续的旋转子数组，使得该子数组的和最大。输出答案时，请分别返回第一个数字和最后一个数字的序号。（如果两个相同的答案，请返回其中任意一个）
+
+样例
+
+给定 [3, 1, -100, -3, 4], 返回 [4,1].
+
+**题解**
+
+使用一个Stack就可以完成计算，非常简单。只需要从左往右结合，每遇到一个运算符号，就将前面两个数字弹出并且计算，然后再push回去。
+
+全部计算完成后，再将结果弹出即可。
+
+```java
+public class Solution {
+    /**
+     * @param tokens The Reverse Polish Notation
+     * @return the value
+     */
+    public int evalRPN(String[] tokens) {
+        if (tokens == null) {
+            return 0;
+        }
+
+        int len = tokens.length;
+        Stack<Integer> s = new Stack<Integer>();
+
+        for (int i = 0; i < len; i++) {
+            String str = tokens[i];
+            if (str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/")) {
+                // get out the two operation number.
+                int n2 = s.pop();
+                int n1 = s.pop();
+                if (str.equals("+")) {
+                    s.push(n1 + n2);
+                } else if (str.equals("-")) {
+                    s.push(n1 - n2);
+                } else if (str.equals("*")) {
+                    s.push(n1 * n2);
+                } else if (str.equals("/")) {
+                    s.push(n1 / n2);
+                }
+            } else {
+                s.push(Integer.parseInt(str));
+            }
+        }
+
+        if (s.isEmpty()) {
+            return 0;
+        }
+
+        return s.pop();
+    }
+}
+
+```
+
+---
+
+## @ nuts 和 bolts 的问题
+
+给定一组 n 个不同大小的 nuts 和 n 个不同大小的 bolts。nuts 和 bolts 一一匹配。 不允许将 nut 之间互相比较，也不允许将 bolt 之间互相比较。也就是说，只许将 nut 与 bolt 进行比较， 或将 bolt 与 nut 进行比较。请比较 nut 与 bolt 的大小。
+
+样例
+
+Nuts 用一个整数数组表示 nuts [] = {1, 5, 8, 2}. Bolts 也用一个整数数组表示 bolts[] = {3, 6, 7, 9}. 我们将提供一个比较函数，以比较 nut 与 bolt 的大小。 将 nuts 进行升序排序，使得 nuts 与 bolts 位置对等。
+
+**题解**
+
+```java
+
+```
 
 ---
 
