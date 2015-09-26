@@ -67,12 +67,13 @@
 - @ 子树
 - @ 最长上升连续子序列
 - @ 有效回文串
+- @ 把排序数组转换为高度最小的二叉搜索树
+- @ 排列序号
+- @ 将整数A转换为B
+- @ 分割回文串
 - ---- 未做完 ----
 - @ 数组剔除元素后的乘积
-- @ 将整数A转换为B
-- @ 排列序号
 - @ 判断数独是否合法
-- @ 分割回文串
 - ---- 中等题 ----
 - @ 罗马数字转整数
 - @ 整数转罗马数字
@@ -88,7 +89,54 @@
 - @ 下一个排列
 - @ 最长回文子串
 - @ 和大于S的最小子数组
+- @ 硬币排成线
+- @ 硬币排成线 II
+- @ 用递归打印数字
+- @ 两个整数相除
+- @ 格雷编码
+- @ 打劫房屋
+- @ 最多有k个不同字符的最长子字符串
+- @ 最小差
+- @ 数飞机
+- @ 最长无重复字符的子串
+- @ 装最多水的容器
+- @ 乘积最大子序列
+- @ 排列序号II
+- @ 丢失的第一个正整数
+- @ 接雨水
+- @ 第k个排列
+- @ 最大数
+- @ 删除数字
+- @ 木材加工
+- @ 寻找旋转排序数组中的最小值
+- @ 寻找旋转排序数组中的最小值 II
+- @ 旋转图像
+- @ 矩阵归零
+- @ 不同的二叉查找树
+- @ 不同的二叉查找树 II
+- @ 更新二进制位
+- @ 旋转链表
+- @ 乱序字符串
+- @ 图中两个点之间的路线
+- @ 数字组合
+- @ 数字组合 II
+- @ 交错正负数
+- @ 快速幂
+- @ 组合
+- @ 颜色分类
+- @ 排颜色 II
+- @ 买卖股票的最佳时机
+- @ 买卖股票的最佳时机 II
+- @ 买卖股票的最佳时机 III
+- @ 链表排序
+- @ 重排链表
+- @ 带环链表
+- @ 合并k个排序链表
+- @ 排序链表转换为二分查找树
+- @ 单词切分
 - ---- 未做完 ----
+- @ 统计比给定整数小的数的个数
+- @ 区间最小数
 - @ 连续子数组求和 II
 - @ nuts 和 bolts 的问题
 - ---- 困难题 ----
@@ -3491,8 +3539,225 @@ public class Solution {
 
 ---
 
+## @ 把排序数组转换为高度最小的二叉搜索树
+
+给一个排序数组（从小到大），将其转换为一棵高度最小的排序二叉树。
+
+样例
+
+给出数组 [1,2,3,4,5,6,7], 返回
+
+         4
+       /   \
+      2     6
+     / \    / \
+    1   3  5   7
+
+挑战
+
+可能有多个答案，返回任意一个即可
+
+**题解**
+
+要达到「平衡二叉搜索树」这个条件，我们首先应从「平衡二叉搜索树」的特性入手。简单起见，我们先考虑下特殊的满二叉搜索树，满二叉搜索树的一个重要特征就是各根节点的 key 不小于左子树的 key ，而小于右子树的所有 key；另一个则是左右子树数目均相等，那么我们只要能将所给升序序列分成一大一小的左右两半部分即可满足题目要求。又由于此题所给的链表结构中仅有左右子树的链接而无指向根节点的链接，故我们只能从中间的根节点进行分析逐层往下递推直至取完数组中所有 key, 数组中间的索引自然就成为了根节点。由于 OJ 上方法入口参数仅有升序序列，方便起见我们可以另写一私有方法，加入start和end两个参数，至此递归模型初步建立。
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param A: an integer array
+     * @return: a tree node
+     */
+    public TreeNode sortedArrayToBST(int[] A) {
+        if (A == null || A.length == 0) return null;
+
+        return helper(A, 0, A.length - 1);
+    }
+
+    private TreeNode helper(int[] nums, int start, int end) {
+        if (start > end) return null;
+
+        int mid = start + (end - start) / 2;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = helper(nums, start, mid - 1);
+        root.right = helper(nums, mid + 1, end);
+
+        return root;
+    }
+}
 
 
+```
+
+---
+
+## @ 排列序号
+
+给出一个不含重复数字的排列，求这些数字的所有排列按字典序排序后该排列的编号。其中，编号从1开始。
+
+样例
+
+例如，排列[1,2,4]是第1个排列。
+
+**题解**
+
+以序列1, 2, 4为例，其不同的排列共有 3!=6 种，以排列[2, 4, 1]为例，若将1置于排列的第一位，后面的排列则有 2!=2 种。将2置于排列的第一位，由于[2, 4, 1]的第二位4在1, 2, 4中为第3大数，故第二位可置1或者2，那么相应的排列共有 2 * 1! = 2种，最后一位1为最小的数，故比其小的排列为0。综上，可参考我们常用的十进制和二进制的转换，对于[2, 4, 1], 可总结出其排列的index为2! * (2 - 1) + 1! * (3 - 1) + 0! * (1 - 1) + 1.
+
+以上分析看似正确无误，实则有个关键的漏洞，在排定第一个数2后，第二位数只可为1或者4，而无法为2, 故在计算最终的 index 时需要动态计算某个数的相对大小。按照从低位到高位进行计算，我们可通过两重循环得出到某个索引处值的相对大小。
+
+```java
+public class Solution {
+    /**
+     * @param A an integer array
+     * @return a long integer
+     */
+    public long permutationIndex(int[] A) {
+        if (A == null || A.length == 0) return 0;
+
+        long index = 1;
+        long factor = 1;
+        for (int i = A.length - 1; i >= 0; i--) {
+            int rank = 0;
+            for (int j = i + 1; j < A.length; j++) {
+                if (A[i] > A[j]) rank++;
+            }
+            index += rank * factor;
+            factor *= (A.length - i);
+        }
+
+        return index;
+    }
+}
+
+```
+
+---
+
+## @ 将整数A转换为B
+
+如果要将整数A转换为B，需要改变多少个bit位？
+
+样例
+
+    如把31转换为14，需要改变2个bit位。
+    (31)10=(11111)2
+    (14)10=(01110)2
+
+挑战
+
+    你能想出几种方法？
+
+**题解**
+
+
+```java
+class Solution {
+    /**
+     *@param a, b: Two integer
+     *return: An integer
+     */
+    public static int bitSwapRequired(int a, int b) {
+        int result = a^b;
+        int counter = 0;
+        while (result != 0) {
+            result = result & (result - 1);
+            counter++;
+        }
+        return counter;
+    }
+};
+
+```
+
+---
+
+## @ 分割回文串
+
+给定一个字符串s，将s分割成一些子串，使每个子串都是回文串。
+
+返回s所有可能的回文串分割方案。
+
+样例
+
+    给出 s = "aab"，返回
+
+    [
+     ["aa","b"],
+     ["a","a","b"]
+    ]
+
+**题解**
+
+dfs
+
+```java
+public class Solution {
+    /**
+     * @param s: A string
+     * @return: A list of lists of string
+     */
+    public ArrayList<ArrayList<String>> partition(String s) {
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+
+        if (s == null || s.length() == 0) {
+            return result;
+        }
+
+        ArrayList<String> partition = new ArrayList<String>();//track each possible partition
+        addPalindrome(s, 0, partition, result);
+
+        return result;
+    }
+
+    private void addPalindrome(String s, int start, ArrayList<String> partition,
+            ArrayList<ArrayList<String>> result) {
+        //stop condition
+        if (start == s.length()) {
+            ArrayList<String> temp = new ArrayList<String>(partition);
+            result.add(temp);
+            return;
+        }
+
+        for (int i = start + 1; i <= s.length(); i++) {
+            String str = s.substring(start, i);
+            if (isPalindrome(str)) {
+                partition.add(str);
+                addPalindrome(s, i, partition, result);
+                partition.remove(partition.size() - 1);
+            }
+        }
+    }
+
+    private boolean isPalindrome(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+
+```
+
+---
 
 ## ---- 未做完 ----
 
@@ -3520,52 +3785,6 @@ public class Solution {
 ---
 
 
-
-## @ 将整数A转换为B
-
-如果要将整数A转换为B，需要改变多少个bit位？
-
-样例
-
-    如把31转换为14，需要改变2个bit位。
-    (31)10=(11111)2
-    (14)10=(01110)2
-
-挑战
-
-    你能想出几种方法？
-
-**题解**
-
-
-
-```python
-
-```
-
----
-
-## @ 排列序号
-
-给出一个不含重复数字的排列，求这些数字的所有排列按字典序排序后该排列的编号。其中，编号从1开始。
-
-样例
-
-    例如，排列[1,2,4]是第1个排列。
-
-**题解**
-
-
-
-```python
-
-```
-
----
-
-
-
-
 ## @ 判断数独是否合法
 
 请判定一个数独是否有效。
@@ -3591,30 +3810,7 @@ public class Solution {
 
 ---
 
-## @ 分割回文串
 
-给定一个字符串s，将s分割成一些子串，使每个子串都是回文串。
-
-返回s所有可能的回文串分割方案。
-
-样例
-
-    给出 s = "aab"，返回
-
-    [
-     ["aa","b"],
-     ["a","a","b"]
-    ]
-
-**题解**
-
-
-
-```python
-
-```
-
----
 
 
 ## ---- 中等题 ----
@@ -4424,8 +4620,2914 @@ public class Solution {
 
 ---
 
+## @ 硬币排成线
+
+有 n 个硬币排成一条线。两个参赛者轮流从右边依次拿走 1 或 2 个硬币，直到没有硬币为止。拿到最后一枚硬币的人获胜。
+
+请判定 第一个玩家 是输还是赢？
+
+样例
+
+    n = 1, 返回 true.
+    n = 2, 返回 true.
+    n = 3, 返回 false.
+    n = 4, 返回 true.
+    n = 5, 返回 true.
+
+挑战
+
+O(1) 时间复杂度且O(1) 存储。
+
+**题解**
+
+递推一下即可找到规律
+
+```java
+public class Solution {
+    /**
+     * @param n: an integer
+     * @return: a boolean which equals to true if the first player will win
+     */
+    public boolean firstWillWin(int n) {
+        // write your code here
+        if (n % 3 == 0){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+}
+
+```
+
+---
+
+## @ 硬币排成线 II
+
+有 n 个不同价值的硬币排成一条线。两个参赛者轮流从右边依次拿走 1 或 2 个硬币，直到没有硬币为止。计算两个人分别拿到的硬币总价值，价值高的人获胜。
+
+请判定 第一个玩家 是输还是赢？
+
+样例
+
+    给定数组 A = [1,2,2], 返回 true.
+    给定数组 A = [1,2,4], 返回 false.
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param values: an array of integers
+     * @return: a boolean which equals to true if the first player will win
+     */
+    public boolean firstWillWin(int[] values) {
+        // write your code here
+        int length = values.length;
+        int first = 0;
+        int second = 0;
+
+        for (int i = 0; i < length; i++){
+            if ((i+1) % 3 != 0){
+                first += values[i];
+            }
+            else {
+                second += values[i];
+            }
+        }
+
+        if (first > second){
+            return true;
+        }
+        return false;
+    }
+}
+
+```
+
+---
+
+## @ 用递归打印数字
+
+用递归的方法找到从1到最大的N位整数。
+
+样例
+
+    给出 N = 1, 返回[1,2,3,4,5,6,7,8,9].
+    给出 N = 2, 返回[1,2,3,4,5,6,7,8,9,10,11,...,99].
+
+注意
+
+用下面这种方式去递归其实很容易：
+
+    recursion(i) {
+        if i > largest number:
+            return
+        results.add(i)
+        recursion(i + 1)
+    }
+
+但是这种方式会耗费很多的递归空间，导致堆栈溢出。你能够用其他的方式来递归使得递归的深度最多只有 N 层么？
+
+挑战
+
+用递归完成，而非循环的方式。
+
+**题解**
+
+注意整体思路的理解
+
+```java
+public class Solution {
+    /**
+     * @param n: An integer.
+     * return : An array storing 1 to the largest number with n digits.
+     */
+    public List<Integer> numbersByRecursion(int n) {
+        List<Integer> res = new ArrayList<Integer>();
+        if (n >= 0) {
+            sub(n, res);
+        }
+        return res;
+    }
+
+    private int sub(int n, List<Integer> res) {
+        if (n == 0) {
+            return 1;
+        }
+        int base = sub(n - 1, res);
+        int size = res.size();
+        for (int i = 1; i <= 9; i++) {
+            int curBase = i * base;
+            res.add(curBase);
+            for (int j = 0; j < size; j++) {
+                res.add(curBase + res.get(j));
+            }
+        }
+        return base * 10;
+    }
+}
+
+```
+
+---
+
+## @ 两个整数相除
+
+将两个整数相除，要求不使用乘法、除法和 mod 运算符。
+
+如果溢出，返回 2147483647 。
+
+样例
+
+给定被除数 = 100 ，除数 = 9，返回 11。
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param dividend the dividend
+     * @param divisor the divisor
+     * @return the result
+     */
+    public int divide(int dividend, int divisor) {
+        if (divisor == 0) {
+             return dividend >= 0? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
+        if (dividend == 0) {
+            return 0;
+        }
+
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+
+        boolean isNegative = (dividend < 0 && divisor > 0) ||
+                             (dividend > 0 && divisor < 0);
+
+        long a = Math.abs((long)dividend);
+        long b = Math.abs((long)divisor);
+        int result = 0;
+        while(a >= b){
+            a -= b;
+            result++;
+        }
+        return isNegative? -result: result;
+    }
+}
+
+```
+
+---
+
+## @ 格雷编码
+
+格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个二进制的差异。
+
+给定一个非负整数 n ，表示该代码中所有二进制的总数，请找出其格雷编码顺序。一个格雷编码顺序必须以 0 开始，并覆盖所有的 2n 个整数。
+
+样例
+
+给定 n = 2， 返回 [0,1,3,2]。其格雷编码顺序为：
+
+    00 - 0
+    01 - 1
+    11 - 3
+    10 - 2
+
+注意
+
+对于给定的 n，其格雷编码顺序并不唯一。
+
+根据以上定义， [0,2,3,1] 也是一个有效的格雷编码顺序。
+
+挑战
+
+O(2n) 时间复杂度。
+
+**题解**
+
+n 位的格雷码可由 n-1位的格雷码递推，在最高位前顺序加0，逆序加1即可。实际实现时我们可以省掉在最高位加0的过程，因为其在数值上和前 n-1位格雷码相同。另外一点则是初始化的处理，图中为从1开始，但若从0开始可进一步简化程序。而且根据 格雷码 的定义，n=0时确实应该返回0.
+
+加0 的那一部分已经在前一组格雷码中出现，故只需将前一组格雷码镜像后在最高位加1即可。第二重 for 循环中需要注意的是currGray.size() - 1并不是常量，只能用于给 j 初始化。本应该使用 2^n 和上一组格雷码相加，这里考虑到最高位为1的特殊性，使用位运算模拟加法更好。
+
+```java
+public class Solution {
+    /**
+     * @param n a number
+     * @return Gray code
+     */
+    public ArrayList<Integer> grayCode(int n) {
+        if (n < 0) return null;
+
+        ArrayList<Integer> currGray = new ArrayList<Integer>();
+        currGray.add(0);
+
+        for (int i = 0; i < n; i++) {
+            int msb = 1 << i;
+            // backward - symmetry
+            for (int j = currGray.size() - 1; j >= 0; j--) {
+                currGray.add(msb | currGray.get(j));
+            }
+        }
+
+        return currGray;
+    }
+}
+
+```
+
+---
+
+## @ 打劫房屋
+
+假设你是一个专业的窃贼，准备沿着一条街打劫房屋。每个房子都存放着特定金额的钱。你面临的唯一约束条件是：相邻的房子装着相互联系的防盗系统，且 当相邻的两个房子同一天被打劫时，该系统会自动报警。
+
+给定一个非负整数列表，表示每个房子中存放的钱， 算一算，如果今晚去打劫，你最多可以得到多少钱 在不触动报警装置的情况下。
+
+样例
+
+给定 [3, 8, 4], 返回 8.
+
+挑战
+
+O(n) 时间复杂度 且 O(1) 存储。
+
+**题解**
+
+用两个变量来代替 dp 中原来要有的数组
+
+dp[i] = max(dp[i - 1], dp[i - 2] + num[i - 1])
+
+```java
+public class Solution {
+    /**
+     * @param A: An array of non-negative integers.
+     * return: The maximum amount of money you can rob tonight
+     */
+    public long houseRobber(int[] A) {
+        int length = A.length;
+        long even = 0, odd = 0;
+        for(int i = 0; i < A.length; i++){
+            if(i % 2 == 1){
+                odd = Math.max(odd + A[i], even);
+            } else even = Math.max(even + A[i], odd);
+        }
+        return Math.max(even, odd);
+    }
+}
+
+```
+
+---
+
+## @ 最多有k个不同字符的最长子字符串
+
+给定一个字符串，找到最多有k个不同字符的最长子字符串。
+
+样例
+
+例如，给定 s = "eceba" , k = 3,
+
+T 是 "eceb"，长度为 4.
+
+挑战
+O(n), n 是所给字符串的长度
+
+**题解**
+
+解法是维护一个sliding window，以及一个hash map， key是char，value是这个char在当前window中得出现次数。
+start和end是当前字符串的起始和终止index。
+当当前window 字符数超过k的时候，从start开始remove，只要遇到一个char的个数降为0的时候，可以跳出，因为说明当前window的char个数已经为k-1,满足条件。
+如果字符集比较小的话可以维护一个int[]来对char计数。
+
+```java
+public class Solution {
+    /**
+     * @param s : A string
+     * @return : The length of the longest substring
+     *           that contains at most k distinct characters.
+     */
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        if (s == null || s.length() == 0 || k <= 0) {
+            return 0;
+        }
+        int start = 0;
+        int res = 1;
+        Map<Character, Integer> map = new HashMap<Character, Integer>();
+        map.put(s.charAt(0), 1);
+        for (int end = 1; end < s.length(); end++) {
+            char ch = s.charAt(end);
+            if (map.containsKey(ch)) {
+                map.put(ch, map.get(ch)+1);
+            } else {
+                if (map.size() == k) {
+                    res = Math.max(res, end - start);
+                    //full map, need to remove the first character in ths substring
+                    for (int index = start; index < end; index++) {
+                        map.put(s.charAt(index), map.get(s.charAt(index))-1);
+                        start++;
+                        if (map.get(s.charAt(index)) == 0) {
+                            //have removed all occurance of a char
+                            map.remove(s.charAt(index));
+                            break;
+                        }
+                    }
+                }
+                map.put(ch, 1);
+            }
+        }
+        res = Math.max(res, s.length() - start);
+        return res;
+    }
+}
+
+```
+
+---
+
+## @ 最小差
+
+给定两个整数数组（第一个是数组 A，第二个是数组 B），在数组 A 中取 A[i]，数组 B 中取 B[j]，A[i] 和 B[j]两者的差越小越好(|A[i] - B[j]|)。返回最小差。
+
+样例
+
+给定数组 A = [3,4,6,7]， B = [2,3,8,9]，返回 0。
+
+挑战
+
+时间复杂度 O(n log n)
+
+**题解**
+
+Given the hint of time complexity O(nlogn), we know that we should sort two arrays first, and then, use two pointers going through two arrays. To get the smallest difference, keep the tragedy of moving smaller pointer forward.
+
+```java
+public class Solution {
+    /**
+     * @param A, B: Two integer arrays.
+     * @return: Their smallest difference.
+     */
+    public int smallestDifference(int[] A, int[] B) {
+        Arrays.sort(A);
+        Arrays.sort(B);
+
+        int i = 0, j = 0;
+        int min = Integer.MAX_VALUE;
+
+        while (i < A.length && j < B.length) {
+            min = Math.min(min, Math.abs(A[i] - B[j]));
+            if (A[i] <= B[j]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+        return min;
+    }
+}
+
+
+```
+
+---
+
+## @ 数飞机
+
+给出飞机的起飞和降落时间的列表，用 interval 序列表示. 请计算出天上同时最多有多少架飞机？
+
+样例
+
+对于每架飞机的起降时间列表：[[1,10],[2,3],[5,8],[4,7]], 返回3。
+
+注意
+
+如果多架飞机降落和起飞在同一时刻，我们认为降落有优先权。
+
+**题解**
+
+将interval的开始和结束都看做一个point，进行排序。对于排好序的数组便利，如果当前point是interval的开始点，那么cur++，否则cur–-。
+
+```java
+/**
+ * Definition of Interval:
+ * public classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this.start = start;
+ *         this.end = end;
+ *     }
+ */
+
+class Solution {
+    /**
+     * @param intervals: An interval array
+     * @return: Count of airplanes are in the sky.
+     */
+    public int countOfAirplanes(List<Interval> airplanes) {
+        if (airplanes == null || airplanes.size() == 0) {
+            return 0;
+        }
+        //this round of sort is to make sure landing takes place before flying, if
+        //they happen at the same time
+        Collections.sort(airplanes, new Comparator<Interval>() {
+            public int compare(Interval i1, Interval i2) {
+                return Integer.compare(i1.start, i2.start);
+            }
+        });
+        Point[] points = new Point[airplanes.size()*2];
+        for (int i = 0; i < airplanes.size(); i++) {
+            points[i*2] = new Point(airplanes.get(i).start, true);
+            points[i*2 + 1] = new Point(airplanes.get(i).end, false);
+        }
+        Arrays.sort(points, new Comparator<Point>(){
+            public int compare(Point i1, Point i2) {
+                return Integer.compare(i1.time, i2.time);
+            }
+        });
+        int res = 0;
+        int cur = 0;
+        for (Point p : points) {
+            if (!p.isStart) {
+                cur--;
+            } else {
+                cur++;
+                res = Math.max(res, cur);
+            }
+        }
+        return res;
+    }
+
+    class Point {
+        int time;
+        boolean isStart;
+        public Point(int time, boolean isStart) {
+            this.time = time;
+            this.isStart = isStart;
+        }
+    }
+}
+
+```
+
+---
+
+## @ 最长无重复字符的子串
+
+给定一个字符串，请找出其中无重复字符的最长子字符串。
+
+样例
+
+例如，在"abcabcbb"中，其无重复字符的最长子字符串是"abc"，其长度为 3。
+
+对于，"bbbbb"，其无重复字符的最长子字符串为"b"，长度为1。
+
+挑战
+
+O(n) 时间
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param s: a string
+     * @return: an integer
+     */
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        HashSet<Character> set = new HashSet<Character>();
+
+        int leftBound = 0, max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (set.contains(s.charAt(i))) {
+                while (leftBound < i && s.charAt(leftBound) != s.charAt(i)) {
+                    set.remove(s.charAt(leftBound));
+                    leftBound ++;
+                }
+                leftBound ++;
+            } else {
+                set.add(s.charAt(i));
+                max = Math.max(max, i - leftBound + 1);
+            }
+        }
+
+        return max;
+    }
+}
+
+```
+
+---
+
+## @ 装最多水的容器
+
+给定 n 个非负整数 a1, a2, ..., an, 每个数代表了坐标中的一个点 (i, ai)。画 n 条垂直线，使得 i 垂直线的两个端点分别为(i, ai)和(i, 0)。找到两条线，使得其与 x 轴共同构成一个容器，以容纳最多水。
+
+样例
+
+给出[1,3,2], 最大的储水面积是2.
+
+注意
+
+容器不可倾斜。
+
+**题解**
+
+思路是从两头到中间扫描，设i,j分别指向height数组的首尾。
+
+那么当前的area是min(height[i],height[j]) * (j-i)。
+
+当height[i] < height[j]的时候，我们把i往后移，否则把j往前移，直到两者相遇。
+这个正确性如何证明呢？
+
+代码里面的注释说得比较清楚了，即每一步操作都能保证当前位置能取得的最大面积已经记录过了，而最开始初始化的时候最大面积记录过，所以有点类似于数学归纳法，证明这个算法是正确的。
+
+```java
+public class Solution {
+    /**
+     * @param heights: an array of integers
+     * @return: an integer
+     */
+    public int maxArea(int[] heights) {
+        int length = heights.length;
+        if (length< 2) return 0;
+        int i = 0, j = length - 1;
+        int maxarea = 0;
+        while(i < j) {
+            int area = 0;
+            if(heights[i] < heights[j]) {
+                area = heights[i] * (j-i);
+                //Since i is lower than j,
+                //so there will be no jj < j that make the area from i,jj
+                //is greater than area from i,j
+                //so the maximum area that can benefit from i is already recorded.
+                //thus, we move i forward.
+                //因为i是短板，所以如果无论j往前移动到什么位置，都不可能产生比area更大的面积
+                //换句话所，i能形成的最大面积已经找到了，所以可以将i向前移。
+                ++i;
+            } else {
+                area = heights[j] * (j-i);
+                //the same reason as above
+                //同理
+                --j;
+            }
+            if(maxarea < area) maxarea = area;
+        }
+        return maxarea;
+    }
+}
+
+```
+
+---
+
+## @ 乘积最大子序列
+
+出一个序列中乘积最大的连续子序列（至少包含一个数）。
+
+比如, 序列 [2,3,-2,4] 中乘积最大的子序列为 [2,3] ，其乘积为6。
+
+**题解**
+
+用两个变量分别记录乘积的最大值和乘积的最小值.用一个变量记录当前值是否为负数.
+让后遍历array中的每个数,并累乘起来,更新乘积的最大值和乘积的最小值.
+
+取累乘的数值和当前的数值中大的,存为乘积的最大值
+取累乘的数值和当前的数值中小的,存为乘积的最小值
+
+因为:如果当前的数值较大,则前面的都可以抛弃不要,从当前的地方开始继续累乘可能会出现最大值; 如果累乘值较大,则后面可能会继续增大.
+同理,如果当前值最小,则如果出现一个负数,可能反而会出现最大值.
+
+所以要同时记录最大和最小值!
+
+```java
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @return: an integer
+     */
+    public int maxProduct(int[] nums) {
+        int[] max = new int[nums.length];
+        int[] min = new int[nums.length];
+
+        min[0] = max[0] = nums[0];
+        int result = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            min[i] = max[i] = nums[i];
+            if (nums[i] > 0) {
+                max[i] = Math.max(max[i], max[i - 1] * nums[i]);
+                min[i] = Math.min(min[i], min[i - 1] * nums[i]);
+            } else if (nums[i] < 0) {
+                max[i] = Math.max(max[i], min[i - 1] * nums[i]);
+                min[i] = Math.min(min[i], max[i - 1] * nums[i]);
+            }
+
+            result = Math.max(result, max[i]);
+        }
+
+        return result;
+    }
+}
+
+```
+
+---
+
+## @ 排列序号II
+
+给出一个可能包含重复数字的排列，求这些数字的所有排列按字典序排序后该排列在其中的编号。编号从1开始。
+
+样例
+
+给出排列[1, 4, 2, 2]，其编号为3。
+
+**题解**
+
+这里需要考虑重复元素，有无重复元素最大的区别在于原来的1!, 2!, 3!...等需要除以重复元素个数的阶乘，颇有点高中排列组合题的味道。记录重复元素个数同样需要动态更新，引入哈希表这个万能的工具较为方便。
+
+```java
+public class Solution {
+    /**
+     * @param A an integer array
+     * @return a long integer
+     */
+    public long permutationIndexII(int[] A) {
+        if (A == null || A.length == 0) return 0;
+
+        long index = 1;
+        long factor = 1;
+        for (int i = A.length - 1; i >= 0; i--) {
+            HashMap<Integer, Integer> hash = new HashMap<Integer, Integer>();
+            hash.put(A[i], 1);
+            int rank = 0;
+            for (int j = i + 1; j < A.length; j++) {
+                if (hash.containsKey(A[j])) {
+                    hash.put(A[j], hash.get(A[j]) + 1);
+                } else {
+                    hash.put(A[j], 1);
+                }
+
+                if (A[i] > A[j]) {
+                    rank++;
+                }
+            }
+            index += rank * factor / dupPerm(hash);
+            factor *= (A.length - i);
+        }
+
+        return index;
+    }
+
+    private long dupPerm(HashMap<Integer, Integer> hash) {
+        if (hash == null || hash.isEmpty()) return 1;
+
+        long dup = 1;
+        for (int val : hash.values()) {
+            dup *= fact(val);
+        }
+
+        return dup;
+    }
+
+    private long fact(int num) {
+        long val = 1;
+        for (int i = 1; i <= num; i++) {
+            val *= i;
+        }
+
+        return val;
+    }
+}
+
+```
+
+---
+
+
+## @ 丢失的第一个正整数
+
+给出一个无序的正数数组，找出其中没有出现的最小正整数。
+
+样例
+
+如果给出 [1,2,0], return 3 如果给出 [3,4,-1,1], return 2
+
+挑战
+
+只允许时间复杂度O(n)的算法，并且只能使用常数级别的空间。
+
+**题解**
+
+容易想到的方案是先排序，然后遍历求得缺的最小整数。排序算法中常用的基于比较的方法时间复杂度的理论下界为 O(nlogn), 不符题目要求。常见的能达到线性时间复杂度的排序算法有 基数排序，计数排序 和 桶排序。
+
+基数排序显然不太适合这道题，计数排序对元素落在一定区间且重复值较多的情况十分有效，且需要额外的 O(n) 空间，对这道题不太合适。最后就只剩下桶排序了，桶排序通常需要按照一定规则将值放入桶中，一般需要额外的 O(n) 空间，咋看一下似乎不太适合在这道题中使用，但是若能设定一定的规则原地交换原数组的值呢？这道题的难点就在于这种规则的设定。
+
+设想我们对给定数组使用桶排序的思想排序，第一个桶放1，第二个桶放2，如果找不到相应的数，则相应的桶的值不变(可能为负值，也可能为其他值)。
+
+那么怎么才能做到原地排序呢？即若 A[i]=x, 则将 x 放到它该去的地方 - A[x−1]=x, 同时将原来 A[x−1] 地方的值交换给 A[i].
+
+排好序后遍历桶，如果不满足 f[i]=i+1, 那么警察叔叔就是它了！如果都满足条件怎么办？那就返回给定数组大小再加1呗。
+
+```java
+public class Solution {
+    /**
+     * @param A: an array of integers
+     * @return: an integer
+     */
+    public int firstMissingPositive(int[] A) {
+        int size = A.length;
+
+        for (int i = 0; i < size; ++i) {
+            while (A[i] > 0 && A[i] <= size &&
+                  (A[i] != i + 1) && (A[i] != A[A[i] - 1])) {
+                int temp = A[A[i] - 1];
+                A[A[i] - 1] = A[i];
+                A[i] = temp;
+            }
+        }
+
+        for (int i = 0; i < size; ++i) {
+            if (A[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        return size + 1;
+    }
+}
+
+```
+
+核心代码为那几行交换，但是要很好地处理各种边界条件则要下一番功夫了，要能正常的交换，需满足以下几个条件：
+
+1. A[i] 为正数，负数和零都无法在桶中找到生存空间...
+2. A[i] \leq size 当前索引处的值不能比原数组容量大，大了的话也没用啊，肯定不是缺的第一个正数。
+3. A[i] != i + 1, 都满足条件了还交换个毛线，交换也是自身的值。
+4. A[i] != A[A[i] - 1], 避免欲交换的值和自身相同，否则有重复值时会产生死循环。
+如果满足以上四个条件就可以愉快地交换彼此了，使用while循环处理，此时i并不自增，直到将所有满足条件的索引处理完。
+
+---
+
+## @ 接雨水
+
+给出 n 个非负整数，代表一张X轴上每个区域宽度为 1 的海拔图, 计算这个海拔图最多能接住多少（面积）雨水。
+
+样例
+
+如上图所示，海拔分别为 [0,1,0,2,1,0,1,3,2,1,2,1], 返回 6.
+
+挑战
+
+    O(n) 时间, O(1) 空间
+    O(n) 时间, O(n) 空间也可以接受
+
+**题解**
+
+对于任何一个坐标，检查其左右的最大坐标，然后相减就是容积。所以，
+
+1. 从左往右扫描一遍，对于每一个坐标，求取左边最大值。
+2. 从右往左扫描一遍，对于每一个坐标，求最大右值。
+3. 再扫描一遍，求取容积并加和。
+
+```java
+public class Solution {
+    /**
+     * @param heights: an array of integers
+     * @return: a integer
+     */
+    public int trapRainWater(int[] heights) {
+        if(heights.length < 3) return 0;
+        int max = heights[0];
+        int[] left = new int[heights.length];
+        int[] right = new int[heights.length];
+        int sum = 0;
+
+        for(int i = 1; i < heights.length-1; i++){
+            left[i] = max;
+            if(heights[i] > max){
+                max = heights[i];
+            }
+        }
+        max = heights[heights.length-1];
+        for(int i = heights.length-2; i >=1; i--){
+            right[i] = max;
+            if(heights[i] > max){
+                max = heights[i];
+            }
+        }
+        for(int i = 1; i < heights.length-1; i++){
+            int cur = Math.min(left[i], right[i]) - heights[i];
+            if(cur > 0){
+                sum += cur;
+            }
+        }
+        return sum;
+    }
+}
+
+```
+
+---
+
+## @ 第k个排列
+
+给定 n 和 k，求123..n组成的排列中的第 k 个排列。
+
+样例
+
+对于 n = 3, 所有的排列如下：
+
+    123
+    132
+    213
+    231
+    312
+    321
+
+如果 k = 4, 第4个排列为，231.
+
+注意
+
+1 ≤ n ≤ 9
+
+**题解**
+
+这里给定第几个排列的相对排名，输出排列值。和不同进制之间的转化类似，这里的『进制』为1!, 2!..., 以n=3, k=4为例，我们从高位到低位转化，直觉应该是用 k/(n-1)!, 但以 n=3,k=5 和 n=3,k=6 代入计算后发现边界处理起来不太方便，故我们可以尝试将 k 减1进行运算，后面的基准也随之变化。第一个数可以通过(k-1)/(n-1)!进行计算，那么第二个数呢？联想不同进制数之间的转化，我们可以通过求模运算求得下一个数的k-1, 那么下一个数可通过(k2 - 1)/(n-2)!求得，这里不理解的可以通过进制转换类比进行理解。和减掉相应的阶乘值是等价的。
+
+1. 以某一数字开头的排列有(n-1)! 个。
+例如： 123， 132， 以1开头的是 2！个
+2. 所以第一位数字就可以用 （k-1） / (n-1)!  来确定 .这里K-1的原因是，序列号我们应从0开始计算，否则在边界时无法计算。
+3. 第二位数字。假设前面取余后为m，则第二位数字是 第 m/(n-2)! 个未使用的数字。
+4. 不断重复2，3，取余并且对(n-k)!进行除法，直至计算完毕
+
+```java
+class Solution {
+    /**
+      * @param n: n
+      * @param k: the kth permutation
+      * @return: return the k-th permutation
+      */
+    public String getPermutation(int n, int k) {
+        // generate factorial list
+        int[] factorial = new int[n + 1];
+        factorial[0] = 1;
+        for (int i = 1; i < n + 1; i++) {
+            factorial[i] = factorial[i - 1] * i;
+        }
+        // generate digits ranging from 1 to n
+        ArrayList<Integer> nums = new ArrayList<Integer>(n);
+        for (int i = 0; i < n; i++) {
+            nums.add(i + 1);
+        }
+
+        int[] perm = new int[n];
+        for (int i = 0; i < n; i++) {
+            int rank = (k - 1) / factorial[n - i - 1];
+            k = (k - 1) % factorial[n - i - 1] + 1;
+
+            perm[i] = nums.get(rank);
+            nums.remove(nums.get(rank));
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (int digit : perm) {
+          result.append(digit);
+        }
+        return result.toString();
+    }
+}
+
+
+```
+
+---
+
+## @ 最大数
+
+给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数
+
+样例
+
+给出样例 [1, 20, 23, 4, 8]，返回组合最大的整数为8423201
+
+注意
+
+最后的结果可能很大，所以我们返回一个字符串来代替这个整数
+
+**题解**
+
+Override comparator:  put the larger number ahead of smaller number.
+
+```java
+public class Solution {
+    /**
+     *@param num: A list of non negative integers
+     *@return: A string
+     */
+    public String largestNumber(int[] num) {
+        if (num == null || num.length == 0) {
+            return "0";
+        }
+
+        String[] strs = new String[num.length];
+        for (int i = 0; i < num.length; i++) {
+            strs[i] = Integer.toString(num[i]);
+        }
+
+        Arrays.sort(strs, new NumberComparator());
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < strs.length; i++) {
+            sb.append(strs[i]);
+        }
+        String res = sb.toString();
+
+        if(res.charAt(0) == '0') {
+            return "0";
+        }
+
+        return res;
+    }
+
+
+    class NumberComparator implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2){
+            return (s2 + s1).compareTo(s1 + s2);
+        }
+    }
+}
+
+```
+
+---
+
+## @ 删除数字
+
+给出一个字符串 A, 表示一个 n 位正整数, 删除其中 k 位数字, 使得剩余的数字仍然按照原来的顺序排列产生一个新的正整数。
+
+找到删除 k 个数字之后的最小正整数。
+
+N <= 240, k <= N
+
+样例
+
+给出一个字符串代表的正整数 A 和一个整数 k, 其中 A = 178542, k = 4
+
+返回一个字符串 "12"
+
+**题解**
+
+这道题跟Leetcode里面的那道Next Permutation很像，那个题要找比一个数大的下一个数，于是从这个数的右边开始，找第一个递减的位置所在。这道题也是类似，只不过从这个数的左边开始，找第一个递减的位置所在。那道题是想要改动的影响最小，所以从右边开始扫描。这道题是想要改动的影响最大，所以从左边开始扫描。
+
+这道题，删掉一个数，相当于用这个数后面的数代替这个数。所以后面这个数一定要比当前小才行。所以找的是第一个递减的位置，把大的那个数删了。
+
+这样做一次就是找到了：删除哪一个数，使得剩下的数最小。对剩下的数再做k次，就可以找到删除哪k个数，使得剩下的数最小。这其实是一个Greedy算法，因为这样每做一次，得到的都是当前最优的结果。
+
+看起来需要O(Nk)时间复杂度，但其实用一个Stack，再记录pop了几次，O(2N)就好了
+
+```java
+public class Solution {
+    /**
+     *@param A: A positive integer which has N digits, A is a string.
+     *@param k: Remove k digits.
+     *@return: A string
+     */
+    public String DeleteDigits(String A, int k) {
+        Stack<Integer> st = new Stack<Integer>();
+        int popCount = 0;
+        StringBuffer res = new StringBuffer();
+        for (int i=0; i<A.length(); i++) {
+            int num = (int)(A.charAt(i) - '0');
+            if (st.isEmpty()) st.push(num);
+            else if (num >= st.peek()) {
+                st.push(num);
+            }
+            else {
+                if (popCount < k) {
+                    st.pop();
+                    i--;
+                    popCount++;
+                }
+                else {
+                    st.push(num);
+                }
+            }
+        }
+        while (popCount < k) {
+            st.pop();
+            popCount++;
+        }
+        while (!st.isEmpty()) {
+            res.insert(0, st.pop());
+        }
+        while (res.length() > 1 && res.charAt(0) == '0') {
+            res.deleteCharAt(0);
+        }
+        return res.toString();
+    }
+}
+
+```
+
+---
+
+## @ 木材加工
+
+有一些原木，现在想把这些木头切割成一些长度相同的小段木头，需要得到的小段的数目至少为 k。当然，我们希望得到的小段越长越好，你需要计算能够得到的小段木头的最大长度。
+
+样例
+
+有3根木头[232, 124, 456], k=7, 最大长度为114.
+
+注意
+
+木头长度的单位是厘米。原木的长度都是正整数，我们要求切割得到的小段木头的长度也要求是整数。无法切出要求至少 k 段的,则返回 0 即可。
+
+挑战
+
+O(n log Len), Len为 n 段原木中最大的长度
+
+**题解**
+
+这道题要直接想到二分搜素其实不容易，但是看到题中 Challenge 的提示后你大概就能想到往二分搜索上靠了。首先来分析下题意，题目意思是说给出 n 段木材L[i], 将这 n 段木材切分为至少 k 段，这 k 段等长，求能从 n 段原材料中获得的最长单段木材长度。以 k=7 为例，要将 L 中的原材料分为7段，能得到的最大单段长度为114, 232/114 = 2, 124/114 = 1, 456/114 = 4, 2 + 1 + 4 = 7.
+
+理清题意后我们就来想想如何用算法的形式表示出来，显然在计算如2, 1, 4等分片数时我们进行了取整运算，在计算机中则可以使用下式表示：
+
+∑^(i=1)~(​n) (L[i]/l) ≥ k
+​​
+其中 l 为单段最大长度，显然有 1 ≤ l ≤ max(L[i]). 单段长度最小为1，最大不可能超过给定原材料中的最大木材长度。
+
+注意求和与取整的顺序，是先求 L[i]/l的单个值，而不是先对L[i]求和。
+
+分析到这里就和题 Sqrt x 差不多一样了，要求的是 l 的最大可能取值，同时
+l 可以看做是从有序序列[1, max(L[i])]的一个元素，典型的二分搜索！
+
+```java
+public class Solution {
+    /**
+     *@param L: Given n pieces of wood with length L[i]
+     *@param k: An integer
+     *return: The maximum length of the small pieces.
+     */
+    public int woodCut(int[] L, int k) {
+        if(L == null || L.length == 0) return 0;
+        if(L.length == 1){
+            return L[0] / (L[0] / k);
+        }
+        Arrays.sort(L);
+        int start = 1, end = L[L.length - 1];
+        int max = 0;
+        while(start <= end){
+            int mid = (end - start) / 2 + start;
+            int count = 0;
+            for(int l : L){
+                count += (l / mid);
+            }
+            if(count < k){
+                end = mid-1;
+            } else{
+                start = mid+1;
+                max = mid;
+            }
+        }
+        return max;
+    }
+}
+
+```
+
+---
+
+## @ 寻找旋转排序数组中的最小值
+
+假设一个旋转排序的数组其起始位置是未知的（比如0 1 2 4 5 6 7 可能变成是4 5 6 7 0 1 2）。
+
+你需要找到其中最小的元素。
+
+你可以假设数组中不存在重复的元素。
+
+样例
+
+给出[4,5,6,7,0,1,2]  返回 0
+
+**题解**
+
+1.如何找中间断开的区间（也就是说旋转过）
+
+我们的目的是要找出存在断口的地方。所以我们可以每次求一下mid的值，把mid 跟左边比一下，如果是正常序，就丢掉左边，反之丢掉右边，不断反复直到找到断口。
+
+分析一下：
+
+比如4 5 6 7 0 1 2  从中间断开后，它是由一个有序跟一个无序的序列组成的。
+
+如果left = 0, right = 6,mid = 3, 那么4， 5， 6， 7 是正序， 7， 0， 1， 2是逆序，所以我们要丢掉左边。这样反复操作，直到数列中只有2个数字，就是断开处，这题我们会得到7，0，返回后一个就可以了。
+
+2.特别的情况：
+
+如果发现 A.mid > A.left，表示左边是有序，丢掉左边。
+
+如果发现 A.mid < A.left, 表示无序的状态在左边，丢掉右边
+
+如果A.mid = A.left，说明无法判断。这时我们可以把left++，丢弃一个即可。不必担心丢掉我们的目标值。因为A.left == A.mid，即使丢掉了left,还有mid在嘛！
+
+每次进入循环，我们都要判断A.left < A.right，原因是，前面我们丢弃一些数字时，有可能造成余下的数组是有序的，这时应直接返回A.left! 否则的话 我们可能会丢掉解。
+
+就像以下的例子，在1 10 10中继续判断会丢弃1 10.
+
+举例: 10 1 10 10 如果我们丢弃了最左边的10，则1 10 10 是有序的
+
+```java
+public class Solution {
+    /**
+     * @param num: a rotated sorted array
+     * @return: the minimum number in the array
+     */
+    public int findMin(int[] num) {
+        if (num == null || num.length == 0) {
+            return 0;
+        }
+
+        int len = num.length;
+        if (len == 1) {
+            return num[0];
+        } else if (len == 2) {
+            return Math.min(num[0], num[1]);
+        }
+
+        int left = 0;
+        int right = len - 1;
+
+        while (left < right - 1) {
+            int mid = left + (right - left) / 2;
+            // In this case, the array is sorted.
+            // 这一句很重要，因为我们移除一些元素后，可能会使整个数组变得有序...
+            if (num[left] < num[right]) {
+                return num[left];
+            }
+
+            // left side is sorted. CUT the left side.
+            if (num[mid] > num[left]) {
+                left = mid;
+            // left side is unsorted, right side is sorted. CUT the right side.
+            } else if (num[mid] < num[left]) {
+                right = mid;
+            } else {
+                left++;
+            }
+        }
+
+        return Math.min(num[left], num[right]);
+    }
+}
+
+```
+
+---
+
+## @ 寻找旋转排序数组中的最小值 II
+
+假设一个旋转排序的数组其起始位置是未知的（比如0 1 2 4 5 6 7 可能变成是4 5 6 7 0 1 2）。
+
+你需要找到其中最小的元素。
+
+数组中可能存在重复的元素。
+
+**题解**
+
+1.如何找中间断开的区间（也就是说旋转过）
+
+我们的目的是要找出存在断口的地方。所以我们可以每次求一下mid的值，把mid 跟左边比一下，如果是正常序，就丢掉左边，反之丢掉右边，不断反复直到找到断口。
+
+分析一下：
+
+比如4 5 6 7 0 1 2  从中间断开后，它是由一个有序跟一个无序的序列组成的。
+
+如果left = 0, right = 6,mid = 3, 那么4， 5， 6， 7 是正序， 7， 0， 1， 2是逆序，所以我们要丢掉左边。这样反复操作，直到数列中只有2个数字，就是断开处，这题我们会得到7，0，返回后一个就可以了。
+
+2.特别的情况：
+
+如果发现 A.mid > A.left，表示左边是有序，丢掉左边。
+
+如果发现 A.mid < A.left, 表示无序的状态在左边，丢掉右边
+
+如果A.mid = A.left，说明无法判断。这时我们可以把left++，丢弃一个即可。不必担心丢掉我们的目标值。因为A.left == A.mid，即使丢掉了left,还有mid在嘛！
+
+每次进入循环，我们都要判断A.left < A.right，原因是，前面我们丢弃一些数字时，有可能造成余下的数组是有序的，这时应直接返回A.left! 否则的话 我们可能会丢掉解。
+
+就像以下的例子，在1 10 10中继续判断会丢弃1 10.
+
+举例: 10 1 10 10 如果我们丢弃了最左边的10，则1 10 10 是有序的
+
+```java
+public class Solution {
+    /**
+     * @param num: a rotated sorted array
+     * @return: the minimum number in the array
+     */
+    public int findMin(int[] num) {
+        if (num == null || num.length == 0) {
+            return 0;
+        }
+
+        int len = num.length;
+        if (len == 1) {
+            return num[0];
+        } else if (len == 2) {
+            return Math.min(num[0], num[1]);
+        }
+
+        int left = 0;
+        int right = len - 1;
+
+        while (left < right - 1) {
+            int mid = left + (right - left) / 2;
+            // In this case, the array is sorted.
+            // 这一句很重要，因为我们移除一些元素后，可能会使整个数组变得有序...
+            if (num[left] < num[right]) {
+                return num[left];
+            }
+
+            // left side is sorted. CUT the left side.
+            if (num[mid] > num[left]) {
+                left = mid;
+            // left side is unsorted, right side is sorted. CUT the right side.
+            } else if (num[mid] < num[left]) {
+                right = mid;
+            } else {
+                left++;
+            }
+        }
+
+        return Math.min(num[left], num[right]);
+    }
+}
+
+```
+
+---
+
+## @ 旋转图像
+
+给定一个N×N的二维矩阵表示图像，90度顺时针旋转图像。
+
+样例
+
+给出一个矩形[[1,2],[3,4]]，90度顺时针旋转后，返回[[3,1],[4,2]]
+
+挑战
+
+能否在原地完成？
+
+**题解**
+
+一次转一层，画图即可
+
+```java
+public class Solution {
+    /**
+     * @param matrix: A list of lists of integers
+     * @return: Void
+     */
+    public void rotate(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return;
+        }
+
+        int length = matrix.length;
+
+        for (int i = 0; i < length / 2; i++) {
+            for (int j = 0; j < (length + 1) / 2; j++){
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[length - j - 1][i];
+                matrix[length -j - 1][i] = matrix[length - i - 1][length - j - 1];
+                matrix[length - i - 1][length - j - 1] = matrix[j][length - i - 1];
+                matrix[j][length - i - 1] = tmp;
+            }
+        }
+    }
+}
+
+```
+
+---
+
+## @ 矩阵归零
+
+给定一个m×n矩阵，如果一个元素是0，则将其所在行和列全部元素变成0。
+
+需要在原地完成。
+
+样例
+
+给出一个矩阵[[1,2],[0,3]]，返回[[0,2],[0,0]]
+
+挑战
+
+你是否使用了额外的空间？
+
+一个直接的解决方案是使用O(MN)的额外空间，但这并不是一个好的方案。
+
+一个简单的改进方案是使用O(M + N)的额外空间，但这仍然不是最好的解决方案。
+
+你能想出一个常数空间的解决方案吗？
+
+**题解**
+
+1. 设置两个布尔型标示符flag_row,flag_col用来保存第0行和第0列是否需要置0,初始值false
+2. 遍历第0行，如果遇到0，则将flag_row=true
+3. 同上遍历第0列，如果遇到0，则将flag_col=true
+4. 遍历剩下的元素即i从1开始，j从一开始，如果遇到某个元素【i,j】为0，则将matrix[i][0]=0,matrix[0][j]=0
+5. 遍历第0行，遇到matrix[0][j]=0则设置此列上的所有元素为0
+6. 遍历第0列，遇到matrix[i][0]=0则设置此行上的所有元素为0
+7. 判断flag_row是否为true，是的话设置第0行元素均为0
+8. 判断flag_col是否为true，是的话设置第0列元素均为0
+9. 至此，题目完成
+
+```java
+public class Solution {
+    /**
+     * @param matrix: A list of lists of integers
+     * @return: Void
+     */
+    public void setZeroes(int[][] matrix) {
+        int row = matrix.length;
+        if (row == 0) {
+            return;
+        }
+        int col = matrix[0].length;
+
+        int rowIndex = 0;
+        int colIndex = 0;
+        boolean stop = false;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == 0) {
+                    rowIndex = i;
+                    colIndex = j;
+                    stop = true;
+                    break;
+                }
+            }
+            if (stop) {
+                break;
+            }
+        }
+
+        if (!stop) {
+            return;
+        }
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (i == rowIndex || j == colIndex) {
+                    continue;
+                }
+
+                if (matrix[i][j] == 0) {
+                    matrix[rowIndex][j] = 0;
+                    matrix[i][colIndex] = 0;
+                }
+            }
+        }
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (i == rowIndex || j == colIndex) {
+                    continue;
+                }
+                if (matrix[rowIndex][j] == 0 || matrix[i][colIndex] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 0; i < row; i++) {
+            matrix[i][colIndex] = 0;
+        }
+        for (int j = 0; j < col; j++) {
+            matrix[rowIndex][j] = 0;
+        }
+    }
+}
+
+```
+
+---
+
+## @ 不同的二叉查找树
+
+给出 n，问由 1...n 为节点组成的不同的二叉查找树有多少种？
+
+样例
+
+给出n = 3，有5种不同形态的二叉查找树：
+
+    1           3    3       2      1
+     \         /    /       / \      \
+      3      2     1       1   3      2
+     /      /       \                  \
+    2     1          2                  3
+
+**题解**
+
+The case for 3 elements example
+
+    Count[3] = Count[0]*Count[2]  (1 as root)
+               + Count[1]*Count[1]  (2 as root)
+               + Count[2]*Count[0]  (3 as root)
+
+Therefore, we can get the equation:
+
+    count[n] = sum(count[0..k]*count[k+1...n]) 0 <= k < n-1
+
+```java
+public class Solution {
+    /**
+     * @paramn n: An integer
+     * @return: An integer
+     */
+    public int numTrees(int n) {
+        int[] count = new int[n+2];
+        count[0] = 1;
+        count[1] = 1;
+
+        for(int i=2;  i<= n; i++){
+            for(int j=0; j<i; j++){
+                count[i] += count[j] * count[i - j - 1];
+            }
+        }
+        return count[n];
+    }
+}
+
+```
+
+---
+
+## @ 不同的二叉查找树 II
+
+给出n，生成所有由1...n为节点组成的不同的二叉查找树
+
+样例
+
+给出n = 3，生成所有5种不同形态的二叉查找树：
+
+    1         3     3       2    1
+     \       /     /       / \    \
+      3     2     1       1   3    2
+     /     /       \                \
+    2     1         2                3
+
+**题解**
+
+使用递归来做。
+
+1. 先定义递归的参数为左边界、右边界，即1到n.
+2. 考虑从left, 到right 这n个数字中选取一个作为根，余下的使用递归来构造左右子树。
+3. 当无解时，应该返回一个null树，这样构造树的时候，我们会比较方便，不会出现左边解为空，或是右边解为空的情况。
+4. 如果说左子树有n种组合，右子树有m种组合，那最终的组合数就是n*m. 把这所有的组合组装起来即可
+
+```java
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @paramn n: An integer
+     * @return: A list of root
+     */
+    public List<TreeNode> generateTrees(int n) {
+        return dfs(1, n);
+    }
+
+    public List<TreeNode> dfs(int left, int right) {
+        List<TreeNode> ret = new ArrayList<TreeNode>();
+
+        // The base case;
+        if (left > right) {
+            ret.add(null);
+            return ret;
+        }
+
+        for (int i = left; i <= right; i++) {
+            List<TreeNode> lTree = dfs(left, i - 1);
+            List<TreeNode> rTree = dfs(i + 1, right);
+            for (TreeNode nodeL: lTree) {
+                for (TreeNode nodeR: rTree) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = nodeL;
+                    root.right = nodeR;
+                    ret.add(root);
+                }
+            }
+        }
+
+        return ret;
+    }
+}
+
+```
+
+---
+
+## @ 更新二进制位
+
+给出两个32位的整数N和M，以及两个二进制位的位置i和j。写一个方法来使得N中的第i到j位等于M（M会是N中从第i为开始到第j位的子串）
+
+样例
+
+给出N = (10000000000)2，M = (10101)2， i = 2, j = 6
+
+返回 N = (10001010100)2
+
+挑战
+
+最少的操作次数是多少？
+
+**题解**
+
+Cracking The Coding Interview 上的题，题意简单来讲就是使用 M 代替 N 中的第i位到第j位。很显然，我们需要借用掩码操作。大致步骤如下：
+
+1. 得到第i位到第j位的比特位为0，而其他位均为1的掩码mask。
+2. 使用mask与 N 进行按位与，清零 N 的第i位到第j位。
+3. 对 M 右移i位，将 M 放到 N 中指定的位置。
+4. 返回 N | M 按位或的结果。
+
+获得掩码mask的过程可参考 CTCI 书中的方法，先获得掩码(1111...000...111)的左边部分，然后获得掩码的右半部分，最后左右按位或即为最终结果。
+
+在给定测试数据[-521,0,31,31]时出现了 WA, 也就意味着目前这段程序是存在 bug 的，此时m = 0, i = 31, j = 31，仔细瞅瞅到底是哪几行代码有问题？本地调试后发现问题出在left那一行，left移位后仍然为ones, 这是为什么呢？在j为31时j + 1为32，也就是说此时对left位移的操作已经超出了此时int的最大位宽！
+
+使用~0获得全1比特位，在j == 31时做特殊处理，即不必求left。求掩码的右侧1时使用了(1 << i) - 1, 题中有保证第i位到第j位足以容纳 M, 故不必做溢出处理。
+
+```java
+class Solution {
+    /**
+     *@param n, m: Two integer
+     *@param i, j: Two bit positions
+     *return: An integer
+     */
+    public int updateBits(int n, int m, int i, int j) {
+        int mask;
+        if (j < 31) {
+            mask = ~((1 << (j + 1)) - (1 << i));
+        } else {
+            mask = (1 << i) - 1;
+        }
+        return (m << i) + (mask & n);
+    }
+}
+
+
+```
+
+---
+
+## @ 旋转链表
+
+给定一个链表，旋转链表，使得每个节点向右移动k个位置，其中k是一个非负数
+
+样例
+
+    给出链表1->2->3->4->5->null和k=2
+    返回4->5->1->2->3->null
+
+**题解**
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: the List
+     * @param k: rotate to the right k places
+     * @return: the list after rotation
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        int len = 0;
+        ListNode run = head;
+        if(head == null || head.next == null) return head;
+        while(run != null){
+            len++;
+            run = run.next;
+        }
+
+        k = k % len;
+        int m = len - k;
+
+        ListNode nextHead = head;
+        ListNode pre = null;
+
+        while(m-- > 0){
+            pre = nextHead;
+            nextHead = nextHead.next;
+        }
+        pre.next = null;
+        run = nextHead;
+        while(run.next != null){
+            run = run.next;
+        }
+
+        run.next = head;
+        return nextHead;
+    }
+}
+
+```
+
+---
+
+## @ 乱序字符串
+
+给出一个字符串数组S，找到其中所有的乱序字符串(Anagram)。如果一个字符串是乱序字符串，那么他存在一个字母集合相同，但顺序不同的字符串也在S中。
+
+样例
+
+对于字符串数组 ["lint","intl","inlt","code"]
+
+返回 ["lint","inlt","intl"]
+
+注意
+
+所有的字符串都只包含小写字母
+
+**题解**
+
+在题 Two Strings Are Anagrams | Data Structure and Algorithm 中曾介绍过使用排序和 hashmap 两种方法判断变位词。这里我们将这两种方法同时引入！只不过此时的 hashmap 的 key 为字符串，value 为该字符串在 vector 中出现的次数。两次遍历字符串数组，第一次遍历求得排序后的字符串数量，第二次遍历将排序后相同的字符串取出放入最终结果中。
+
+```java
+public class Solution {
+    /**
+     * @param strs: A list of strings
+     * @return: A list of strings
+     */
+    public List<String> anagrams(String[] strs) {
+        List<String> ret = new ArrayList<String>();
+
+        if (strs == null) {
+            return ret;
+        }
+
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+
+        int len = strs.length;
+        for (int i = 0; i < len; i++) {
+            String s = strs[i];
+
+            // Sort the string.
+            char[] chars = s.toCharArray();
+            Arrays.sort(chars);
+            String strSort = new String(chars);
+
+            // Create a ArrayList for the sorted string.
+            if (!map.containsKey(strSort)) {
+                map.put(strSort, new ArrayList<String>());
+            }
+
+            // Add a new string to the list of the hashmap.
+            map.get(strSort).add(s);
+        }
+
+        // go through the map and add all the strings into the result.
+        for (Map.Entry<String, List<String>> entry: map.entrySet()) {
+            List<String> list = entry.getValue();
+
+            // skip the entries which only have one string.
+            if (list.size() == 1) {
+                continue;
+            }
+
+            // add the strings into the list.
+            ret.addAll(list);
+        }
+
+        return ret;
+    }
+}
+
+```
+
+---
+
+## @ 图中两个点之间的路线
+
+给出一张有向图，设计一个算法判断两个点 s 与 t 之间是否存在路线。
+
+样例
+
+如下图:
+
+    A----->B----->C
+     \     |
+      \    |
+       \   |
+        \  v
+         ->D----->E
+
+for s = B and t = E, return true
+
+for s = D and t = C, return false
+
+**题解**
+
+bfs dfs 均可，不要递归即可
+
+```java
+/**
+ * Definition for Directed graph.
+ * class DirectedGraphNode {
+ *     int label;
+ *     ArrayList<DirectedGraphNode> neighbors;
+ *     DirectedGraphNode(int x) {
+ *         label = x;
+ *         neighbors = new ArrayList<DirectedGraphNode>();
+ *     }
+ * };
+ */
+public class Solution {
+   /**
+     * @param graph: A list of Directed graph node
+     * @param s: the starting Directed graph node
+     * @param t: the terminal Directed graph node
+     * @return: a boolean value
+     */
+    public boolean hasRoute(ArrayList<DirectedGraphNode> graph,
+                            DirectedGraphNode s, DirectedGraphNode t) {
+        if (s == t) {
+            return true;
+        }
+        if (graph == null || graph.size() == 0 || s == null || t == null) {
+            return false;
+        }
+        Set<DirectedGraphNode> visited = new HashSet<DirectedGraphNode>();
+        Stack<DirectedGraphNode> stack = new Stack<DirectedGraphNode>();
+        stack.push(s);
+        while (!stack.isEmpty()) {
+            DirectedGraphNode node = stack.pop();
+            if (visited.contains(node)) {
+                continue;
+            }
+            visited.add(node);
+            for (DirectedGraphNode neighbor : node.neighbors) {
+                if (neighbor == t) {
+                    return true;
+                }
+                stack.push(neighbor);
+            }
+        }
+        return false;
+    }
+}
+
+```
+
+---
+
+## @ 数字组合
+
+给出一组候选数字(C)和目标数字(T),找到C中所有的组合，使找出的数字和为T。C中的数字可以无限制重复被选取。
+
+例如,给出候选数组[2,3,6,7]和目标数字7，所求的解为：
+
+[7]，
+
+[2,2,3]
+
+样例
+
+给出候选数组[2,3,6,7]和目标数字7
+
+返回 [[7],[2,2,3]]
+
+注意
+
++ 所有的数字(包括目标数字)均为正整数。
++ 元素组合(a1, a2, … , ak)必须是非降序(ie, a1 ≤ a2 ≤ … ≤ ak)。
++ 解集不能包含重复的组合
+
+**题解**
+
+和 Permutations 十分类似，区别在于剪枝函数不同。这里允许一个元素被多次使用，故递归时传入的索引值不自增，而是由 for 循环改变。
+
+对数组首先进行排序是必须的，递归函数中本应该传入 target 作为入口参数，这里借用了 Soulmachine 的实现，使用 gap 更容易理解。注意在将临时 list 添加至 result 中时需要 new 一个新的对象。
+
+复杂度分析
+
+按状态数进行分析，时间复杂度 O(n!), 使用了list 保存中间结果，空间复杂度 O(n).
+
+```java
+public class Solution {
+    /**
+     * @param candidates: A list of integers
+     * @param target:An integer
+     * @return: A list of lists of integers
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> list = new ArrayList<Integer>();
+        if (candidates == null) return result;
+
+        Arrays.sort(candidates);
+        helper(candidates, 0, target, list, result);
+
+        return result;
+    }
+
+    private void helper(int[] candidates, int pos, int gap,
+                        List<Integer> list, List<List<Integer>> result) {
+
+        if (gap == 0) {
+            // add new object for result
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }
+
+        for (int i = pos; i < candidates.length; i++) {
+            // cut invalid candidate
+            if (gap < candidates[i]) {
+                return;
+            }
+            list.add(candidates[i]);
+            helper(candidates, i, gap - candidates[i], list, result);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+
+```
+
+---
+
+## @ 数字组合 II
+
+给出一组候选数字(C)和目标数字(T),找出C中所有的组合，使组合中数字的和为T。C中每个数字在每个组合中只能使用一次
+
+样例
+
+给出一个例子，候选数字集合为[10,1,6,7,2,1,5] 和目标数字 8  ,
+
+解集为：[[1,7],[1,2,5],[2,6],[1,1,6]]
+
+注意
+
++ 所有的数字(包括目标数字)均为正整数。
++ 元素组合(a1, a2, … , ak)必须是非降序(ie, a1 ≤ a2 ≤ … ≤ ak)。
++ 解集不能包含重复的组合。
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param num: Given the candidate numbers
+     * @param target: Given the target number
+     * @return: All the combinations that sum to target
+     */
+    public List<List<Integer>> combinationSum2(int[] num, int target) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> list = new ArrayList<Integer>();
+        if (num == null) return result;
+
+        Arrays.sort(num);
+        helper(num, 0, target, list, result);
+
+        return result;
+    }
+
+    private void helper(int[] nums, int pos, int gap,
+                        List<Integer> list, List<List<Integer>> result) {
+
+        if (gap == 0) {
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }
+
+        for (int i = pos; i < nums.length; i++) {
+            // ensure only the first same num is chosen, remove duplicate list
+            if (i != pos && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            // cut invalid num
+            if (gap < nums[i]) {
+                return;
+            }
+            list.add(nums[i]);
+            // i + 1 ==> only be used once
+            helper(nums, i + 1, gap - nums[i], list, result);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+
+```
+
+---
+
+## @ 交错正负数
+
+给出一个含有正整数和负整数的数组，重新排列成一个正负数交错的数组。
+
+样例
+
+给出数组[-1, -2, -3, 4, 5, 6]，重新排序之后，变成[-1, 5, -2, 4, -3, 6]或者其他任何满足要求的答案
+
+注意
+
+不需要保持正整数或者负整数原来的顺序。
+
+挑战
+
+原地完成，没有额外的空间
+
+**题解**
+
+这道题没有给出正数、负数谁多谁少，所以需要先统计数量，数量多的要包着数量少的，然后数组尾部全是数量多的数
+
+```java
+class Solution {
+    /**
+     * @param A: An integer array.
+     * @return: void
+     */
+    public void rerange(int[] A) {
+        int posNum = 0, negNum = 0;
+        for (int elem : A) {
+            if (elem < 0) {
+                negNum++;
+            }
+            else {
+                posNum++;
+            }
+        }
+        int posInd = 1, negInd = 0;
+        if (posNum > negNum) {
+            negInd = 1;
+            posInd = 0;
+        }
+        while (posInd<A.length && negInd<A.length) {
+            while (posInd < A.length && A[posInd] > 0) {
+                posInd += 2;
+            }
+            while (negInd < A.length && A[negInd] < 0) {
+                negInd += 2;
+            }
+            if (posInd<A.length && negInd<A.length) {
+                swap(A, posInd, negInd);
+            }
+        }
+        return ;
+   }
+
+   public void swap(int[] A, int l, int r) {
+       int temp = A[l];
+       A[l] = A[r];
+       A[r] = temp;
+   }
+}
+
+```
+
+---
+
+
+
+## @ 快速幂
+
+计算 a^n % b，其中a，b和n都是32位的整数。
+
+样例
+
+例如 231 % 3 = 2
+
+例如 1001000 % 1000 = 0
+
+挑战
+
+O(logn)
+
+**题解**
+
+数学题，考察整数求模的一些特性，不知道这个特性的话此题一时半会解不出来，本题中利用的关键特性为：
+
+(a * b) % p = ((a % p) * (b % p)) % p
+即 a 与 b 的乘积模 p 的值等于 a, b 分别模 p 相乘后再模 p 的值，只能帮你到这儿了，不看以下的答案先想想知道此关系后如何解这道题。
+
+首先不太可能先把 a^n 具体值求出来，太大了... 所以利用以上求模公式，可以改写为：
+
+a^n = a^(n/2)⋅a^(n/2) = a^(n/4)⋅a^(n/4)⋅a^(n/4)⋅a^(n/4) = ...
+​​
+至此递归模型建立。
+
+```java
+class Solution {
+    /*
+     * @param a, b, n: 32bit integers
+     * @return: An integer
+     */
+    public int fastPower(int a, int b, int n) {
+       if (n == 1) {
+            return a % b;
+        } else if (n == 0) {
+            return 1 % b;
+        } else if (n < 0) {
+            return -1;
+        }
+
+        // (a * b) % p = ((a % p) * (b % p)) % p
+        // use long to prevent overflow
+        long product = fastPower(a, b, n / 2);
+        product = (product * product) % b;
+        if (n % 2 == 1) {
+            product = (product * a) % b;
+        }
+
+        // cast long to int
+        return (int) product;
+    }
+};
+
+```
+
+源码分析
+
+分三种情况讨论 n 的值，需要特别注意的是n == 0，虽然此时 a0 的值为1，但是不可直接返回1，因为b == 1时应该返回0，故稳妥的写法为返回1 % b.
+
+递归模型中，需要注意的是要分 n 是奇数还是偶数，奇数的话需要多乘一个 a, 保存乘积值时需要使用long型防止溢出，最后返回时强制转换回int。
+
+复杂度分析
+
+使用了临时变量product，空间复杂度为 O(1), 递归层数约为 logn, 时间复杂度为 O(logn), 栈空间复杂度也为 O(logn).
+
+---
+
+## @ 组合
+
+给出两个整数n和k，返回从1......n中选出的k个数的组合。
+
+样例
+
+例如 n = 4 且 k = 2
+
+返回的解为：
+
+[[2,4],[3,4],[2,3],[1,2],[1,3],[1,4]]
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param n: Given the range of numbers
+     * @param k: Given the numbers of combinations
+     * @return: All the combinations of k numbers out of 1..n
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> list = new ArrayList<Integer>();
+        if (n <= 0 || k <= 0) return result;
+
+        helper(n, k, 1, list, result);
+        return result;
+    }
+
+    private void helper(int n, int k, int pos,
+                        List<Integer> list, List<List<Integer>> result) {
+
+        if (list.size() == k) {
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }
+
+        for (int i = pos; i <= n; i++) {
+            list.add(i);
+            helper(n, k, i + 1, list, result);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+
+```
+
+---
+
+## @ 颜色分类
+
+给定一个包含红，白，蓝且长度为n的数组，将数组元素进行分类使相同颜色的元素相邻，并按照红、白、蓝的顺序进行排序。
+
+我们可以使用整数0，1和2分别代表红，白，蓝。
+
+注意
+不能使用代码库中的排序函数来解决这个问题
+
+说明
+
+一个相当直接的解决方案是使用计数排序扫描2遍的算法。
+
+首先，迭代数组计算0,1,2出现的次数，然后依次用0,1,2出现的次数去覆盖数组。
+
+你否能想出一个仅使用常数级额外空间复杂度且只扫描遍历一遍数组的算法？
+
+**题解**
+
+By keeping three pointers, red = 0, blue = n - 1, and use white to scan through the whole array, when encountering 0, swap A[red] and A[white], when encountering 2, swap A[blue] and A[white] and move the pointers red, white, blue correspondingly
+
+```java
+class Solution {
+    /**
+     * @param nums: A list of integer which is 0, 1 or 2
+     * @return: nothing
+     */
+    public void sortColors(int[] nums) {
+        if(nums == null || nums.length <= 1)
+            return;
+
+        int pl = 0;
+        int pr = nums.length - 1;
+        int i = 0;
+        while(i <= pr){
+            if(nums[i] == 0){
+                swap(nums, pl, i);
+                pl++;
+                i++;
+            }else if(nums[i] == 1){
+                i++;
+            }else{
+                swap(nums, pr, i);
+                pr--;
+            }
+        }
+    }
+
+    private void swap(int[] a, int i, int j){
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+}
+
+```
+
+---
+
+## @ 排颜色 II
+
+给定一个有n个对象（包括k种不同的颜色，并按照1到k进行编号）的数组，将对象进行分类使相同颜色的对象相邻，并按照1,2，...k的顺序进行排序。
+
+样例
+
+给出colors=[3, 2, 2, 1, 4]，k=4, 你的代码应该在原地操作使得数组变成[1, 2, 2, 3, 4]
+
+注意
+
+不能使用代码库中的排序函数来解决这个问题
+
+挑战
+
+一个相当直接的解决方案是使用计数排序扫描2遍的算法。这样你会花费O(k)的额外空间。你否能在不使用额外空间的情况下完成？
+
+**题解**
+
+inplace，并且O(N)时间复杂度的算法。
+
+我们可以使用类似桶排序的思想，对所有的数进行计数。
+
+1. 从左扫描到右边，遇到一个数字，先找到对应的bucket.比如 3 2 2 1 4 第一个3对应的bucket是index = 2 (bucket从0开始计算）
+2. Bucket 如果有数字，则把这个数字移动到i的position(就是存放起来），然后把bucket记为-1(表示该位置是一个计数器，计1）。
+3. Bucket 存的是负数，表示这个bucket已经是计数器，直接减1. 并把color[i] 设置为0 （表示此处已经计算过）
+4. Bucket 存的是0，与3一样处理，将bucket设置为-1， 并把color[i] 设置为0 （表示此处已经计算过）
+5. 回到position i，再判断此处是否为0（只要不是为0，就一直重复2-4的步骤）。
+6.完成1-5的步骤后，从尾部到头部将数组置结果。（从尾至头是为了避免开头的计数器被覆盖）
+
+例子(按以上步骤运算)：
+
+    3 2 2 1 4
+    2 2 -1 1 4
+    2 -1 -1 1 4
+    0 -2 -1 1 4
+    -1 -2 -1 0 4
+    -1 -2 -1 -1 0
+
+```java
+class Solution {
+    /**
+     * @param colors: A list of integer
+     * @param k: An integer
+     * @return: nothing
+     */
+    public void sortColors2(int[] colors, int k) {
+        if (colors == null) {
+            return;
+        }
+
+        int len = colors.length;
+        for (int i = 0; i < len; i++) {
+            // Means need to deal with A[i]
+            while (colors[i] > 0) {
+                int num = colors[i];
+                if (colors[num - 1] > 0) {
+                    // 1. There is a number in the bucket,
+                    // Store the number in the bucket in position i;
+                    colors[i] = colors[num - 1];
+                    colors[num - 1] = -1;
+                } else if (colors[num - 1] <= 0) {
+                    // 2. Bucket is using or the bucket is empty.
+                    colors[num - 1]--;
+                    // delete the A[i];
+                    colors[i] = 0;
+                }
+            }
+        }
+
+        int index = len - 1;
+        for (int i = k - 1; i >= 0; i--) {
+            int cnt = -colors[i];
+
+            // Empty number.
+            if (cnt == 0) {
+                continue;
+            }
+
+            while (cnt > 0) {
+                colors[index--] = i + 1;
+                cnt--;
+            }
+        }
+    }
+}
+
+```
+
+---
+
+## @ 买卖股票的最佳时机
+
+假设有一个数组，它的第i个元素是一支给定的股票在第i天的价格。如果你最多只允许完成一次交易(例如,一次买卖股票),设计一个算法来找出最大利润。
+
+样例
+
+给出一个数组样例 [3,2,3,1,2], 返回 1
+
+
+**题解**
+
+keep updating the smallest value and the max difference.
+
+```java
+public class Solution {
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    public int maxProfit(int[] prices) {
+        if (prices.length == 0) return 0;
+        int min = prices[0];
+        int res = 0;
+        for (int i=1; i<prices.length; i++){
+            if (prices[i] < min) min = prices[i];
+            else if ((prices[i]-min) > res){
+                res = (prices[i]-min);
+            }
+        }
+        return res;
+    }
+}
+
+```
+
+---
+
+## @ 买卖股票的最佳时机 II
+
+假设有一个数组，它的第i个元素是一个给定的股票在第i天的价格。设计一个算法来找到最大的利润。你可以完成尽可能多的交易(多次买卖股票)。然而,你不能同时参与多个交易(你必须在再次购买前出售股票)。
+
+样例
+
+给出一个数组样例[2,1,2,0,1], 返回 2
+
+**题解**
+
+Add all the positive change into the result.
+
+```java
+class Solution {
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length==0)
+            return 0;
+        int res = 0;
+        for(int i=0;i<prices.length-1;i++)
+        {
+            int diff = prices[i+1]-prices[i];
+            if(diff>0)
+                res += diff;
+        }
+        return res;
+    }
+};
+
+```
+
+---
+
+## @ 买卖股票的最佳时机 III
+
+假设你有一个数组，它的第i个元素是一支给定的股票在第i天的价格。设计一个算法来找到最大的利润。你最多可以完成两笔交易。
+
+样例
+
+给出一个样例数组 [4,4,6,1,1,4,2,5], 返回 6
+
+注意
+
+你不可以同时参与多笔交易(你必须在再次购买前出售掉之前的股票)
+
+**题解**
+
+这道题是Best Time to Buy and Sell Stock的扩展，现在我们最多可以进行两次交易。我们仍然使用动态规划来完成，事实上可以解决非常通用的情况，也就是最多进行k次交易的情况。
+这里我们先解释最多可以进行k次交易的算法，然后最多进行两次我们只需要把k取成2即可。我们还是使用“局部最优和全局最优解法”。我们维护两种量，一个是当前到达第i天可以最多进行j次交易，最好的利润是多少（global[i][j]），另一个是当前到达第i天，最多可进行j次交易，并且最后一次交易在当天卖出的最好的利润是多少（local[i][j]）。
+
+下面我们来看递推式，全局的比较简单，
+
+global[i][j]=max(local[i][j],global[i-1][j])
+全局（到达第i天进行j次交易的最大收益） = max{局部（在第i天交易后，恰好满足j次交易），全局（到达第i-1天时已经满足j次交易）}
+对于局部变量的维护，递推式是
+
+local[i][j]=max(global[i-1][j-1]+max(diff,0),local[i-1][j]+diff)，
+局部（在第i天交易后，总共交易了j次） =  max{情况2，情况1}
+
+情况1：在第i-1天时，恰好已经交易了j次（local[i-1][j]），那么如果i-1天到i天再交易一次：即在第i-1天买入，第i天卖出（diff），则这不并不会增加交易次数！【例如我在第一天买入，第二天卖出；然后第二天又买入，第三天再卖出的行为  和   第一天买入，第三天卖出  的效果是一样的，其实只进行了一次交易！因为有连续性】
+
+情况2：第i-1天后，共交易了j-1次（global[i-1][j-1]），因此为了满足“第i天过后共进行了j次交易，且第i天必须进行交易”的条件：我们可以选择在第i-1天买入，然后再第i天卖出（diff），或者选择在第i天买入，然后同样在第i天卖出（收益为0）。
+上面的算法中对于天数需要一次扫描，而每次要对交易次数进行递推式求解，所以时间复杂度是O(n*k)，如果是最多进行两次交易，那么复杂度还是O(n)。空间上只需要维护当天数据皆可以，所以是O(k)，当k=2，则是O(1)。
+
+```java
+class Solution {
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length == 0)
+        return 0;
+        int[] local = new int[3];
+        int[] global = new int[3];
+        for(int i = 0; i < prices.length - 1; i++)
+        {
+            int diff = prices[i + 1] - prices[i];
+            for(int j = 2; j >= 1; j--) //go backwards to use old data, and then override it.
+            {
+                local[j] = Math.max(global[j - 1] + (diff > 0 ? diff : 0), local[j] + diff);
+                global[j] = Math.max(local[j],global[j]);
+            }
+        }
+        return global[2];
+    }
+};
+
+```
+
+---
+
+## @ 链表排序
+
+在O(nlogn)时间复杂度和常数级的空间复杂度下给链表排序。
+
+样例
+
+给出1-3->2->null，给它排序变成1->2->3->null
+
+**题解**
+
+merge sort
+
+```java
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: You should return the head of the sorted linked list,
+                    using constant space complexity.
+     */
+    private ListNode findMiddle(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    private ListNode merge(ListNode head1, ListNode head2) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        while (head1 != null && head2 != null) {
+            if (head1.val < head2.val) {
+                tail.next = head1;
+                head1 = head1.next;
+            } else {
+                tail.next = head2;
+                head2 = head2.next;
+            }
+            tail = tail.next;
+        }
+        if (head1 != null) {
+            tail.next = head1;
+        } else {
+            tail.next = head2;
+        }
+
+        return dummy.next;
+    }
+
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode mid = findMiddle(head);
+
+        ListNode right = sortList(mid.next);
+        mid.next = null;
+        ListNode left = sortList(head);
+
+        return merge(left, right);
+    }
+}
+
+
+```
+
+---
+
+## @ 重排链表
+
+给定一个单链表L： L0→L1→…→Ln-1→Ln,
+
+重新排列后为：L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+必须在不改变节点值的情况下进行原地操作
+
+样例
+
+给出链表1->2->3->4->null，重新排列后为1->4->2->3->null。
+
+**题解**
+
+```java
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: void
+     */
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null || head.next.next == null) return;
+        ListNode slow = head, fast = head;
+
+        while(fast.next != null && fast.next.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        fast = slow.next;
+        slow.next = null;
+        // reverse
+        ListNode pre = null;
+        while(fast != null){
+            ListNode temp = fast.next;
+            fast.next = pre;
+            pre = fast;
+            fast = temp;
+        }
+
+        while(head != null && pre != null){
+            ListNode temp = head.next;
+            head.next = pre;
+            pre = pre.next;
+            head.next.next = temp;
+            head = temp;
+        }
+    }
+}
+
+
+```
+
+---
+
+## @ 带环链表
+
+给定一个链表，判断它是否有环。
+
+样例
+
+给出 -21->10->4->5, tail connects to node index 1，返回 true
+
+挑战
+
+不要使用额外的空间
+
+**题解**
+
+快慢指针
+
+```java
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @return: True if it has a cycle, or false
+     */
+    public boolean hasCycle(ListNode head) {
+        if(head == null)
+            return false;
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast)
+                return true;
+        }
+        return false;
+    }
+}
+
+
+```
+
+---
+
+## @ 合并k个排序链表
+
+合并k个排序链表，并且返回合并后的排序链表。尝试分析和描述其复杂度。
+
+样例
+
+给出3个排序链表[2->4->null,null,-1->null]，返回 -1->2->4->null
+
+**题解**
+
+merge two by two
+
+```java
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param lists: a list of ListNode
+     * @return: The head of one sorted list.
+     */
+    public ListNode mergeKLists(List<ListNode> lists) {
+        if (lists == null || lists.size() == 0) {
+            return null;
+        }
+
+        while (lists.size() > 1) {
+            List<ListNode> new_lists = new ArrayList<ListNode>();
+            for (int i = 0; i + 1 < lists.size(); i += 2) {
+                ListNode merged_list = merge(lists.get(i), lists.get(i+1));
+                new_lists.add(merged_list);
+            }
+            if (lists.size() % 2 == 1) {
+                new_lists.add(lists.get(lists.size() - 1));
+            }
+            lists = new_lists;
+        }
+
+        return lists.get(0);
+    }
+
+    private ListNode merge(ListNode a, ListNode b) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        while (a != null && b != null) {
+            if (a.val < b.val) {
+                tail.next = a;
+                a = a.next;
+            } else {
+                tail.next = b;
+                b = b.next;
+            }
+            tail = tail.next;
+        }
+
+        if (a != null) {
+            tail.next = a;
+        } else {
+            tail.next = b;
+        }
+
+        return dummy.next;
+    }
+}
+
+
+```
+
+---
+
+
+## @ 排序链表转换为二分查找树
+
+给出一个所有元素以升序排序的单链表，将它转换成一棵高度平衡的二分查找树
+
+
+**题解**
+
+快慢指针找到中间，属于暴力法
+
+```java
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @return: a tree node
+     */
+    public TreeNode sortedListToBST(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+
+        ListNode pre = head;
+
+        if (head == null) {
+            return null;
+        }
+
+        TreeNode root = null;
+        if (head.next == null) {
+            root = new TreeNode(head.val);
+            root.left = null;
+            root.right = null;
+            return root;
+        }
+
+        // get the middle node.
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+
+            // record the node before the SLOW.
+            pre = slow;
+            slow = slow.next;
+        }
+
+        // cut the list to two parts.
+        pre.next = null;
+        TreeNode left = sortedListToBST(head);
+        TreeNode right = sortedListToBST(slow.next);
+
+        root = new TreeNode(slow.val);
+        root.left = left;
+        root.right = right;
+
+        return root;
+    }
+}
+
+
+```
+
+---
+
+## @ 单词切分
+
+给出一个字符串s和一个词典，判断字符串s是否可以被空格切分成一个或多个出现在字典中的单词。
+
+样例
+
+给出
+
+s = "lintcode"
+
+dict = ["lint","code"]
+
+返回 true 因为"lintcode"可以被空格切分成"lint code"
+
+**题解**
+
+It is a DP problem. However, we need to use charAt() instead of substring() to optimize speed. Also, we can first check whether each char in s has appeared in dict, if not, then directly return false. (This is used to pass the last test case in LintCode).
+
+```java
+public class Solution {
+    /**
+     * @param s: A string s
+     * @param dict: A dictionary of words dict
+     */
+    public boolean wordBreak(String s, Set<String> dict) {
+        if (s.length()==0) return true;
+
+        char[] chars = new char[256];
+        for (String word : dict)
+            for (int i=0;i<word.length();i++)
+                chars[word.charAt(i)]++;
+
+        for (int i = 0;i<s.length();i++)
+            if (chars[s.charAt(i)]==0) return false;
+
+        boolean[] d = new boolean[s.length()+1];
+        Arrays.fill(d,false);
+        d[0] = true;
+        for (int i=1;i<=s.length();i++){
+        StringBuilder builder = new StringBuilder();
+            for (int j=i-1;j>=0;j--){
+                builder.insert(0,s.charAt(j));
+                String cur = builder.toString();
+                if (d[j] && dict.contains(cur)){
+                    d[i]=true;
+                    break;
+                }
+            }
+        }
+
+        return d[s.length()];
+    }
+}
+
+```
+
+---
+
+
 
 ## ---- 未做完 ----
+
+## @ 统计比给定整数小的数的个数
+
+给定一个整数数组 （下标由 0 到 n-1，其中 n 表示数组的规模，数值范围由 0 到 10000），以及一个 查询列表。对于每一个查询，将会给你一个整数，请你返回该数组中小于给定整数的元素的数量。
+
+样例
+
+对于数组 [1,2,7,8,5] ，查询 [1,8,5]，返回 [0,4,2]
+
+注意
+
+在做此题前，最好先完成 线段树的构造 and 线段树查询 II 这两道题目。
+
+挑战
+
+可否用一下三种方法完成以上题目。
+
+1. 仅用循环方法
+2. 分类搜索 和 二进制搜索
+3. 构建 线段树 和 搜索
+
+**题解**
+
+```java
+
+```
+
+---
+
+
+## @ 区间最小数
+
+给定一个整数数组（下标由 0 到 n-1，其中 n 表示数组的规模），以及一个查询列表。每一个查询列表有两个整数 [start, end]。 对于每个查询，计算出数组中从下标 start 到 end 之间的数的最小值，并返回在结果列表中。
+
+样例
+
+对于数组 [1,2,7,8,5]， 查询 [(1,2),(0,4),(2,4)]，返回 [2,1,5]
+
+注意
+
+在做此题前，建议先完成以下三道题 线段树的构造， 线段树的查询 及 线段树的修改。
+
+挑战
+
+每次查询在O(logN)的时间内完成
+
+**题解**
+
+```java
+
+```
+
+---
+
 
 ## @ 连续子数组求和 II
 
