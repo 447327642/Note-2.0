@@ -78,6 +78,8 @@
 - @ 最大子数组
 - @ 搜索插入位置
 - @ 在二叉查找树中插入节点
+- @ 最小路径和
+- @ 数字三角形
 - ---- 未做完 ----
 - @ 判断数独是否合法
 - ---- 中等题 ----
@@ -190,6 +192,15 @@
 - @ 最近公共祖先
 - @ 落单的数 II
 - @ 落单的数 III
+- @ 单词接龙
+- @ 编辑距离
+- @ 不同的子序列
+- @ 跳跃游戏
+- @ 跳跃游戏 II
+- @ 删除排序链表中的重复数字 II
+- @ 分割回文串 II
+- @ 复制带随机指针的链表
+- @ 最小调整代价
 - ---- 未做完 ----
 - @ 统计比给定整数小的数的个数
 - @ 区间最小数
@@ -4206,6 +4217,103 @@ public class Solution {
 
 ---
 
+## @ 最小路径和
+
+给定一个只含非负整数的m*n网格，找到一条从左上角到右下角的可以使数字和最小的路径。
+
+注意
+
+你在同一时间只能向下或者向右移动一步
+
+**题解**
+
+```java
+public class Solution {
+    /**
+     * @param grid: a list of lists of integers.
+     * @return: An integer, minimizes the sum of all numbers along its path
+     */
+    public int minPathSum(int[][] grid) {
+        int rowNum = grid.length;
+        if (rowNum==0) return 0;
+        int colNum = grid[0].length;
+        if (colNum==0) return 0;
+
+        int[][] sum = new int[rowNum][colNum];
+        sum[0][0] = grid[0][0];
+        for (int i=1;i<rowNum;i++) sum[i][0] = sum[i-1][0]+grid[i][0];
+        for (int i=1;i<colNum;i++) sum[0][i] = sum[0][i-1]+grid[0][i];
+
+        for (int i=1;i<rowNum;i++)
+            for (int j=1;j<colNum;j++){
+                sum[i][j] = Math.min(sum[i-1][j],sum[i][j-1])+grid[i][j];
+            }
+
+        return sum[rowNum-1][colNum-1];
+    }
+}
+
+
+```
+
+---
+
+
+## @ 数字三角形
+
+给定一个数字三角形，找到从顶部到底部的最小路径和。每一步可以移动到下面一行的相邻数字上。
+
+样例
+
+比如，给出下列数字三角形：
+
+    [
+         [2],
+        [3,4],
+       [6,5,7],
+      [4,1,8,3]
+    ]
+
+从顶到底部的最小路径和为11 ( 2 + 3 + 5 + 1 = 11)。
+
+注意
+
+如果你只用额外空间复杂度O(n)的条件下完成可以获得加分，其中n是数字三角形的总行数。
+
+**题解**
+
+It’s an easy question. Instead of normal DP transition function, this one is so-called bottom-up approach.
+
+```java
+public class Solution {
+    /**
+     * @param triangle: a list of lists of integers.
+     * @return: An integer, minimum path sum.
+     */
+    public int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
+        int len = triangle.size();
+        if (len == 0) return 0;
+        int[] m = new int[len];
+        m[0] = triangle.get(0).get(0);
+        for (int i = 1; i < len; i ++) {
+            ArrayList<Integer> cur = triangle.get(i);
+            for (int j = i; j >= 0; j --) {
+                if (j == i) m[j] = m[j-1] + cur.get(j);
+                else if (j == 0) m[j] = m[0] + cur.get(0);
+                else m[j] = Math.min(m[j-1], m[j]) + cur.get(j);
+            }
+        }
+        int min = Integer.MAX_VALUE;
+        for (Integer k: m)
+            min = Math.min(min, k);
+        return min;
+    }
+}
+
+
+```
+
+---
 
 
 ## ---- 未做完 ----
@@ -11251,6 +11359,581 @@ public class Solution {
             else res.set(1, res.get(1)^elem);
         }
         return res;
+    }
+}
+
+```
+
+---
+
+
+## @ 单词接龙
+
+给出两个单词（start和end）和一个字典，找到从start到end的最短转换序列
+
+比如：
+
+1. 每次只能改变一个字母。
+2. 变换过程中的中间单词必须在字典中出现。
+
+样例
+
+给出数据如下：
+
+start = "hit"
+
+end = "cog"
+
+dict = ["hot","dot","dog","lot","log"]
+
+一个最短的变换序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog"，
+
+返回它的长度 5
+
+注意
+
++ 如果没有转换序列则返回0。
++ 所有单词具有相同的长度。
++ 所有单词都只包含小写字母。
+
+**题解**
+
+一开始看到string会以为是类似array的问题，但是其实是graph的问题 找最短路径，应该用BFS而不是DFS BFS搜索，最先搜索到的一定是最短路径
+
+这种题，肯定是每次改变单词的一个字母，然后逐渐搜索，很多人一开始就想到用dfs，其实像这种求最短路径、树最小深度问题bfs最适合，可以参考我的这篇博客bfs（层序遍历）求二叉树的最小深度。本题bfs要注意的问题：
+
+和当前单词相邻的单词是：对当前单词改变一个字母且在字典中存在的单词
+一开始我使用每个dict里面的word和curr比较是否是neighbour的方式，但是这个会随着dict越大计算次数越多，会超时
+
+使用每个位置改变26个字母来找neighbours的方法，只需要使用固定的26 * len(word)的time
+
+找到一个单词的相邻单词，加入bfs队列后，要从字典中删除，因为不删除的话会造成类似于hog->hot->hog的死循环。而删除对求最短路径没有影响，因为我们第一次找到该单词肯定是最短路径，即使后面其他单词也可能转化得到它，路径肯定不会比当前的路径短（如果要输出所有最短路径，则不能立即从字典中删除，具体见下一题）
+
+```java
+public class Solution {
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return an integer
+      */
+    public int ladderLength(String start, String end, Set<String> dict) {
+         if(start == null || end == null || start.equals(end)) return 0;
+
+        Queue<String> from = new LinkedList<String>();
+        HashSet<String> record = new HashSet<String>();
+        from.offer(start);
+        record.add(start);
+        int count = 1;
+        while(!from.isEmpty()){
+            Queue<String> to = new LinkedList<String>();
+            while(!from.isEmpty()){
+                String word = from.poll();
+                if(word.equals(end)) return count;
+                for(int i = 0; i < word.length(); i++){
+                    for(char c = 'a'; c <= 'z'; c++){
+                        char[] arr = word.toCharArray();
+                        if(arr[i] != c){
+                            arr[i] = c;
+                            String newWord = new String(arr);
+                            if(end.equals(newWord)) return count+1;
+                            if(!record.contains(newWord) && dict.contains(newWord)){
+                                record.add(newWord);
+                                to.add(newWord);
+                            }
+                        }
+                    }
+                }
+            }
+            count++;
+            from = to;
+        }
+        return count;
+    }
+}
+
+```
+
+---
+
+## @ 编辑距离
+
+给出两个单词word1和word2，计算出将word1 转换为word2的最少操作次数。
+
+你总共三种操作方法：
+
++ 插入一个字符
++ 删除一个字符
++ 替换一个字符
+
+样例
+
+给出 work1="mart" 和 work2="karma"
+
+返回 3
+
+**题解**
+
+res[i][j]表示Edit Distance between X数组的前i个元素以及Y数组的前j个元素，或者the minimum # of operations to convert X前i个元素 into Y的前j个元素
+
+因为对于Xi 和 Yj，操作无非是 insert, delete, replace三种，所以递归式就是三项：根据上面这个图很清楚：res[i][j] = min{res[i-1][j]+1, res[i][j-1]+1, Xi == Yj ? res[i-1][j-1] : res[i-1][j-1] + 1}
+
+```java
+public class Solution {
+    /**
+     * @param word1 & word2: Two string.
+     * @return: The minimum number of steps.
+     */
+    public int minDistance(String word1, String word2) {
+        if (word1==null && word2!=null) return word2.length();
+        if (word1!=null && word2==null) return word1.length();
+        if (word1==null && word2==null) return 0;
+        int[][] res = new int[word1.length()+1][word2.length()+1];
+        for (int i=1; i<=word1.length(); i++) {
+            res[i][0] = i;
+        }
+        for (int j=1; j<=word2.length(); j++) {
+            res[0][j] = j;
+        }
+        for (int m=1; m<=word1.length(); m++) {
+            for (int n=1; n<=word2.length(); n++) {
+                res[m][n] = Math.min(Math.min(res[m-1][n]+1, res[m][n-1]+1), word1.charAt(m-1)==word2.charAt(n-1)? res[m-1][n-1] : res[m-1][n-1]+1);
+            }
+        }
+        return res[word1.length()][word2.length()];
+    }
+}
+
+```
+
+---
+
+## @ 不同的子序列
+
+给出字符串S和字符串T，计算S的不同的子序列中T出现的个数。
+
+子序列字符串是原始字符串通过删除一些(或零个)产生的一个新的字符串，并且对剩下的字符的相对位置没有影响。(比如，“ACE”是“ABCDE”的子序列字符串,而“AEC”不是)。
+
+样例
+
+给出S = "rabbbit", T = "rabbit"
+
+返回 3
+
+**题解**
+
+递归解法，首先，从个字符串S的尾部开始扫描，找到第一个和T最后一个字符相同的位置k，那么有下面两种匹配：a. T的最后一个字符和S[k]匹配，b. T的最后一个字符不和S[k]匹配。a相当于子问题:从S[0...lens-2]中删除几个字符得到T[0...lent-2]，b相当于子问题：从S[0...lens-2]中删除几个字符得到T[0...lent-1]。那么总的删除方法等于a、b两种情况的删除方法的和。递归解法代码如下，但是通过大数据会超时：
+
+动态规划，设dp[i][j]是从字符串S[0...i]中删除几个字符得到字符串T[0...j]的不同的删除方法种类，有上面递归的分析可知，动态规划方程如下
+
++ 如果S[i] = T[j], dp[i][j] = dp[i-1][j-1]+dp[i-1][j]
++ 如果S[i] 不等于 T[j], dp[i][j] = dp[i-1][j]
+
+初始条件：当T为空字符串时，从任意的S删除几个字符得到T的方法为1
+
+Consider s=”EEACC” and t=”EAC”. num[i][j] means how many distinct sequence for T[0..i-1] in S[0..j-1]
+
+Two cases for each num[i][j]:
+
+num[i][j] inherits from num[i][j-1]. This means overlooking s[j], t[0..i] at least keeps the number of distinct sequences in s[0..j-1]. This case finds all sequences of t[0..i] in s[o..j] without s[j].
+
+if t[i]==s[j], this means t[i] could be mapped to s[j], we cannot overlook s[j].  We look at the number of t[0..i-1] in s[0..j-1], and add it to the result. This case finds all sequences of t[0..i] in s[o..j] with s[j].
+
+```java
+public class Solution {
+    /**
+     * @param S, T: Two string.
+     * @return: Count the number of distinct subsequences
+     */
+    public int numDistinct(String s, String t) {
+        if (s==null || t==null || (s.length()==0 && t.length()!=0)) return 0;
+        if (t.length()==0) return 1;
+        int[] pre = new int[s.length()+1];
+        Arrays.fill(pre,1);
+        for (int i=1; i<=t.length(); i++){
+            int[] cur = new int[s.length()+1];
+            cur[0] = 0;
+            for (int j=1; j<=s.length(); j++){
+                if (s.charAt(j-1)==t.charAt(i-1)){
+                    cur[j]+=pre[j-1];
+                }
+                cur[j] += cur[j-1];
+            }
+            System.arraycopy(cur, 0, pre, 0, cur.length);
+        }
+        return pre[s.length()];
+    }
+}
+
+```
+
+---
+
+## @ 跳跃游戏
+
+给出一个非负整数数组，你最初定位在数组的第一个位置。　　　
+
+数组中的每个元素代表你在那个位置可以跳跃的最大长度。　　　　
+
+判断你是否能到达数组的最后一个位置。
+
+样例
+
+A = [2,3,1,1,4]，返回 true.
+
+A = [3,2,1,0,4]，返回 false.
+
+注意
+
+这个问题有两个方法，一个是贪心和 动态规划。
+
+贪心方法时间复杂度为O（N）。
+
+动态规划方法的时间复杂度为为O（n^2）。
+
+我们手动设置小型数据集，使大家阔以通过测试的两种方式。这仅仅是为了让大家学会如何使用动态规划的方式解决此问题。如果您用动态规划的方式完成它，你可以尝试贪心法，以使其再次通过一次。
+
+**题解**
+
+dp
+
+```java
+public class Solution {
+    /**
+     * @param A: A list of integers
+     * @return: The boolean answer
+     */
+    public boolean canJump(int[] A) {
+        boolean[] can = new boolean[A.length];
+        can[0] = true;
+
+        for (int i = 1; i < A.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (can[j] && j + A[j] >= i) {
+                    can[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return can[A.length - 1];
+    }
+}
+
+
+```
+
+---
+
+## @ 跳跃游戏 II
+
+给出一个非负整数数组，你最初定位在数组的第一个位置。
+
+数组中的每个元素代表你在那个位置可以跳跃的最大长度。　　　
+
+你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+
+样例
+
+给出数组A = [2,3,1,1,4]，最少到达数组最后一个位置的跳跃次数是2(从数组下标0跳一步到数组下标1，然后跳3步到数组的最后一个位置，一共跳跃2次)
+
+**题解**
+
+dp
+
+```java
+public class Solution {
+    /**
+     * @param A: A list of lists of integers
+     * @return: An integer
+     */
+    public int jump(int[] A) {
+        int[] steps = new int[A.length];
+
+        steps[0] = 0;
+        for (int i = 1; i < A.length; i++) {
+            steps[i] = Integer.MAX_VALUE;
+            for (int j = 0; j < i; j++) {
+                if (steps[j] != Integer.MAX_VALUE && j + A[j] >= i) {
+                    steps[i] = steps[j] + 1;
+                    break;
+                }
+            }
+        }
+
+        return steps[A.length - 1];
+    }
+}
+
+
+```
+
+---
+
+## @ 删除排序链表中的重复数字 II
+
+给定一个排序链表，删除所有重复的元素只留下原链表中没有重复的元素。
+
+样例
+
+给出1->2->3->3->4->4->5->null，返回1->2->5->null
+
+给出1->1->1->2->3->null，返回 2->3->null
+
+**题解**
+
+上题为保留重复值节点的一个，这题删除全部重复节点，看似区别不大，但是考虑到链表头不确定(可能被删除，也可能保留)，因此若用传统方式需要较多的if条件语句。这里介绍一个处理链表头节点不确定的方法——引入dummy node.
+
+    ListNode *dummy = new ListNode(0);
+    dummy->next = head;
+    ListNode *node = dummy;
+
+引入新的指针变量dummy，并将其next变量赋值为head，考虑到原来的链表头节点可能被删除，故应该从dummy处开始处理，这里复用了head变量。考虑链表A->B->C，删除B时，需要处理和考虑的是A和C，将A的next指向C。如果从空间使用效率考虑，可以使用head代替以上的node，含义一样，node比较好理解点。
+
+与上题不同的是，由于此题引入了新的节点dummy，不可再使用node->val == node->next->val，原因有二：
+
+1. 此题需要将值相等的节点全部删掉，而删除链表的操作与节点前后两个节点都有关系，故需要涉及三个链表节点。且删除单向链表节点时不能删除当前节点，只能改变当前节点的next指向的节点。
+2. 在判断val是否相等时需先确定node->next和node->next->next均不为空，否则不可对其进行取值。
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param ListNode head is the head of the linked list
+     * @return: ListNode head of the linked list
+     */
+    public static ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode node = dummy;
+        while(node.next != null && node.next.next != null) {
+            if (node.next.val == node.next.next.val) {
+                int val_prev = node.next.val;
+                while (node.next != null && node.next.val == val_prev) {
+                    node.next = node.next.next;
+                }
+            } else {
+                node = node.next;
+            }
+        }
+
+        return dummy.next;
+    }
+}
+
+
+```
+
+---
+
+## @ 分割回文串 II
+
+给定一个字符串s，将s分割成一些子串，使每个子串都是回文。
+
+返回s符合要求的的最少分割次数。
+
+样例
+
+比如，给出字符串s = "aab"，
+
+返回 1， 因为进行一次分割可以将字符串s分割成["aa","b"]这样两个回文子串
+
+**题解**
+
+使用DP来解决：
+
+1. D[i]  表示前i 个字符切为回文需要的切割数
+2. P[i][j]: S.sub(i-j) is a palindrome.
+3. 递推公式： D[i] = Math.min(D[i], D[j] + 1), 0 <= j <= i - 1) ，并且要判断 P[j][i - 1]是不是回文。
+4. 注意D[0] = -1的用意，它是指当整个字符串判断出是回文是，因为会D[0] + 1 其实应该是结果为0（没有任何切割），所以，应把D[0] 设置为-1
+
+有个转移函数之后，一个问题出现了，就是如何判断[i,j]是否是回文？每次都从i到j比较一遍？太浪费了，这里也是一个DP问题。
+
+定义函数
+
+P[i][j] = true if [i,j]为回文
+
+那么
+P[i][j] = str[i] == str[j] && P[i+1][j-1];
+
+```java
+public class Solution {
+    /**
+     * @param s a string
+     * @return an integer
+     */
+    public int minCut(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        int len = s.length();
+
+        // D[i]: 前i 个字符切为回文需要的切割数
+        int[] D = new int[len + 1];
+        D[0] = -1;
+
+        // P[i][j]: S.sub(i-j) is a palindrome.
+        boolean[][] P = new boolean[len][len];
+
+        for (int i = 1; i <= len; i++) {
+            // The worst case is cut character one by one.
+            D[i] = i - 1;
+            for (int j = 0; j <= i - 1; j++) {
+                P[j][i - 1] = false;
+                if (s.charAt(j) == s.charAt(i - 1) && (i - 1 - j <= 2 || P[j + 1][i - 2])) {
+                    P[j][i - 1] = true;
+                    D[i] = Math.min(D[i], D[j] + 1);
+                }
+            }
+        }
+
+        return D[len];
+    }
+};
+
+```
+
+---
+
+## @ 复制带随机指针的链表
+
+给出一个链表，每个节点包含一个额外增加的随机指针可以指向链表中的任何节点或空的节点。
+
+返回一个深拷贝的链表。
+
+挑战
+
+可否使用O(1)的空间
+
+**题解**
+
+Using HashMap to store the RandomListNode info.
+
+We can create a hashMap<RandomListNode, RandomListNode>, the Key stores the original ListNode, and the value stores the new RandomListNode.
+
+In the implementation, we only need to iterate the RandomListNode once. and for each original node, we first copy the next pointer. and then copy the Random pointer.
+
+The important is every time when you copy the next or the random pointer, you should check whether the node is/not exist.
+
+```java
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    /**
+     * @param head: The head of linked list with a random pointer.
+     * @return: A new head of a deep copy of the list.
+     */
+    public RandomListNode copyRandomList(RandomListNode head) {
+        if (null == head) {
+       return null;
+       }
+       Map<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
+       RandomListNode dummy = new RandomListNode(-1);
+       dummy.next = head;
+
+       RandomListNode copyNode = dummy;
+       RandomListNode temp;
+
+       while (head != null) {
+           // copy current node
+           if (map.containsKey(head)) {
+               temp = map.get(head);
+           } else {
+               temp = new RandomListNode(head.label);
+               map.put(head, temp);
+           }
+           copyNode.next = temp;
+           // copy random node
+           if (head.random != null) {
+               if (map.containsKey(head.random)) {
+                   temp.random = map.get(head.random);
+               } else {
+                   temp.random = new RandomListNode(head.random.label);
+                   map.put(head.random, temp.random);
+               }
+           }
+           copyNode = copyNode.next;
+           head = head.next;
+       }
+       return dummy.next;
+    }
+}
+
+```
+
+---
+
+## @ 最小调整代价
+
+给一个整数数组，调整每个数的大小，使得相邻的两个数的差小于一个给定的整数target，调整每个数的代价为调整前后的差的绝对值，求调整代价之和最小是多少。
+
+样例
+
+对于数组[1, 4, 2, 3]和target=1，最小的调整方案是调整为[2, 3, 2, 3]，调整代价之和是2。返回2。
+
+注意
+
+你可以假设数组中每个整数都是正整数，且小于等于100。
+
+**题解**
+
+这道题要看出是背包问题，不容易，跟FB一面 paint house很像，比那个难一点
+
+定义res[i][j] 表示前 i个number with 最后一个number是j，这样的minimum adjusting cost
+
+如果第i-1个数是j, 那么第i-2个数只能在[lowerRange, UpperRange]之间，lowerRange=Math.max(0, j-target), upperRange=Math.min(99, j+target),
+
+这样的话，transfer function可以写成：
+
+    for (int p=lowerRange; p<= upperRange; p++) {
+    　　res[i][j] = Math.min(res[i][j], res[i-1][p] + Math.abs(j-A.get(i-1)));
+    }
+
+```java
+public class Solution {
+    /**
+     * @param A: An integer array.
+     * @param target: An integer.
+     */
+    public int MinAdjustmentCost(ArrayList<Integer> A, int target) {
+        int[][] res = new int[A.size()+1][100];
+        for (int j=0; j<=99; j++) {
+            res[0][j] = 0;
+        }
+        for (int i=1; i<=A.size(); i++) {
+            for (int j=0; j<=99; j++) {
+                res[i][j] = Integer.MAX_VALUE;
+                int lowerRange = Math.max(0, j-target);
+                int upperRange = Math.min(99, j+target);
+                for (int p=lowerRange; p<=upperRange; p++) {
+                    res[i][j] = Math.min(res[i][j], res[i-1][p]+Math.abs(j-A.get(i-1)));
+                }
+            }
+        }
+        int result = Integer.MAX_VALUE;
+        for (int j=0; j<=99; j++) {
+            result = Math.min(result, res[A.size()][j]);
+        }
+        return result;
     }
 }
 
