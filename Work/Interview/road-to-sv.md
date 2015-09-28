@@ -99,6 +99,7 @@ Sep 4 | 提交 VC 的代码，做完 LR 的 OA | 等待结果
 Sep 7 | 简历已投至 9.13 日合适的 14 间公司 | 下一次 9.15 - 9.21 的
 Sep 14 | 简历已投至 9.21 日合适的 19 间公司 | 下一次 9.22 - 9.27 的
 Sep 21 | 简历已投至 9.28 日合适的 22 间公司 | 下一次 9.29 - 10.6 的
+Sep 27 | 简历已投至 10.12 日合适的 26 间公司 | 下一次 10.13- 10.19 的
 
 
 
@@ -133,6 +134,10 @@ Sep 21 | 简历已投至 9.28 日合适的 22 间公司 | 下一次 9.29 - 10.6 
 20. Software Engineer, New College Grad @ Medallia
 21. Software Engineer - Computer Vision @ Samsung
 22. Software Engineer - Android and Embedded Systems/IOT, Wearables, Home Automation @ Samsung
+23. Software Engineer - New Grad @ Thumbtack
+24. VMware Full Time @ VMware
+25. Software Development Engineer, New Graduate @ Groupon
+26. Engineering positions for US location @ DJI
 
 
 关于投简历：
