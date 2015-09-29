@@ -1,61 +1,5 @@
 # 硅谷之路
 
-<!-- MarkdownTOC -->
-
-- 写在前面
-- 行动日志
-	- 已投公司列表
-- 内推公司列表
-- EOC Preparation
-	- 感兴趣公司列表
-- 面试相关
-	- Visual Concepts
-- 预约相关
-	- 8.26 Kevin Collins, Resume and Cover Letter
-	- 9.2 Marcie Foy, Job Fair Preparation
-		- 30秒自我介绍
-		- 1分钟项目介绍
-- 校园平台
-	- Tartantrak
-	- Career Fair
-- LinkedIn
-- 第一步：修改简历
-	- 具体技巧与注意事项
-		- 简历内容与格式
-		- 各部分详细说明
-		- 网申注意事项
-	- Cover Letter
-		- 内容及具体说明
-		- 游戏公司 Cover Letter
-		- 工程师
-- 第二步：规划职业方向
-- 工资分析
-- CPDC Workshop
-- Action Verbs Table
-	- Management/Leadership Skills
-	- Communication Skills
-	- Research/Technical Skills
-	- Teaching Skills
-	- Financial Skills
-	- Creative Skills
-	- Customer Service / Teamwork Skills
-	- Administrative / Organizational / Clerical Skills
-	- More Verbs For Accomplishments
-- 基本功
-	- 掌握一门编程语言
-	- 过一遍微软面试100题系列
-	- 苦补数据结构基础
-	- 看算法导论
-	- 刷leetcode或cc150或编程艺术系列
-	- 能力提高指南
-	- 一些其他资源
-- 过来人经验
-- 网络平台
-	- 其他网站
-
-<!-- /MarkdownTOC -->
-
-
 ## 写在前面
 
 第一次找工作，就是在大洋彼岸，诚惶诚恐。从前可能只需要跟国内的同辈比较，现在舞台更大了，竞争也更激烈了，但是我对自己依然有信心。信心并不是说谁谁谁还不如我都能找到工作，这样比较其实是没有意义的，要把自己摆在初心者的位置，利用一切可以利用的资源，多跟不同的人打交道。
@@ -138,7 +82,9 @@ Sep 27 | 简历已投至 10.12 日合适的 26 间公司 | 下一次 10.13- 10.1
 24. VMware Full Time @ VMware
 25. Software Development Engineer, New Graduate @ Groupon
 26. Engineering positions for US location @ DJI
-
+27. Software Engineer @ Snapchat, LA
+28. Software Engineer @ twilio
+29. Software Engineer @ Intentional
 
 关于投简历：
 
@@ -309,6 +255,9 @@ Cover Letter 的用途
 #### 30秒自我介绍
 
 关键词: Da Wang, Graduate Student, Electrical and Computer Engineering, Carnegie Mellon University, Undergraduate major, Software Engineering, software and hardware, computer graphic, machine learning and game development,position, resume
+
+
+Hi, my name is Da Wang. I'm a gradutate student majored in Electrical and Computer Engineering. Finishing my undergraduate in Software Engineering, I have a deep understanding about software as well as hardware. Also I had great experience on computer graphics, machine learning as well as mobile phone development. Here is my resume and I'd like to know more about [company name] and chances for working in [company name].
 
 #### 1分钟项目介绍
 

@@ -80,7 +80,7 @@
 - @ 在二叉查找树中插入节点
 - @ 最小路径和
 - @ 数字三角形
-- ---- 未做完 ----
+- @ 找出无向图汇总的相连要素
 - @ 判断数独是否合法
 - ---- 中等题 ----
 - @ 罗马数字转整数
@@ -201,6 +201,15 @@
 - @ 分割回文串 II
 - @ 复制带随机指针的链表
 - @ 最小调整代价
+- @ 找出有向图中的弱联通分量
+- @ 加油站
+- @ 克隆图
+- @ 堆化
+- @ 重哈希
+- @ 拓扑排序
+- @ 背包问题 II
+- @ 最长连续序列
+- @ 单词搜索
 - ---- 未做完 ----
 - @ 统计比给定整数小的数的个数
 - @ 区间最小数
@@ -4316,7 +4325,143 @@ public class Solution {
 ---
 
 
-## ---- 未做完 ----
+## @ 找出无向图汇总的相连要素
+
+请找出无向图中相连要素的个数。
+
+图中的每个节点包含其邻居的 1 个标签和 1 个列表。（一个无向图的相连节点（或节点）是一个子图，其中任意两个顶点通过路径相连，且不与超级图中的其它顶点相连。）
+
+样例
+
+给定图:
+
+    A------B  C
+     \     |  |
+      \    |  |
+       \   |  |
+        \  |  |
+          D   E
+
+返回 {A,B,D}, {C,E}。其中有 2 个相连的元素，即{A,B,D}, {C,E}
+
+**题解**
+
+How do we check for a connected graph (any two nodes are connected)?
+Maybe check for each node: each node represents a lead to a subgraph, then check if this subgraph
+is valid.
+1. In real case, need to ask the intervier: can we assume the given nodes are valid, so that we only
+need to check for success case? That means, we assume for example a linear list A-B-C does not exist.
+2. Then, we can use a 'set' to mark: we've checked this node.
+3. Use a queue for BFS
+4. Use a arraylist to save the results.
+5. Key point: when the queue is empty(), that means one set of connected component is ready to go
+6. Iterate through nodes, when it's not empty.
+More Notes:Have to do Collections.sort()....somehow it want me to sort the results?
+Note2: Get rid of a node from nodes, whenever add it to component ... don't forget this.
+Note3: Well, there is a chance that compoents are added, queue is cleaned, but nodes are empty as well..
+that means, need to catch the last case of 'remaining component' and add it to rst.
+
+bfs
+
+```java
+/**
+ * Definition for Undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     ArrayList<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param nodes a array of Undirected graph node
+     * @return a connected set of a Undirected graph
+     */
+    public List<List<Integer>> connectedSet(ArrayList<UndirectedGraphNode> nodes) {
+        List<List<Integer>> rst = new ArrayList<>();
+        if (nodes == null || nodes.size() == 0) {
+            return rst;
+        }
+        //Init:
+        Set<UndirectedGraphNode> checked = new HashSet();
+        Queue<UndirectedGraphNode> queue = new LinkedList();
+        ArrayList<Integer> component = new ArrayList<Integer>();
+
+        queue.offer(nodes.get(0));
+
+        while (!nodes.isEmpty()) {
+            if (queue.isEmpty()) {
+                Collections.sort(component);
+                rst.add(component);
+                queue.offer(nodes.get(0));
+                component = new ArrayList<Integer>();
+            } else {
+                UndirectedGraphNode curr = queue.poll();
+                if (!checked.contains(curr)) {
+                    checked.add(curr);
+                    component.add(curr.label);
+                    nodes.remove(curr);
+                    for (UndirectedGraphNode node : curr.neighbors) {
+                            queue.add(node);
+                    }
+                }
+            }
+        }
+        if (!component.isEmpty()) {
+            rst.add(component);
+        }
+        return rst;
+    }
+}
+
+```
+
+dfs
+
+```java
+/**
+ * Definition for Undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     ArrayList<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param nodes a array of Undirected graph node
+     * @return a connected set of a Undirected graph
+     */
+    public List<List<Integer>> connectedSet(ArrayList<UndirectedGraphNode> nodes) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> path = new ArrayList<Integer>();
+        Set<UndirectedGraphNode> visited = new HashSet<UndirectedGraphNode>();
+        for(UndirectedGraphNode node : nodes){
+            if(!visited.contains(node)){
+                dfs(node, visited, path);
+                Collections.sort(path);
+                result.add(new ArrayList<Integer>(path));
+                path.clear();
+            }
+        }
+        return result;
+
+    }
+
+    public void dfs(UndirectedGraphNode node, Set<UndirectedGraphNode> visited, List<Integer> path){
+        visited.add(node);
+        path.add(node.label);
+        for(UndirectedGraphNode n : node.neighbors){
+            if(!visited.contains(n)){
+                dfs(n, visited, path);
+            }
+        }
+    }
+}
+
+```
+
+---
 
 
 ## @ 判断数独是否合法
@@ -4336,9 +4481,54 @@ public class Solution {
 
 **题解**
 
+```java
+class Solution {
+    /**
+      * @param board: the board
+        @return: wether the Sudoku is valid
+      */
+    public boolean isValidSudoku(char[][] board) {
+        if(board == null || board.length == 0 || board[0].length == 0) return false;
 
+        int m = 9, n = 9;
+        // check row
+        boolean[] visited = new boolean[9];
+        for(int i = 0; i < m; i++){
+            Arrays.fill(visited, false);
+            for(int j = 0; j < n; j++){
+                if(!precess(visited, board[i][j])) return false;
+            }
+        }
 
-```python
+        for(int i = 0; i < n; i++){
+            Arrays.fill(visited, false);
+            for(int j = 0; j < m; j++){
+                if(!precess(visited, board[j][i])) return false;
+            }
+        }
+
+        for(int i = 0; i < m; i+=3){
+
+          for(int j = 0; j < n; j+=3){
+              Arrays.fill(visited, false);
+              for(int k = 0; k < 9; k++){
+                  if(!precess(visited, board[i+k/3][j+k%3])) return false;
+              }
+
+            }
+        }
+        return true;
+
+    }
+
+    private boolean precess(boolean[] visited, char c){
+        if(c == '.') return true;
+        int num = c - '0';
+        if(num > 9 || num < 1 || visited[num-1]) return false;
+        visited[num-1] = true;
+        return true;
+    }
+};
 
 ```
 
@@ -11941,8 +12131,703 @@ public class Solution {
 
 ---
 
+## @ 找出有向图中的弱联通分量
+
+请找出有向图中弱联通分量的数目。图中的每个节点包含其邻居的 1 个标签和1 个列表。 （一个有向图中的相连节点指的是一个包含 2 个通过直接边沿路径相连的顶点的子图。）
+
+样例
+
+给定图:
+
+    A----->B  C
+     \     |  |
+      \    |  |
+       \   |  |
+        \  v  v
+         ->D  E <- F
+
+返回 {A,B,D}, {C,E,F}. 图中有 2 个相连要素，即{A,B,D} 和 {C,E,F} 。
+
+挑战
+
+将原素升序排列。
+
+**题解**
+
+Union Find
+
+```java
+/**
+ * Definition for Directed graph.
+ * class DirectedGraphNode {
+ *     int label;
+ *     ArrayList<DirectedGraphNode> neighbors;
+ *     DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param nodes a array of Directed graph node
+     * @return a connected set of a directed graph
+     */
+    public List<List<Integer>> connectedSet2(ArrayList<DirectedGraphNode> nodes) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(DirectedGraphNode node : nodes){
+            for(DirectedGraphNode n : node.neighbors){
+                int fa = find(map, node.label);
+                int ch = find(map, n.label);
+                map.put(fa, ch);
+            }
+        }
+        HashMap<Integer, ArrayList<Integer>> record = new HashMap<Integer, ArrayList<Integer>>();
+
+        for(DirectedGraphNode node : nodes){
+            int val = find(map, node.label);
+            if(!record.containsKey(val)){
+                record.put(val, new ArrayList<Integer>());
+            }
+            record.get(val).add(node.label);
+        }
+
+        for(int key : record.keySet()){
+            ArrayList<Integer> sub = new ArrayList<Integer>();
+            sub.addAll(record.get(key));
+            res.add(sub);
+        }
+        return res;
+
+    }
+
+    private int find(HashMap<Integer, Integer> map, int v){
+        if(!map.containsKey(v)){
+            map.put(v, v);
+            return v;
+        }
+        while(map.get(v) != v) v = map.get(v);
+        return v;
+    }
+}
+
+```
+
+---
+
+## @ 加油站
+
+在一条环路上有 N 个加油站，其中第 i 个加油站有汽油gas[i]，并且从第 i 个加油站前往第 i+1个加油站需要消耗汽油cost[i]。
+
+你有一辆油箱容量无限大的汽车，现在要从某一个加油站出发绕环路一周，一开始油箱为空。
+
+求可环绕环路一周时出发的加油站的编号，若不存在环绕一周的方案，则返回-1。
+
+样例
+
+现在有4个加油站，汽油量gas[i]=[1, 1, 3, 1]，环路旅行时消耗的汽油量cost[i]=[2, 2, 1, 1]。则出发的加油站的编号为2。
+
+注意
+
+数据保证答案唯一。
+
+挑战
+
+O(n)时间和O(1)额外空间
+
+**题解**
+
+1. 从i开始，j是当前station的指针，sum += gas[j] – cost[j] （从j站加了油，再算上从i开始走到j剩的油，走到j+1站还能剩下多少油）
+2. 如果sum < 0，说明从i开始是不行的。那能不能从i..j中间的某个位置开始呢？既然i出发到i+1是可行的， 又i~j是不可行的， 从而发现i+1~ j是不可行的。
+3. 以此类推i+2~j， i+3~j，i+4~j 。。。。等等都是不可行的
+4. 所以一旦sum<0，index就赋成j + 1，sum归零。
+5. 最后total表示能不能走一圈。
+
+以上做法，其实是贪心的思想：
+
+也就是说brute force的解是 ： 一个一个来考虑， 每一个绕一圈， 但是 实际上 我们发现 i - j不可行 直接index就跳到j+1， 这样周而复始，很快就是绕一圈 就得到解了。
+
+```java
+public class Solution {
+    /**
+     * @param gas: an array of integers
+     * @param cost: an array of integers
+     * @return: an integer
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        if (gas == null || cost == null || gas.length == 0 || cost.length == 0) {
+            // Bug 0: should not return false;
+            return -1;
+        }
+
+        int total = 0;
+        int sum = 0;
+
+        int startIndex = 0;
+
+        int len = gas.length;
+        for (int i = 0; i < len; i++) {
+            int dif = gas[i] - cost[i];
+            sum += dif;
+
+            if (sum < 0) {
+                // Means that from 0 to this gas station, none of them can be the solution.
+                startIndex = i + 1; // Begin from the next station.
+                sum = 0; // reset the sum.
+            }
+
+            total += dif;
+        }
+
+        if (total < 0) {
+            return -1;
+        }
+
+        return startIndex;
+    }
+}
+
+```
+
+---
+
+## @ 克隆图
+
+克隆一张无向图，图中的每个节点包含一个label和一个列表neighbors
+
+LintCode Online Judge的无向图序列化：
+
+图节点有唯一的label。
+
+使用#作为一个分隔符，分隔节点的label和每个相邻节点neighbors。比如，序列化图{0,1,2#1,2#2,2}共有三个节点,因此包含两个个分隔符#。
+
+1. 第一个节点label为0，存在边从节点0链接到节点1和节点2
+2. 第二个节点label为1，存在边从节点1连接到节点2
+3. 第三个节点label为2，存在边从节点2连接到节点2(本身),从而形成自环。
+
+我们能看到如下的图：
+
+       1
+      / \
+     /   \
+    0 --- 2
+         / \
+         \_/
+
+**题解**
+
+使用BFS来解决此问题。用一个Queue来记录遍历的节点，遍历原图，并且把复制过的节点与原节点放在MAP中防止重复访问。
+
+图的遍历有两种方式，BFS和DFS
+
+这里使用BFS来解本题，BFS需要使用queue来保存neighbors
+
+但这里有个问题，在clone一个节点时我们需要clone它的neighbors，而邻居节点有的已经存在，有的未存在，如何进行区分？
+
+这里我们使用Map来进行区分，Map的key值为原来的node，value为新clone的node，当发现一个node未在map中时说明这个node还未被clone，
+
+将它clone后放入queue中处理neighbors。
+
+使用Map的主要意义在于充当BFS中Visited数组，它也可以去环问题，例如A--B有条边，当处理完A的邻居node，然后处理B节点邻居node时发现A已经处理过了
+
+处理就结束，不会出现死循环。
+
+queue中放置的节点都是未处理neighbors的节点。
+
+```java
+/**
+ * Definition for undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     ArrayList<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param node: A undirected graph node
+     * @return: A undirected graph node
+     */
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        UndirectedGraphNode root = null;
+
+        // store the nodes which are cloned.
+        HashMap<UndirectedGraphNode, UndirectedGraphNode> map =
+            new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+
+        Queue<UndirectedGraphNode> q = new LinkedList<UndirectedGraphNode>();
+
+        q.offer(node);
+        UndirectedGraphNode rootCopy = new UndirectedGraphNode(node.label);
+
+        // 别忘记这一行啊。orz..
+        map.put(node, rootCopy);
+
+        // BFS the graph.
+        while (!q.isEmpty()) {
+            UndirectedGraphNode cur = q.poll();
+            UndirectedGraphNode curCopy = map.get(cur);
+
+            // bfs all the childern node.
+            for (UndirectedGraphNode child: cur.neighbors) {
+                // the node has already been copied. Just connect it and don't need to copy.
+                if (map.containsKey(child)) {
+                    curCopy.neighbors.add(map.get(child));
+                    continue;
+                }
+
+                // put all the children into the queue.
+                q.offer(child);
+
+                // create a new child and add it to the parent.
+                UndirectedGraphNode childCopy = new UndirectedGraphNode(child.label);
+                curCopy.neighbors.add(childCopy);
+
+                // Link the new node to the old map.
+                map.put(child, childCopy);
+            }
+        }
+
+        return rootCopy;
+    }
+}
+
+```
+
+---
+
+## @ 堆化
+
+给出一个整数数组，堆化操作就是把它变成一个最小堆数组。
+
+对于堆数组A，A[0]是堆的根，并对于每个A[i]，A [i * 2 + 1]是A[i]的左儿子并且A[i * 2 + 2]是A[i]的右儿子。
+
+样例
+
+给出 [3,2,1,4,5]，返回[1,2,3,4,5] 或者任何一个合法的堆数组
+
+挑战
+
+O(n)的时间复杂度完成堆化
+
+说明
+
+什么是堆？
+
++ 堆是一种数据结构，它通常有三种方法：push， pop 和 top。其中，“push”添加新的元素进入堆，“pop”删除堆中最小/最大元素，“top”返回堆中最小/最大元素。
+
+什么是堆化？
+
++ 把一个无序整数数组变成一个堆数组。如果是最小堆，每个元素A[i]，我们将得到A[i * 2 + 1] >= A[i]和A[i  * 2 + 2] >= A[i]
+
+如果有很多种堆化的结果？
+
++ 返回其中任何一个。
+
+**题解**
+
+Heapify的基本思路就是：Given an array of N values, a heap containing those values can be built by simply “sifting” each internal node down to its proper location：
+
+1. start with the last internal node
+2. swap the current internal node with its smaller child, if necessary
+3. then follow the swapped node down
+4. continue until all internal nodes are done
+
+```java
+public class Solution {
+    /**
+     * @param A: Given an integer array
+     * @return: void
+     */
+    public void heapify(int[] A) {
+        int start = A.length/2;
+        for (int i=start;i>=0;i--)
+            shiftDown(i, A);
+    }
+
+    private void shiftDown(int ind, int[] A){
+        int size = A.length;
+        int left = ind*2+1;
+        int right = ind*2+2;
+        while (left<size || right<size){
+            int leftVal = (left<size) ? A[left] : Integer.MAX_VALUE;
+            int rightVal = (right<size) ? A[right] : Integer.MAX_VALUE;
+            int next = (leftVal<=rightVal) ? left : right;
+            if (A[ind]<A[next]) break;
+            else {
+                swap(A, ind,next);
+                ind = next;
+                left = ind*2+1;
+                right = ind*2+2;
+            }
+        }
+    }
+
+    private void swap(int[] A, int x, int y){
+        int temp = A[x];
+        A[x] = A[y];
+        A[y] = temp;
+    }
+}
+
+```
+
+---
+
+## @ 重哈希
+
+哈希表容量的大小在一开始是不确定的。如果哈希表存储的元素太多（如超过容量的十分之一），我们应该将哈希表容量扩大一倍，并将所有的哈希值重新安排。假设你有如下一哈希表：
+
+size=3, capacity=4
+
+    [null, 21, 14, null]
+           ↓    ↓
+           9   null
+           ↓
+          null
+
+哈希函数为：
+
+    int hashcode(int key, int capacity) {
+        return key % capacity;
+    }
+
+这里有三个数字9，14，21，其中21和9共享同一个位置因为它们有相同的哈希值1(21 % 4 = 9 % 4 = 1)。我们将它们存储在同一个链表中。
+
+重建哈希表，将容量扩大一倍，我们将会得到：
+
+size=3, capacity=8
+
+    index:   0    1    2    3     4    5    6   7
+    hash : [null, 9, null, null, null, 21, 14, null]
+
+给定一个哈希表，返回重哈希后的哈希表。
+
+样例
+
+给出 [null, 21->9->null, 14->null, null]
+
+返回 [null, 9->null, null, null, null, 21->null, 14->null, null]
+
+注意
+哈希表中负整数的下标位置可以通过下列方式计算：
+
++ C++/Java：如果你直接计算-4 % 3，你会得到-1，你可以应用函数：a % b = (a % b + b) % b得到一个非负整数。
++ Python：你可以直接用-1 % 3，你可以自动得到2。
+
+**题解**
+
+```java
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param hashTable: A list of The first node of linked list
+     * @return: A list of The first node of linked list which have twice size
+     */
+    public ListNode[] rehashing(ListNode[] hashTable) {
+        int size = hashTable.length;
+        if (size==0) return null;
+        int newSize = 2*size;
+        ListNode[] newTable = new ListNode[newSize];
+        Arrays.fill(newTable,null);
+
+        for (int i=0;i<size;i++){
+            ListNode cur = hashTable[i];
+            while (cur!=null){
+                ListNode temp = cur;
+                cur = cur.next;
+                //Calculate the new position for temp.
+                int val = (temp.val % newSize + newSize) % newSize;
+                if (newTable[val]==null){
+                    newTable[val]=temp;
+                    temp.next = null;
+                } else {
+                    ListNode p = newTable[val];
+                    while (p.next!=null) p = p.next;
+                    p.next = temp;
+                    temp.next = null;
+                }
+            }
+        }
+
+        return newTable;
+    }
+};
+
+
+```
+
+---
+
+## @ 拓扑排序
+
+给定一个有向图，图节点的拓扑排序被定义为：
+
++ 对于每条有向边A--> B，则A必须排在B之前　　
++ 拓扑排序的第一个节点可以是任何在图中没有其他节点指向它的节点　　
+
+找到给定图的任一拓扑排序
+
+挑战
+
+能否分别用BFS和DFS完成？
+
+**题解**
+
+A basica method is recording the pre nodes of every node, then find out a node without pre node in each iteration and delete this node from unvisited set.
+
+DFS: use a recursive method, randomly pick up an unmakred node, before adding it into result list, recursively visite all its neighbors and add its neighbors into list first. In this way, we guarantee that all the nodes belong to some node's post nodes will be added to the result list first.
+
+Thoughts:
+
+1. For each node in the graph, construct a map with node as key, and number of parent nodes as value
+2. Looping through left nodes and see if its indegree is 0: if so, remove the node from graph and add it to result; also its neighbors indegree--
+
+A problem while implementing #2 is ConcurrentModificatoinException that I tried to remove the node from map while looping through it. A work around is looping through remaining nodes from graph and remove it from graph directly. Entries in map are never removed.
+
+```java
+/**
+ * Definition for Directed graph.
+ * class DirectedGraphNode {
+ *     int label;
+ *     ArrayList<DirectedGraphNode> neighbors;
+ *     DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */
+    public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
+        ArrayList<DirectedGraphNode> res = new ArrayList<DirectedGraphNode>();
+        if (graph.size()==0) return res;
+
+        //Construct hash map.
+        Map<DirectedGraphNode, Set<DirectedGraphNode>> map = new HashMap<DirectedGraphNode, Set<DirectedGraphNode>>();
+        for (DirectedGraphNode node: graph){
+            Set<DirectedGraphNode> set = new HashSet<DirectedGraphNode>();
+            map.put(node,set);
+        }
+        for (DirectedGraphNode node : graph)
+            for (DirectedGraphNode temp: node.neighbors)
+                map.get(temp).add(node);
+
+        //Construct topological order sequence.
+        int len = graph.size();
+        while (graph.size()>0) {
+            int index = 0;
+            while (index<graph.size()){
+                DirectedGraphNode node = graph.get(index);
+                if (map.get(node).size()==0){
+                    graph.remove(node);
+                    res.add(node);
+                    for (DirectedGraphNode temp: graph)
+                        if (map.get(temp).contains(node))
+                            map.get(temp).remove(node);
+                } else index++;
+            }
+        }
+        return res;
+    }
+}
+
+```
+
+---
+
+## @ 背包问题 II
+
+给出n个物品的体积A[i]和其价值V[i]，将他们装入一个大小为m的背包，最多能装入的总价值有多大？
+
+样例
+
+对于物品体积[2, 3, 5, 7]和对应的价值[1, 5, 2, 4], 假设背包大小为10的话，最大能够装入的价值为9。
+
+注意
+
+A[i], V[i], n, m均为整数。你不能将物品进行切分。你所挑选的物品总体积需要小于等于给定的m。
+
+**题解**
+
+这道题还是跟Backpack有大不一样之处
+
+用子问题定义状态：即f[i][v]表示前 i 件物品恰放入一个容量为 j 的背包可以获得的最大价值。则其状态转移方程便是：
+
+f[i][j] = max{f[i-1][j], j>=A[i-1]? f[i-1][j-A[i-1]]+V[i-1] : 0}
+
+```java
+public class Solution {
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A & V: Given n items with size A[i] and value V[i]
+     * @return: The maximum value
+     */
+    public int backPackII(int m, int[] A, int V[]) {
+        int[][] res = new int[A.length+1][m+1];
+        res[0][0] = 0;
+        for (int i=1; i<=A.length; i++) {
+            for (int j=0; j<=m; j++) {
+                if (j - A[i-1] < 0)
+                    res[i][j] = res[i-1][j];
+                if (j - A[i-1] >= 0) {
+                    res[i][j] = Math.max(res[i-1][j], res[i-1][j-A[i-1]]+V[i-1]);
+                }
+            }
+        }
+
+        return res[A.length][m];
+    }
+}
+
+```
+
+---
+
+## @ 最长连续序列
+
+给定一个未排序的整数数组，找出最长连续序列的长度。
+
+样例
+
+给出数组[100, 4, 200, 1, 3, 2]，这个最长的连续序列是 [1, 2, 3, 4]，返回所求长度 4
+
+说明
+
+要求你的算法复杂度为O(n)
+
+**题解**
+
+我们可以把所有的数字放在hashset中，来一个数字后，取出HashSet中的某一元素x，找x-1,x-2....x+1,x+2...是否也在set里。
+
+```java
+public class Solution {
+    /**
+     * @param nums: A list of integers
+     * @return an integer
+     */
+    public int longestConsecutive(int[] num) {
+        if (num == null) {
+            return 0;
+        }
+
+        HashSet<Integer> set = new HashSet<Integer>();
+        for (int i: num) {
+            set.add(i);
+        }
+
+        int max = 0;
+        for (int i: num) {
+            int cnt = 1;
+            set.remove(i);
+
+            int tmp = i - 1;
+            while (set.contains(tmp)) {
+                set.remove(tmp);
+                cnt++;
+                tmp--;
+            }
+
+            tmp = i + 1;
+            while (set.contains(tmp)) {
+                set.remove(tmp);
+                cnt++;
+                tmp++;
+            }
+
+            max = Math.max(max, cnt);
+        }
+
+        return max;
+    }
+}
+
+```
+
+---
+
+## @ 单词搜索
+
+给出一个二维的字母板和一个单词，寻找字母板网格中是否存在这个单词。
+
+单词可以由按顺序的相邻单元的字母组成，其中相邻单元指的是水平或者垂直方向相邻。每个单元中的字母最多只能使用一次。
+
+样例
+给出board =
+
+    [
+      "ABCE",
+      "SFCS",
+      "ADEE"
+    ]
+
+word = "ABCCED"， ->返回 true,
+
+word = "SEE"，-> 返回 true,
+
+word = "ABCB"， -> 返回 false.
+
+**题解**
+
+1. Locate the first char and start the recursive search
+2. Backtracking. Set and unset the visited flag.
+
+```java
+public class Solution {
+    /**
+     * @param board: A list of lists of character
+     * @param word: A string
+     * @return: A boolean
+     */
+    public boolean exist(char[][] board, String word) {
+        if (board==null || board.length==0) return false;
+        boolean visited[][] = new boolean[board.length][board[0].length];
+        for (int i=0; i < board.length; i++){
+            for (int j=0; j < board[0].length; j++){
+                if (search(word, 0, board, i, j, visited)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean search(String word, int index, char[][] board, int i, int j, boolean[][] visited){
+        if (i<0 || j<0 || i==board.length || j==board[0].length || visited[i][j]==true) return false;
+        visited[i][j] = true;
+        boolean result = false;
+        if (board[i][j]==word.charAt(index)){
+            if (index == word.length()-1) return true;
+            //save the result here instead of just return the result, as we need to unset the visited matrix before return
+            result = search(word, index+1, board, i-1, j, visited) ||
+                            search(word, index+1, board, i+1, j, visited) ||
+                            search(word, index+1, board, i, j-1, visited) ||
+                            search(word, index+1, board, i, j+1, visited);
+        }
+        visited[i][j] = false;
+        return result;
+    }
+}
+
+```
+
+---
+
 
 ## ---- 未做完 ----
+
 
 ## @ 统计比给定整数小的数的个数
 
@@ -12016,44 +12901,69 @@ public class Solution {
 ```java
 public class Solution {
     /**
-     * @param tokens The Reverse Polish Notation
-     * @return the value
+     * @param A an integer array
+     * @return  A list of integers includes the index of the first number and the index of the last number
      */
-    public int evalRPN(String[] tokens) {
-        if (tokens == null) {
-            return 0;
+    public ArrayList<Integer> continuousSubarraySumII(int[] A) {
+        Pair regular = continuousSubarraySum(A);
+        int maxWrap = 0;
+
+        for(int i = 0; i < A.length; i++){
+            maxWrap += A[i];
+            A[i] = -A[i];
         }
+        Pair wrap = continuousSubarraySum(A);
+        maxWrap = maxWrap + wrap.maxValue;
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+        temp.add(wrap.idxs.get(1) + 1);
+        temp.add(wrap.idxs.get(0) - 1);
+        return maxWrap > regular.maxValue ?  temp : regular.idxs;
 
-        int len = tokens.length;
-        Stack<Integer> s = new Stack<Integer>();
 
-        for (int i = 0; i < len; i++) {
-            String str = tokens[i];
-            if (str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/")) {
-                // get out the two operation number.
-                int n2 = s.pop();
-                int n1 = s.pop();
-                if (str.equals("+")) {
-                    s.push(n1 + n2);
-                } else if (str.equals("-")) {
-                    s.push(n1 - n2);
-                } else if (str.equals("*")) {
-                    s.push(n1 * n2);
-                } else if (str.equals("/")) {
-                    s.push(n1 / n2);
-                }
-            } else {
-                s.push(Integer.parseInt(str));
+    }
+
+
+    private Pair continuousSubarraySum(int[] A) {
+        // Write your code here
+
+        int curSum = A[0], maxSum = Integer.MIN_VALUE;
+        int start = 0, end = 0;
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        res.add(0);
+        res.add(0);
+        for(int i = 1; i < A.length; i++){
+            if(maxSum < curSum){
+                res.set(0, start);
+                res.set(1, i-1);
+                maxSum = curSum;
             }
+            if(curSum < 0){
+                curSum = 0;
+                start = i;
+                end = i;
+            }
+            curSum += A[i];
+
         }
 
-        if (s.isEmpty()) {
-            return 0;
+        if(maxSum < curSum){
+            res.set(0, start);
+            res.set(1, A.length - 1);
         }
+        return new Pair(maxSum, res);
+    }
 
-        return s.pop();
+    class Pair{
+        int maxValue;
+        ArrayList<Integer> idxs;
+        public Pair(int maxValue, ArrayList<Integer> idxs){
+            this.maxValue = maxValue;
+            this.idxs = idxs;
+
+        }
     }
 }
+
 
 ```
 
