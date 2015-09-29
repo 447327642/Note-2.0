@@ -46,7 +46,20 @@
 	- Dynamic Programming & Memorization
 	- --------------------
 - 10.Object-Oriented Design
-	- Step1: Handle Ambiguity
+	- Design Patterns
+		- Singleton Class
+		- Factory Method
+	- --------------------
+- 11.System Design and Scalability
+	- Key Concepts
+	- Considerations
+	- --------------------
+- 12.Testing
+	- --------------------
+- 13.C++
+	- --------------------
+- 14.Java
+	- Questions
 	- --------------------
 - Behavioral Questions
 	- Interview Preparation Grid
@@ -943,14 +956,14 @@ MapReduce allows us to do a lot of processing in parallel, which makes processin
 	+ HashMap<String, String> map = new HashMap<String, String>();
 	+ map.put("one", "uno");
 	+ map.put("two", "dos");
-	+ System.out.println(map.get("one")); 
-	
+	+ System.out.println(map.get("one"));
+
 ### Questions
-	
+
 > Private Constructor: In terms of inheritance, what is the effect of keeping
 
 This has direct implications for inheritance, since a subclass calls its parent's constructor. The class A an be inherited, but only by its own or its parent's inner classes.
-	
+
 > Return from Finally: In java, does the `finally` block get executed if we insert a return statements inside the try block of a `try-catch-finally`?
 
 Yes, it will get executed. The `finally` block gets executed when the `try` block exits.
@@ -1194,6 +1207,7 @@ And when you find bugs, **fix them carefully!**
 + Whiteboards ten to encourage candidates to speak more and explain their thought process.
 + Getting a hard question isn't a bad thing.
 + If you haven't heard back from a company within 3-5 business days after your interview(1 week after on-site), check in (politely) with your recruiter.
+
 ### --------------------
 
 ## 基本面试流程
