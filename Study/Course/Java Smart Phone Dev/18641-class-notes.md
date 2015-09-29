@@ -20,6 +20,7 @@
 + Assignment2 19.5/20
 	+ Abstract class should have method
 + Project1 Unit1 20/20
++ Project2 Unit2 20/20
 
 ## TA 信息
 
@@ -399,3 +400,5 @@ GJ Compiler - Pizza. -
 		}
 	Template can receive a class definition in runtime.
 	class type as a variable.
+
+
