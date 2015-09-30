@@ -1549,7 +1549,7 @@ class Solution:
 ---
 
 
-## @ 哈希函数
+## @@ 哈希函数
 
 在数据结构中，哈希函数是用来将一个字符串（或任何其他类型）转化为小于哈希表大小且大于等于零的整数。一个好的哈希函数可以尽可能少地产生冲突。一种广泛使用的哈希函数算法是使用数值33，假设任何字符串都是基于33的一个大整数，比如：
 
@@ -1594,7 +1594,7 @@ class Solution:
 
 ---
 
-## @ 颠倒整数
+## @@ 颠倒整数
 
 将一个整数中的数字进行颠倒，当颠倒后的整数溢出时，返回 0 (标记为 32 位整数)。
 
@@ -1636,7 +1636,7 @@ class Solution:
 
 ---
 
-## @ 空格替换
+## @@ 空格替换
 
 设计一种方法，将一个字符串中的所有空格替换成 %20 。你可以假设该字符串有足够的空间来加入新的字符，且你得到的是“真实的”字符长度。
 
@@ -1685,7 +1685,7 @@ class Solution:
 
 ---
 
-## @ 斐波纳契数列
+## @@ 斐波纳契数列
 
 查找斐波纳契数列中第 N 个数。
 
@@ -1724,7 +1724,7 @@ f = lambda n: reduce(lambda x, n: [x[1], x[0]+x[1]], range(n), [0, 1])[0]  # red
 
 ---
 
-## @ 搜索二维矩阵
+## @@ 搜索二维矩阵
 
 写出一个高效的算法来搜索 m × n矩阵中的值。
 
@@ -1787,7 +1787,7 @@ class Solution:
 
 ---
 
-## @ 报数
+## @@ 报数
 
 报数指的是，按照其中的整数的顺序进行报数，然后得到下一个数。如下所示：
 
@@ -1843,7 +1843,7 @@ class Solution:
 
 ---
 
-## @ 恢复旋转排序数组
+## @@ 恢复旋转排序数组
 
 给定一个旋转排序数组，在原地恢复其排序。
 
@@ -1892,7 +1892,7 @@ class Solution:
 
 ---
 
-## @ 尾部的零
+## @@ 尾部的零
 
 设计一个算法，计算出n阶乘中尾部零的个数
 
@@ -1938,7 +1938,7 @@ class Solution:
 
 ---
 
-## @ 在O(1)时间复杂度删除链表节点
+## @@ 在O(1)时间复杂度删除链表节点
 
 给定一个单链表中的表头和一个等待被删除的节点(非表头或表尾)。请在在O(1)时间复杂度删除该链表节点。并在删除该节点后，返回表头。
 
@@ -1980,7 +1980,7 @@ class Solution:
 
 ---
 
-## @ 链表插入排序
+## @@ 链表插入排序
 
 用插入排序对链表排序
 
@@ -2074,7 +2074,7 @@ class Solution:
 
 ---
 
-## @ 链表划分
+## @@ 链表划分
 
 给定一个单链表和数值x，划分链表使得所有小于x的节点排在大于等于x的节点之前。
 
@@ -2136,7 +2136,7 @@ class Solution:
 
 ---
 
-## @ 链表倒数第n个节点
+## @@ 链表倒数第n个节点
 
 找到单链表倒数第n个节点，保证链表中节点的最少数量为n。
 
@@ -2180,7 +2180,7 @@ class Solution:
 
 ---
 
-## @ 翻转链表
+## @@ 翻转链表
 
 翻转一个链表
 
@@ -2232,7 +2232,7 @@ class Solution:
 
 ---
 
-## @ 翻转字符串
+## @@ 翻转字符串
 
 给定一个字符串，逐个翻转字符串中的每个单词。
 
@@ -2285,7 +2285,7 @@ class Solution:
 
 ---
 
-## @ 矩阵的之字型遍历
+## @@ 矩阵的之字型遍历
 
 给你一个包含 m x n 个元素的矩阵 (m 行, n 列), 求该矩阵的之字型遍历。
 
@@ -2348,7 +2348,7 @@ class Solution:
 
 ---
 
-## @ 爬楼梯
+## @@ 爬楼梯
 
 假设你正在爬楼梯，需要n步你才能到达顶部。但每次你只能爬一步或者两步，你能有多少种不同的方法爬到楼顶部？
 
@@ -2381,7 +2381,7 @@ class Solution:
 
 ---
 
-## @ 比较字符串
+## @@ 比较字符串
 
 比较两个字符串A和B，确定A中是否包含B中所有的字符。字符串A和B中的字符都是 大写字母
 
@@ -2424,7 +2424,7 @@ class Solution:
 
 ---
 
-## @ 有效的括号序列
+## @@ 有效的括号序列
 
 给定一个字符串所表示的括号序列，包含以下字符： '(', ')', '{', '}', '[' and ']'， 判定是否是有效的括号序列。
 
@@ -2471,7 +2471,7 @@ class Solution:
 
 ---
 
-## @ 最后一个单词的长度
+## @@ 最后一个单词的长度
 
 给定一个字符串， 包含大小写字母、空格' '，请返回其最后一个单词的长度。
 
@@ -2513,7 +2513,7 @@ class Solution:
 
 ---
 
-## @ 旋转字符串
+## @@ 旋转字符串
 
 给定一个字符串和一个偏移量，根据偏移量旋转字符串(从左向右旋转)
 
@@ -2597,7 +2597,7 @@ public class Solution {
 
 ---
 
-## @ 翻转二叉树
+## @@ 翻转二叉树
 
 翻转一棵二叉树
 
@@ -2672,7 +2672,7 @@ class Solution:
 
 ---
 
-## @ 最长单词
+## @@ 最长单词
 
 给一个词典，找出其中所有最长的单词。
 
@@ -2729,7 +2729,7 @@ class Solution:
 
 ---
 
-## @ 落单的数
+## @@ 落单的数
 
 给出2*n + 1 个的数字，除其中一个数字之外其他每个数字均出现两次，找到这个数字。
 
@@ -2762,7 +2762,7 @@ class Solution:
 
 ---
 
-## @ 单例
+## @@ 单例
 
 单例 是最为最常见的设计模式之一。对于任何时刻，如果某个类只存在且最多存在一个具体的实例，那么我们称这种设计模式为单例。例如，对于 class Mouse (不是动物的mouse哦)，我们应将其设计为 singleton 模式。
 
@@ -2807,7 +2807,7 @@ class Solution:
 
 ---
 
-## @ 奇偶分割数组
+## @@ 奇偶分割数组
 
 分割一个整数数组，使得奇数在前偶数在后。
 
@@ -2847,7 +2847,7 @@ class Solution:
 
 ---
 
-## @ 字符串查找
+## @@ 字符串查找
 
 字符串查找（又称查找子字符串），是字符串操作中一个很有用的函数。你的任务是实现这个函数。
 
@@ -2901,7 +2901,7 @@ class Solution:
 
 ---
 
-## @ 子数组之和(为零)
+## @@ 子数组之和(为零)
 
 给定一个整数数组，找到和为零的子数组。你的代码应该返回满足要求的子数组的起始位置和结束位置
 
@@ -2956,7 +2956,7 @@ public:
 
 ---
 
-## @ 子数组之和(为 K)
+## @@ 子数组之和(为 K)
 
 Given an nonnegative integer array, find a subarray where the sum of numbers is k.
 
@@ -3031,7 +3031,7 @@ vector<int> subarraySum2(vector<int> nums, int k){
 
 ---
 
-## @ 最接近零的子数组和
+## @@ 最接近零的子数组和
 
 给定一个整数数组，找到一个和最接近于零的子数组。返回第一个和最右一个指数。你的代码应该返回满足要求的子数组的起始位置和结束位置。
 
@@ -3101,7 +3101,7 @@ public:
 
 ---
 
-## @ Cosine Similarity
+## @@ Cosine Similarity
 
 Cosine similarity is a measure of similarity between two vectors of an inner product space that measures the cosine of the angle between them. The cosine of 0° is 1, and it is less than 1 for any other angle.
 
@@ -3153,7 +3153,7 @@ class Solution {
 
 ---
 
-## @ 岛屿的个数
+## @@ 岛屿的个数
 
 给一个01矩阵，求不同的岛屿的个数。
 
@@ -3212,7 +3212,7 @@ public class Solution {
 
 ---
 
-## @ 子树
+## @@ 子树
 
 有两个不同大小的二进制树： T1 有上百万的节点； T2 有好几百的节点。请设计一种算法，判定 T2 是否为 T1的子树。
 
@@ -3281,7 +3281,7 @@ public class Solution {
 ---
 
 
-## @ 最长上升连续子序列
+## @@ 最长上升连续子序列
 
 给定一个整数数组（下标从 0 到 n-1， n 表示整个数组的规模），请找出该数组中的最长上升连续子序列。（最长上升连续子序列可以定义为从右到左或从左到右的序列。）
 
@@ -3332,7 +3332,7 @@ public class Solution {
 
 ---
 
-## @ 有效回文串
+## @@ 有效回文串
 
 给定一个字符串，判断其是否为一个回文串。只包含字母和数字，忽略大小写。
 
@@ -3398,7 +3398,7 @@ public class Solution {
 
 ---
 
-## @ 把排序数组转换为高度最小的二叉搜索树
+## @@ 把排序数组转换为高度最小的二叉搜索树
 
 给一个排序数组（从小到大），将其转换为一棵高度最小的排序二叉树。
 
@@ -3460,7 +3460,7 @@ public class Solution {
 
 ---
 
-## @ 排列序号
+## @@ 排列序号
 
 给出一个不含重复数字的排列，求这些数字的所有排列按字典序排序后该排列的编号。其中，编号从1开始。
 
@@ -3502,7 +3502,7 @@ public class Solution {
 
 ---
 
-## @ 将整数A转换为B
+## @@ 将整数A转换为B
 
 如果要将整数A转换为B，需要改变多少个bit位？
 
@@ -3540,7 +3540,7 @@ class Solution {
 
 ---
 
-## @ 分割回文串
+## @@ 分割回文串
 
 给定一个字符串s，将s分割成一些子串，使每个子串都是回文串。
 
@@ -3618,7 +3618,7 @@ public class Solution {
 
 ---
 
-## @ 插入区间
+## @@ 插入区间
 
 给出一个无重叠的按照区间起始端点排序的区间列表。
 
@@ -3683,7 +3683,7 @@ class Solution {
 ---
 
 
-## @ 数组剔除元素后的乘积
+## @@ 数组剔除元素后的乘积
 
 给定一个整数数组A。
 
@@ -3733,7 +3733,7 @@ public class Solution {
 
 ---
 
-## @ 字符大小写排序
+## @@ 字符大小写排序
 
 给定一个只包含字母的字符串，按照先小写字母后大写字母的顺序进行排序。
 
@@ -3781,7 +3781,7 @@ public class Solution {
 
 ---
 
-## @ 最小子数组
+## @@ 最小子数组
 
 给定一个整数数组，找到一个具有最小和的子数组。返回其最小和。
 
@@ -3827,7 +3827,7 @@ public class Solution {
 
 ---
 
-## @ 最大子数组
+## @@ 最大子数组
 
 给定一个整数数组，找到一个具有最大和的子数组，返回其最大和。
 
@@ -3873,7 +3873,7 @@ public class Solution {
 
 ---
 
-## @ 搜索插入位置
+## @@ 搜索插入位置
 
 给定一个排序数组和一个目标值，如果在数组中找到目标值则返回索引。如果没有，返回到它将会被按顺序插入的位置。
 
@@ -3885,7 +3885,7 @@ public class Solution {
 
 [1,3,5,6]，2 → 1
 
-[1,3,5,6]， 7 → 4
+[1,3,5,6]，7 → 4
 
 [1,3,5,6]，0 → 0
 
@@ -3937,7 +3937,7 @@ public class Solution {
 
 ---
 
-## @ 在二叉查找树中插入节点
+## @@ 在二叉查找树中插入节点
 
 给定一棵二叉查找树和一个新的树节点，将节点插入到树中。
 
@@ -4009,7 +4009,7 @@ public class Solution {
 
 ---
 
-## @ 最小路径和
+## @@ 最小路径和
 
 给定一个只含非负整数的m*n网格，找到一条从左上角到右下角的可以使数字和最小的路径。
 
@@ -4051,7 +4051,7 @@ public class Solution {
 ---
 
 
-## @ 数字三角形
+## @@ 数字三角形
 
 给定一个数字三角形，找到从顶部到底部的最小路径和。每一步可以移动到下面一行的相邻数字上。
 
@@ -4108,7 +4108,7 @@ public class Solution {
 ---
 
 
-## @ 找出无向图汇总的相连要素
+## @@ 找出无向图汇总的相连要素
 
 请找出无向图中相连要素的个数。
 
@@ -4247,7 +4247,7 @@ public class Solution {
 ---
 
 
-## @ 判断数独是否合法
+## @@ 判断数独是否合法
 
 请判定一个数独是否有效。
 
@@ -4322,7 +4322,7 @@ class Solution {
 
 ## ---- 中等题 ----
 
-## @ 罗马数字转整数
+## @@ 罗马数字转整数
 
 给定一个罗马数字，将其转换成整数。
 
@@ -4379,7 +4379,7 @@ public class Solution {
 
 ---
 
-## @ 整数转罗马数字
+## @@ 整数转罗马数字
 
 给定一个整数，将其转换成罗马数字。
 
@@ -4425,7 +4425,7 @@ public class Solution {
 ---
 
 
-## @ 排序矩阵中的从小到大第k个数
+## @@ 排序矩阵中的从小到大第k个数
 
 在一个排序矩阵中找从小到大的第 k 个整数。
 
@@ -4493,7 +4493,7 @@ public class Solution {
 
 ---
 
-## @ 简化路径
+## @@ 简化路径
 
 给定一个文档(Unix-style)的完全路径，请进行路径简化。
 
@@ -4544,7 +4544,7 @@ public class Solution {
 
 
 
-## @ 最长公共子串
+## @@ 最长公共子串
 
 给出两个字符串，找到最长公共子串，并返回其长度。
 
@@ -4598,7 +4598,7 @@ public:
 
 ---
 
-## @ 寻找缺失的数
+## @@ 寻找缺失的数
 
 给出一个包含 0 .. N 中 N 个数的序列，找出0 .. N 中没有出现在序列中的那个数。
 
@@ -4637,7 +4637,7 @@ public class Solution {
 
 ---
 
-## @ 最多有多少个点在一条直线上
+## @@ 最多有多少个点在一条直线上
 
 给出二维平面上的n个点，求最多有多少点在同一条直线上。
 
@@ -4718,7 +4718,7 @@ public class Solution {
 
 ---
 
-## @ Maximal Square
+## @@ Maximal Square
 
 Given a 2D binary matrix filled with 0's and 1's, find the largest square containing all 1's and return its area.
 
@@ -4785,7 +4785,7 @@ public class Solution {
 
 ---
 
-## @ 和为零的子矩阵
+## @@ 和为零的子矩阵
 
 给定一个整数矩阵，请找出一个子矩阵，使得其数字之和等于0.输出答案时，请返回左上数字和右下数字的坐标。
 
@@ -4851,7 +4851,7 @@ public class Solution {
 
 ---
 
-## @ 连续子数组求和
+## @@ 连续子数组求和
 
 给定一个整数数组，请找出一个连续子数组，使得该子数组的和最大。输出答案时，请分别返回第一个数字和最后一个数字的值。（如果两个相同的答案，请返回其中任意一个）
 
@@ -4903,7 +4903,7 @@ public class Solution {
 ---
 
 
-## @ 逆波兰表达式求值
+## @@ 逆波兰表达式求值
 
 求逆波兰表达式的值。
 
@@ -4917,12 +4917,52 @@ public class Solution {
 **题解**
 
 ```java
+public class Solution {
+    /**
+     * @param tokens The Reverse Polish Notation
+     * @return the value
+     */
+    public int evalRPN(String[] tokens) {
+        if (tokens == null) {
+            return 0;
+        }
+        
+        int len = tokens.length;
+        Stack<Integer> s = new Stack<Integer>();
+        
+        for (int i = 0; i < len; i++) {
+            String str = tokens[i];
+            if (str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/")) {
+                // get out the two operation number.
+                int n2 = s.pop();
+                int n1 = s.pop();
+                if (str.equals("+")) {
+                    s.push(n1 + n2);
+                } else if (str.equals("-")) {
+                    s.push(n1 - n2);
+                } else if (str.equals("*")) {
+                    s.push(n1 * n2);
+                } else if (str.equals("/")) {
+                    s.push(n1 / n2);
+                }
+            } else {
+                s.push(Integer.parseInt(str));
+            }
+        }
+        
+        if (s.isEmpty()) {
+            return 0;
+        }
+        
+        return s.pop();
+    }
+}
 
 ```
 
 ---
 
-## @ 下一个排列
+## @@ 下一个排列
 
 给定一个若干整数的排列，给出按正数大小进行字典序从小到大排序后的下一个排列。
 
@@ -5002,7 +5042,7 @@ public class Solution {
 
 ---
 
-## @ 最长回文子串
+## @@ 最长回文子串
 
 给出一个字符串（假设长度最长为1000），求出它的最长回文子串，你可以假定只有一个满足条件的最长回文串。
 
@@ -5020,7 +5060,6 @@ O(n2) 时间复杂度的算法是可以接受的，如果你能用 O(n) 的算�
 
 算法简单，而且复杂度为O(n^2),空间复杂度为O(1)
 
-推荐面试使用这一种方法。据说有的公司如EBAY会拒掉动规的解法. ORZ.. 其实主页君比较心水第二种解法啊，多优美，第三种解法虽然消耗更少，但没有什么普适性。
 
 ```java
 public class Solution {
@@ -5075,7 +5114,7 @@ public class Solution {
 
 ---
 
-## @ 和大于S的最小子数组
+## @@ 和大于S的最小子数组
 
 给定一个由 n 个整数组成的数组和一个正整数 s ，请找出该数组中满足其和 ≥ s 的最小长度子数组。如果无解，则返回 -1。
 
@@ -5127,7 +5166,7 @@ public class Solution {
 
 ---
 
-## @ 硬币排成线
+## @@ 硬币排成线
 
 有 n 个硬币排成一条线。两个参赛者轮流从右边依次拿走 1 或 2 个硬币，直到没有硬币为止。拿到最后一枚硬币的人获胜。
 
@@ -5170,7 +5209,7 @@ public class Solution {
 
 ---
 
-## @ 硬币排成线 II
+## @@ 硬币排成线 II
 
 有 n 个不同价值的硬币排成一条线。两个参赛者轮流从右边依次拿走 1 或 2 个硬币，直到没有硬币为止。计算两个人分别拿到的硬币总价值，价值高的人获胜。
 
@@ -5183,39 +5222,51 @@ public class Solution {
 
 **题解**
 
-```java
-public class Solution {
-    /**
-     * @param values: an array of integers
-     * @return: a boolean which equals to true if the first player will win
-     */
-    public boolean firstWillWin(int[] values) {
-        // write your code here
-        int length = values.length;
-        int first = 0;
-        int second = 0;
+```python
+class Solution:
+    # @param values: a list of integers
+    # @return: a boolean which equals to True if the first player will win
+    def firstWillWin(self, values):
+        # write your code here
+        if not values:
+            return True
+        length = len(values)
+        dp = [0 for i in range(length)]
+        dp[length-1] = values[length-1]
+        dp[length-2] = values[length-1] + values[length-2]
+        for i in range(length - 3, -1, -1):
+            if i + 4 <= length - 1:
+                a = dp[i+4]
+            else:
+                a = 0
+            if i + 3 <= length - 1:
+                b = dp[i+3]
+            else:
+                b = 0
+            if i + 2 <= length - 1:
+                c = dp[i+2]
+            else:
+                c = 0
 
-        for (int i = 0; i < length; i++){
-            if ((i+1) % 3 != 0){
-                first += values[i];
-            }
-            else {
-                second += values[i];
-            }
-        }
+            v1 = values[i] + min(c, b)
+            v2 = values[i] + values[i+1] + min(a,b)
+            dp[i] = max(v1,v2)
 
-        if (first > second){
-            return true;
-        }
-        return false;
-    }
-}
+        total = 0
+        for j in range(length):
+            total += values[j]
+
+        second = total-dp[0]
+        if dp[0] > second:
+            return True
+        else:
+            return False
 
 ```
 
 ---
 
-## @ 用递归打印数字
+## @@ 用递归打印数字
 
 用递归的方法找到从1到最大的N位整数。
 
@@ -5280,7 +5331,7 @@ public class Solution {
 
 ---
 
-## @ 两个整数相除
+## @@ 两个整数相除
 
 将两个整数相除，要求不使用乘法、除法和 mod 运算符。
 
@@ -5330,7 +5381,7 @@ public class Solution {
 
 ---
 
-## @ 格雷编码
+## @@ 格雷编码
 
 格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个二进制的差异。
 
@@ -5389,7 +5440,7 @@ public class Solution {
 
 ---
 
-## @ 打劫房屋
+## @@ 打劫房屋
 
 假设你是一个专业的窃贼，准备沿着一条街打劫房屋。每个房子都存放着特定金额的钱。你面临的唯一约束条件是：相邻的房子装着相互联系的防盗系统，且 当相邻的两个房子同一天被打劫时，该系统会自动报警。
 
@@ -5431,7 +5482,7 @@ public class Solution {
 
 ---
 
-## @ 最多有k个不同字符的最长子字符串
+## @@ 最多有k个不同字符的最长子字符串
 
 给定一个字符串，找到最多有k个不同字符的最长子字符串。
 
@@ -5496,7 +5547,7 @@ public class Solution {
 
 ---
 
-## @ 最小差
+## @@ 最小差
 
 给定两个整数数组（第一个是数组 A，第二个是数组 B），在数组 A 中取 A[i]，数组 B 中取 B[j]，A[i] 和 B[j]两者的差越小越好(|A[i] - B[j]|)。返回最小差。
 
@@ -5542,7 +5593,7 @@ public class Solution {
 
 ---
 
-## @ 数飞机
+## @@ 数飞机
 
 给出飞机的起飞和降落时间的列表，用 interval 序列表示. 请计算出天上同时最多有多少架飞机？
 
@@ -5622,7 +5673,7 @@ class Solution {
 
 ---
 
-## @ 最长无重复字符的子串
+## @@ 最长无重复字符的子串
 
 给定一个字符串，请找出其中无重复字符的最长子字符串。
 
@@ -5673,7 +5724,7 @@ public class Solution {
 
 ---
 
-## @ 装最多水的容器
+## @@ 装最多水的容器
 
 给定 n 个非负整数 a1, a2, ..., an, 每个数代表了坐标中的一个点 (i, ai)。画 n 条垂直线，使得 i 垂直线的两个端点分别为(i, ai)和(i, 0)。找到两条线，使得其与 x 轴共同构成一个容器，以容纳最多水。
 
@@ -5735,9 +5786,9 @@ public class Solution {
 
 ---
 
-## @ 乘积最大子序列
+## @@ 乘积最大子序列
 
-出一个序列中乘积最大的连续子序列（至少包含一个数）。
+求出一个序列中乘积最大的连续子序列（至少包含一个数）。
 
 比如, 序列 [2,3,-2,4] 中乘积最大的子序列为 [2,3] ，其乘积为6。
 
@@ -5787,7 +5838,7 @@ public class Solution {
 
 ---
 
-## @ 排列序号II
+## @@ 排列序号II
 
 给出一个可能包含重复数字的排列，求这些数字的所有排列按字典序排序后该排列在其中的编号。编号从1开始。
 
@@ -5858,7 +5909,7 @@ public class Solution {
 ---
 
 
-## @ 丢失的第一个正整数
+## @@ 丢失的第一个正整数
 
 给出一个无序的正数数组，找出其中没有出现的最小正整数。
 
@@ -5922,7 +5973,7 @@ public class Solution {
 
 ---
 
-## @ 接雨水
+## @@ 接雨水
 
 给出 n 个非负整数，代表一张X轴上每个区域宽度为 1 的海拔图, 计算这个海拔图最多能接住多少（面积）雨水。
 
@@ -5983,7 +6034,7 @@ public class Solution {
 
 ---
 
-## @ 第k个排列
+## @@ 第k个排列
 
 给定 n 和 k，求123..n组成的排列中的第 k 个排列。
 
@@ -6006,13 +6057,11 @@ public class Solution {
 
 **题解**
 
-这里给定第几个排列的相对排名，输出排列值。和不同进制之间的转化类似，这里的『进制』为1!, 2!..., 以n=3, k=4为例，我们从高位到低位转化，直觉应该是用 k/(n-1)!, 但以 n=3,k=5 和 n=3,k=6 代入计算后发现边界处理起来不太方便，故我们可以尝试将 k 减1进行运算，后面的基准也随之变化。第一个数可以通过(k-1)/(n-1)!进行计算，那么第二个数呢？联想不同进制数之间的转化，我们可以通过求模运算求得下一个数的k-1, 那么下一个数可通过(k2 - 1)/(n-2)!求得，这里不理解的可以通过进制转换类比进行理解。和减掉相应的阶乘值是等价的。
+基本的想法是，对于第k个排列，{a1, a2, a3, ..., an}, a1 是多少呢？
 
-1. 以某一数字开头的排列有(n-1)! 个。
-例如： 123， 132， 以1开头的是 2！个
-2. 所以第一位数字就可以用 （k-1） / (n-1)!  来确定 .这里K-1的原因是，序列号我们应从0开始计算，否则在边界时无法计算。
-3. 第二位数字。假设前面取余后为m，则第二位数字是 第 m/(n-2)! 个未使用的数字。
-4. 不断重复2，3，取余并且对(n-k)!进行除法，直至计算完毕
+因为{a2, a3, ..., an} 一共有 (n-1)!种，a1在num中的index相当于 k / (n-1)!。换句话解释，就是一共有n个block，每个block大小是(n-1)!这么大，现在要求的就是在哪个block。
+
+同理，求a2的时候，a1（在哪个block）已经求出来了，update k = k % (n-1)!, block的大小变成了(n-2)!, 这又是一个子问题了。
 
 ```java
 class Solution {
@@ -6022,32 +6071,25 @@ class Solution {
       * @return: return the k-th permutation
       */
     public String getPermutation(int n, int k) {
-        // generate factorial list
-        int[] factorial = new int[n + 1];
-        factorial[0] = 1;
-        for (int i = 1; i < n + 1; i++) {
-            factorial[i] = factorial[i - 1] * i;
-        }
-        // generate digits ranging from 1 to n
-        ArrayList<Integer> nums = new ArrayList<Integer>(n);
-        for (int i = 0; i < n; i++) {
-            nums.add(i + 1);
-        }
+        int[] num = new int[n];
+        int perNumCount = 1;
 
-        int[] perm = new int[n];
-        for (int i = 0; i < n; i++) {
-            int rank = (k - 1) / factorial[n - i - 1];
-            k = (k - 1) % factorial[n - i - 1] + 1;
-
-            perm[i] = nums.get(rank);
-            nums.remove(nums.get(rank));
+        for(int i = 0; i < n; i++) {
+            num[i] = i+1;
+            perNumCount *= i + 1;
         }
-
-        StringBuilder result = new StringBuilder();
-        for (int digit : perm) {
-          result.append(digit);
+        k--;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < n; i++) {
+            perNumCount = perNumCount / (n - i);
+            int choosed = k / perNumCount;
+            sb.append(String.valueOf(num[choosed]));
+            for(int j = choosed; j < n - i - 1; j++) {
+                num[j] = num[j+1]; 
+            }
+            k = k % perNumCount;
         }
-        return result.toString();
+        return sb.toString();
     }
 }
 
@@ -6056,7 +6098,7 @@ class Solution {
 
 ---
 
-## @ 最大数
+## @@ 最大数
 
 给出一组非负整数，重新排列他们的顺序把他们组成一个最大的整数
 
@@ -6116,7 +6158,7 @@ public class Solution {
 
 ---
 
-## @ 删除数字
+## @@ 删除数字
 
 给出一个字符串 A, 表示一个 n 位正整数, 删除其中 k 位数字, 使得剩余的数字仍然按照原来的顺序排列产生一个新的正整数。
 
@@ -6186,7 +6228,7 @@ public class Solution {
 
 ---
 
-## @ 木材加工
+## @@ 木材加工
 
 有一些原木，现在想把这些木头切割成一些长度相同的小段木头，需要得到的小段的数目至少为 k。当然，我们希望得到的小段越长越好，你需要计算能够得到的小段木头的最大长度。
 
@@ -6253,7 +6295,7 @@ public class Solution {
 
 ---
 
-## @ 寻找旋转排序数组中的最小值
+## @@ 寻找旋转排序数组中的最小值
 
 假设一个旋转排序的数组其起始位置是未知的（比如0 1 2 4 5 6 7 可能变成是4 5 6 7 0 1 2）。
 
@@ -6339,7 +6381,7 @@ public class Solution {
 
 ---
 
-## @ 寻找旋转排序数组中的最小值 II
+## @@ 寻找旋转排序数组中的最小值 II
 
 假设一个旋转排序的数组其起始位置是未知的（比如0 1 2 4 5 6 7 可能变成是4 5 6 7 0 1 2）。
 
@@ -6421,7 +6463,7 @@ public class Solution {
 
 ---
 
-## @ 旋转图像
+## @@ 旋转图像
 
 给定一个N×N的二维矩阵表示图像，90度顺时针旋转图像。
 
@@ -6466,7 +6508,7 @@ public class Solution {
 
 ---
 
-## @ 矩阵归零
+## @@ 矩阵归零
 
 给定一个m×n矩阵，如果一个元素是0，则将其所在行和列全部元素变成0。
 
