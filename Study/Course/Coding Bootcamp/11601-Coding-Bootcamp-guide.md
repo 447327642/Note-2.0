@@ -32,13 +32,12 @@ Week | Topic
 13 | Python problem set 3.1-3.26
 14 | Python problem set 4.1-4.5, Web Crawler Project Due
 
-## Shuffle 1
+## CodeChef
 
-**Me As Interviewer**
+1160115f@gmail.com
 
-
-
-**Me As Interviewee**
+[15fall][ct2] from Da Wang <dawang>
+contest codechef username
 
 ## Week1 9.8
 

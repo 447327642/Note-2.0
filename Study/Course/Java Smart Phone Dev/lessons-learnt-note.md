@@ -26,3 +26,15 @@ P1U3
 7. Why did we have to make the Automobile object static in ProxyAutomobile class?
 8. What is the advantage of adding choice variable in OptionSet class, what measures had to be implemented to expose the choice property in Auto class?
 9. When implementing LinkedHashMap for Auto object in proxyAuto class, what was your consideration for managing CRUD operations on this structure? Did you end up doing the implementation of CRUD operation in proxyAuto or did you consider adding another class in Model for encapuslating Auto for the collection and then introducing an instance of this new class in proxyAuto. (Think about this and if this part of your design is not self-contained, then fix it.)
+
+---
+
+P1U4
+
+1. What is the best way to setup multithreading in an Enterprise Class application?
+2. What Strategy is used for synchronizing, so you end up with a scalable application?
+3. What implementation strategy can be used for creating a race condition for testing Multithreading?
+4. How does Synchronization work in JVM? What are the performance consequences of Synchronizing?
+
+
+
