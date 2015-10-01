@@ -78,7 +78,7 @@ Sep 27 | 简历已投至 10.12 日合适的 26 间公司 | 下一次 10.13- 10.1
 20. Software Engineer, New College Grad @ Medallia
 21. Software Engineer - Computer Vision @ Samsung
 22. Software Engineer - Android and Embedded Systems/IOT, Wearables, Home Automation @ Samsung
-23. Software Engineer - New Grad @ Thumbtack
+23. (**Rejected**)oftware Engineer - New Grad @ Thumbtack
 24. VMware Full Time @ VMware
 25. Software Development Engineer, New Graduate @ Groupon
 26. Engineering positions for US location @ DJI
