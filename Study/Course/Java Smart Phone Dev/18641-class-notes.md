@@ -21,6 +21,7 @@
 	+ Abstract class should have method
 + Project1 Unit1 20/20
 + Project2 Unit2 20/20
++ Project3 Unit3 19/20
 
 ## TA 信息
 

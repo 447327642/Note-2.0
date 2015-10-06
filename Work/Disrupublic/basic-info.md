@@ -39,6 +39,8 @@ first register the openshift at openshift.redhat.com, send me the email name so 
 
 dacrocodilee@gmail.com w33
 
+其实不用自己建立公钥，直接`rhc setup`即可自动完成，只要之前你已经被加入项目即可
+
 please send me your public key, I can upload the public key so you get code upload access for git
 
 [公钥生成教程](https://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E7%94%9F%E6%88%90-SSH-%E5%85%AC%E9%92%A5)
