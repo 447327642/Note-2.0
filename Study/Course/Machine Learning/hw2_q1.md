@@ -16,7 +16,7 @@ andrew id: dawang
 \\
 &=E[\beta]+E[E[(X^TX)^{-1}X^T\epsilon|X]]
 \\
-&=\beta+E[(X^TX)^{-1}X^TE[\epsilon|X]] 
+&=\beta+E[(X^TX)^{-1}X^TE[\epsilon \mid X]] 
 \\
 &=\beta+E[(X^TX)^{-1}X^T \times0]
 \\
