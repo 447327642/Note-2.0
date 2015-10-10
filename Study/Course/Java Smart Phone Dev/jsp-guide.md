@@ -2,6 +2,17 @@
 
 For Project 1 Unit 5 & 6
 
+<!-- MarkdownTOC -->
+
+- 开发环境搭建
+	- Java
+	- Tomcat
+	- Eclipse
+- 整体概念理解
+
+<!-- /MarkdownTOC -->
+
+
 ## 开发环境搭建
 
 Mac 10.11 El Capitan
@@ -31,11 +42,11 @@ Mac 10.11 El Capitan
 
 ```java
  package servlet;
- 
+
  import javax.servlet.http.HttpServlet;
 
  public class Hello extends HttpServlet {
- 
+
 	private static final long serialVersionUID = 1L;
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	 		throws IOException, ServletException {
@@ -72,4 +83,35 @@ Mac 10.11 El Capitan
 3. Remove temp file from this directory <workspace-directory>\.metadata\.plugins\org.eclipse.wst.server.core
 
 当然更多是要注意 console 中给出的错误信息来进行改正
+
+## 整体概念理解
+
+这一章的题目要求非常不清晰，给人的感觉是对着已经写好的代码，反推需要做的事情，这样带来的问题在于：刚拿到要求的时候简直连怎么开始都不知道。然后老师也非常科学的强行停课一周。所以都要靠自己了。
+
+要完成这次的作业，首先需要理解的是我们最终需要什么东西：
+
+1. 我们在上一章完成的 server 端
+2. 我们在上一章完成的 client 端
+3. 两个 servlet 用于实现上一章 client 端的部分功能
+
+那么这些东西要怎么组织呢？首先意味着要运行这次的 project，我们需要两个 server，一个是上一章写的 server，用于保存所有的 model。另一个是用 Tomcat 搭建的本地 server，这个是给 servlet 跑的。然后 client 做什么呢？唯一的功能就是在启动我们上一章完成的 server 之后上传几个 car model 供我们的 servelt 获取和显示。
+
+知道了这些之后，接下来需要理解的是 servlet 的工作模式。servlet 是什么这里不多说，简而言之就是服务器上跑的小程序。不同于我们原来的函数调用，Tomcat 的机制是：
+
+1. 访问一个网址
+2. 找到对应的 servlet
+3. 执行 servlet 里的 `doGet()` 或者 `doPost()` （根据不同的传入调用模式）
+4. 根据这两个方法中返回的 html 内容来展示页面。
+
+所以我们要做一个页面来展示 car model 的信息的话：
+
+1. 创建一个 servlet
+2. 通过 `@WebServlet("/ConfigurePage")` 类似这样的修饰符来把一个 servlet 绑定到不同的 url 上
+3. 访问对应 url 时相当于执行 servlet 中的 `doGet()` 函数
+
+那么问题就来了，JSP 到底是干什么的。我的理解，JSP 其实是对显示内容的再次封装。为什么这么说，原则上看，其实我们可以把所有的输出内容(html)在 `doGet()` 中 `print` 出来，可是这样逻辑代码和输出样式混在一起，一不好改二不好看三不合理。所以就有了另一个办法——JSP。我们可以基本上用 html 代码来制作网页，在需要动态内容的地方插入 jsp 相关的标记符，然后显示的时候就交给 jsp 来处理数据和样式的显示。
+
+具体的 jsp 语法这里略过，网上还是有不少教程的。知道了这些大概就可以完成这次的作业了。
+
+
 
