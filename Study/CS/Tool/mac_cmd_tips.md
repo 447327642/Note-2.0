@@ -23,3 +23,11 @@
 
     launchctl list 查看服务列表
     launchctl remove xxxx 删除xxxxx服务的自启动
+
+## 显示隐藏文件夹
+
+	defaults write com.apple.finder AppleShowAllFiles -boolean true ; killall Finder
+
+	defaults write com.apple.finder AppleShowAllFiles -boolean false ; killall Finder
+
+
