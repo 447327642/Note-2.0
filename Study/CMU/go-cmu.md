@@ -4,9 +4,19 @@
 
 和 Vanya 一起代表 JIE 去参加座谈会
 
-The Around the World with CIT event as Carnival was a success.  The goal of this event is to a) inform attendees about the different types of programs we have across the world and b) help dispel any myths about either the locations where these programs are located or about the quality of the education at those locations.  The audience was impressed by our students and learned a lot about our international programs.  We have decided to replicate the program during Ceilidh Weekend.   As last time, it will be panel discussion with students from our various programs around the world.  Jim will serve as the moderator. 
- 
+The Around the World with CIT event as Carnival was a success.  The goal of this event is to a) inform attendees about the different types of programs we have across the world and b) help dispel any myths about either the locations where these programs are located or about the quality of the education at those locations.  The audience was impressed by our students and learned a lot about our international programs.  We have decided to replicate the program during Ceilidh Weekend.   As last time, it will be panel discussion with students from our various programs around the world.  Jim will serve as the moderator.
+
 We are hoping to include a student from Rwanda, Silicon Valley, Portugal, and SYSU.  Is there a dynamic student whom you would recommend we invite to serve as the representative of your program?  The event will take place on Saturday, October 10th from 2  – 3:30 p.m. in the Tung Au Lab, on the first floor of Porter Hall.
+
+1. What advice would you give a prospective student at your campus?
+2. How do you think studying in this setting has changed your professional development?
+3. What myths about your program or the location of your program would you like to dispel?
+4. Can you name an important connection you made because of your experience?
+5. What would you say is your best experience with Carnegie Mellon University?
+6. How do you think the program at your campus further CMU’s reputation of excellence and innovation?
+7. What cultural experiences have you had while studying in your program?
+
+Note:At the conclusion of the panel, please thank the panelists and invite everyone to the networking in the adjacent room where samplings of food inspired by the location of our programs.
 
 ## 购物清单
 
@@ -233,7 +243,6 @@ Of the 96 required units, you may not count:
 + 千万不要出于对陌生世界的恐惧就把自己关在家里。
 + 留心观察美国的政治生态，媒介现象以及民众对于自由的理解和运用，观察美国「政府-社会-个人」间的关系以及边界，观察一个民主法治社会的运行细节。不管你学什么专业，这些都是目前中国所不易见到的。
 
-### 日常英语
 
 + refrigerator 冰箱
 + automatic rice cooker 电饭锅
