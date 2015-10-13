@@ -3,6 +3,7 @@
 <!-- MarkdownTOC -->
 
 - 课程信息
+- 13 Oct. Tuesday
 - 1 Sep. Tuesday
 - 3 Sep. Wednesday
 	- Density Estimation
@@ -11,6 +12,7 @@
 	- Maximum a priori estimation
 - 8 Sep. Tuesday
 	- Naive Bayes Classifier
+	- Precision and Recall
 
 <!-- /MarkdownTOC -->
 
@@ -18,6 +20,12 @@
 ## 课程信息
 
 Recitation: 7:30-8:30 Thursday, Porter Hall 100
+
+## 13 Oct. Tuesday
+
+semi-supervised 可以看作是，先利用 labeled data 给 unlabeled data 做标记，然后根据这些标记来得出新的分离器。
+
+Semi-supervised 的四个方法针对的是 ml 中不同的阶段，感觉需要经过大量实战才能培养出直觉找到最佳方法。但是半监督训练绝对是未来的方向，所谓四两拨千斤。
 
 ## 1 Sep. Tuesday
 
@@ -52,7 +60,7 @@ Write two expressions for P(A^B)
 
 	P(A^B) = P(A|B)P(B)
 	P(B^A) = P(B|A)P(A)
-	
+
 	P(A|B)P(B) = P(B|A)P(A)
 	P(A|B)P(B) = P(B|A)P(A) / P(B)
 

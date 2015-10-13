@@ -1,28 +1,15 @@
-#Sublime Text Guide
+# Sublime Text Guide
+
 ## Plugins
-1.   [Emmet Git](https://github.com/emmetio/emmet)，[Document](http://docs.emmet.io/)原名为：`Zencoding, 快速生成html,css`，默认扩展快捷为`tab`，如果`tab`按钮损坏，`ctrl+e`替换。
-    生成规则在：
-        
-        Preferences -> Browser packages -> Emment -> emment -> snippets.json                
-    中修改。
 
-    [@ Emmet 中文版文档](http://www.iteye.com/news/27580)
-2.  [Side Bar](https://github.com/titoBouzout/SideBarEnhancements)`增强的侧边栏`
-3.  [Docblockr](https://github.com/spadgos/sublime-jsdocs)`增强js注释`
-4.  [Alignment](https://github.com/wbond/sublime_alignment)`等号对齐`
-在`Preferences -> package settings -> Alignment -> Settings User`添加冒号对齐。
-
-        {
-         "align_indent": false,
-         "alignment_chars": ["=", ":"],
-         "alignment_space_chars": ["=", ":"]
-        }
-        
-5.  [AutoFileName](https://github.com/BoundInCode/AutoFileName): `文件路径自动提示`
-6.  [gbk支持 GBK Encoding Support](https://github.com/akira-cn/sublime-gbk)
-7.  [检测快捷键冲突](http://www.welefen.com/keymapmanager-add-check-plugins-keymap-conflict-feature.html)
-8.  [markdown](https://github.com/revolunet/sublimetext-markdown-preview)
-[markdown 转为 pdf](http://www.tcreator.info/social/experience/markdown-to-pdf.html)
+1. [Emmet Git](https://github.com/emmetio/emmet)，[Document](http://docs.emmet.io/)原名为：`Zencoding, 快速生成html,css`，默认扩展快捷为`tab`，如果`tab`按钮损坏，`ctrl+e`替换。 生成规则在：`Preferences -> Browser packages -> Emment -> emment -> snippets.json`中修改。[@ Emmet 中文版文档](http://www.iteye.com/news/27580)
+2. [Side Bar](https://github.com/titoBouzout/SideBarEnhancements)`增强的侧边栏`
+3. [Docblockr](https://github.com/spadgos/sublime-jsdocs)`增强js注释`
+4. [Alignment](https://github.com/wbond/sublime_alignment)`等号对齐`。在`Preferences -> package settings -> Alignment -> Settings User`添加冒号对齐。`{ "align_indent": false, "alignment_chars": ["=", ":"], "alignment_space_chars": ["=", ":"] }`
+5. [AutoFileName](https://github.com/BoundInCode/AutoFileName): `文件路径自动提示`
+6. [gbk支持 GBK Encoding Support](https://github.com/akira-cn/sublime-gbk)
+7. [检测快捷键冲突](http://www.welefen.com/keymapmanager-add-check-plugins-keymap-conflict-feature.html)
+8. [markdown](https://github.com/revolunet/sublimetext-markdown-preview) [markdown 转为 pdf](http://www.tcreator.info/social/experience/markdown-to-pdf.html)
 9. [LineEndings 设置换行符](https://github.com/SublimeText/LineEndings)
 10. [SublimeText插件列表](https://sublime.wbond.net/)
 11. [html美化插件](https://github.com/rehorn/sublime-htmlbeautify)
@@ -30,27 +17,16 @@
 13. [前端自动化神器LiveReload配合浏览器和less/sass使用方法](http://www.cnblogs.com/liu-l/p/3902100.html)
 14. [使用 Sublime Text 2 开发 Unity3D 项目](http://www.cnblogs.com/yili16438/p/3721896.html)
 15. [全栈开发必备的10款 Sublime Text 插件](http://www.cnblogs.com/lhb25/p/10-essential-sublime-text-plugins.html)
-        
+
 ## Settings
-1. Font
-推荐使用 [YaHei.Consolas.1.12.ttf](http://code.google.com/p/uigroupcode/downloads/detail?name=YaHei.Consolas.1.12.zip&can=2&q=#makechanges)，即为上图中所示字体。
+
+1. Font 推荐使用 [YaHei.Consolas.1.12.ttf](http://code.google.com/p/uigroupcode/downloads/detail?name=YaHei.Consolas.1.12.zip&can=2&q=#makechanges)，即为上图中所示字体。
 2. Theme
-    *   code style: 推荐使用这款[marktheme](http://code.google.com/p/uigroupcode/downloads/detail?name=Monokai.rar&can=2&q=#makechanges)
-    *   [更换sidebar皮肤](https://gist.github.com/1854721)
-    *   [分享一个sublime 主题 ](http://jamiewilson.io/predawn/)
-    *   [颜色配色](http://colorsublime.com/)
-3.  Preferences -> Settings - User
-    
-        {
-            "color_scheme"        : "Packages/Color Scheme - Default/Monokai.tmTheme",    // theme
-            "draw_minimap_border" : true,                                                 // 右侧缩略图边框
-            "font_face"           : "YaHei Consolas Hybrid",                              // 字体设置
-            "font_size"           : 13,                                                   // 字体大小
-            "highlight_line"      : true,                                                 // 当前行标亮
-            "ignored_packages"    : ["Toggle Css Format"],                                // 开启vim模式
-            "save_on_focus_lost"  : true                                                  // 失去焦点后保存
-        }
-        
+    + code style: 推荐使用这款[marktheme](http://code.google.com/p/uigroupcode/downloads/detail?name=Monokai.rar&can=2&q=#makechanges)
+    + [更换sidebar皮肤](https://gist.github.com/1854721)
+    + [分享一个sublime 主题 ](http://jamiewilson.io/predawn/)
+    + [颜色配色](http://colorsublime.com/)
+3. Preferences -> Settings - User
 4. [定制缩进](http://baelabs.duapp.com/Sublime/indentation.html)
 5. [拼写检查](http://baelabs.duapp.com/Sublime/spell_checking.html)
 6. [全屏模式，自由模式的定制](http://baelabs.duapp.com/Sublime/distraction_free.html)
@@ -58,47 +34,47 @@
 8. [其它配置](http://baelabs.duapp.com/Sublime/settings.html)
 
 ## Skill
+
 1. 按住 `ctrl` 键，鼠标单击就是多重选择。
 2. [键盘多重选择](http://baelabs.duapp.com/Sublime/multiple_selection_with_the_keyboard.html)
-3. 根据选择文本自动添加 ', "",(),[] 匹配。   
-4. 搜索按钮的功能说明 ([冷风贡献](http://hi.baidu.com/chaoxinggsc/item/904a471aa937bc35f6625c42))：   
-    <img src="http://e.hiphotos.baidu.com/album/pic/item/77094b36acaf2edd9ffd46a08c1001e93901936e.jpg" />   
+3. 根据选择文本自动添加 ', "",(),[] 匹配。
+4. 搜索按钮的功能说明 ([冷风贡献](http://hi.baidu.com/chaoxinggsc/item/904a471aa937bc35f6625c42))
 
 
 ## Default Keymap
 
-    1. Ctrl+L             选择整行（按住-继续选择下行） 
-    2. Ctrl+Shift+K(shhift+del)     删除整行，  ctrl + KK 从光标处删之行尾，Ctrl+K Backspace 从光标处删除至行首
-    3. Ctrl+Shift+D       复制光标所在整行，插入在该行之前  
-    4. Ctrl+D             选词 （按住-继续选择下个相同的字符串，再按，可跳到相应的方法定义处
-    5. Ctrl+Shift+M       选择括号内的内容（按住-继续选择父括号） 
-    6. Ctrl+/             注释整行（如已选择内容，同“Ctrl+Shift+/”效果）
-    7. Ctrl + alt + /     取消注释 
-    8. Ctrl+Shift+UP      与上行互换  ctrl + shift + up: 列模式编辑  
-    9. Ctrl + R           跳转当前页的目标方法
-    10. Ctrl+K + U        大写
-    11. Ctrl+K + L        小写
-    12. 鼠标中间           列模式编辑
-    13. Ctrl+Shift+[]     代码折叠
-    14. ctrl+k ctrl+1:    折叠所有代码 
-    15. Ctrl + K,B        打开侧边栏
-    16. ctrl + 回车：　　   光标后插入行，　Ctrl+Shift+Enter 光标前插入行
-    17. ctrl + m:         匹配括号
-    18. vim mode下        查找上一个下一个的快捷键是 是* #
-    19. ctrl +z, y:       撤销，恢复撤销
-    20. alt + .:          闭合当前标签
-    21. Ctrl+F2:          设置书签
-    22. F2:               下一个书签
-    23. Shift+F2:         上一个书签
-    24. ctrl + p:         即时的文件切换
-    25. ctrl + shift + a: 选择标签内的内容 
-    26. ctrl + 单击：      多行随意位置添加光标
-    27. alt + F3( mac: ctrl + command + g): 选择页面中所有相同的词
-    28. ctrl + F3:        跳转到下一个选中的词    
-    29. Ctrl+Shift+P Set Syntax:html : 设置文件类型
-    30. Shift + 右键:     连续多行光标选中 (by Gary Gauh)
+1. Ctrl+L             选择整行（按住-继续选择下行）
+2. Ctrl+Shift+K(shhift+del)     删除整行，  ctrl + KK 从光标处删之行尾，Ctrl+K Backspace 从光标处删除至行首
+3. Ctrl+Shift+D       复制光标所在整行，插入在该行之前
+4. Ctrl+D             选词 （按住-继续选择下个相同的字符串，再按，可跳到相应的方法定义处
+5. Ctrl+Shift+M       选择括号内的内容（按住-继续选择父括号）
+6. Ctrl+/             注释整行（如已选择内容，同“Ctrl+Shift+/”效果）
+7. Ctrl + alt + /     取消注释
+8. Ctrl+Shift+UP      与上行互换  ctrl + shift + up: 列模式编辑
+9. Ctrl + R           跳转当前页的目标方法
+10. Ctrl+K + U        大写
+11. Ctrl+K + L        小写
+12. 鼠标中间           列模式编辑
+13. Ctrl+Shift+[]     代码折叠
+14. ctrl+k ctrl+1:    折叠所有代码
+15. Ctrl + K,B        打开侧边栏
+16. ctrl + 回车：　　   光标后插入行，　Ctrl+Shift+Enter 光标前插入行
+17. ctrl + m:         匹配括号
+18. vim mode下        查找上一个下一个的快捷键是 是* #
+19. ctrl +z, y:       撤销，恢复撤销
+20. alt + .:          闭合当前标签
+21. Ctrl+F2:          设置书签
+22. F2:               下一个书签
+23. Shift+F2:         上一个书签
+24. ctrl + p:         即时的文件切换
+25. ctrl + shift + a: 选择标签内的内容
+26. ctrl + 单击：      多行随意位置添加光标
+27. alt + F3( mac: ctrl + command + g): 选择页面中所有相同的词
+28. ctrl + F3:        跳转到下一个选中的词
+29. Ctrl+Shift+P Set Syntax:html : 设置文件类型
+30. Shift + 右键:     连续多行光标选中 (by Gary Gauh)
 
-## Emmet(zencoding) Keymap    
+## Emmet(zencoding) Keymap
 
 
     1. match_pair_outward: ctrl+,向外匹配
@@ -113,7 +89,7 @@
     10. increment_number_by_10:shift+alt+up,数字快速增长,步长为10
     11. decrement_number_by_10: shift+alt+down,数字快速递减,步长为10
     12. select_next_item:shift+ctrl+. 选择下一个属性
-    13. select_previous_item: shift+ctrl+,, 选择上一个属性 
+    13. select_previous_item: shift+ctrl+,, 选择上一个属性
     14. wrap_as_you_type: shift+ctrl+g,包裹内容
 
 ## VIM Keymap
@@ -126,7 +102,7 @@ sublime 支持 VIM 80% 左右的快捷键，以实际为准。
         e:下一个词的词尾。E:不含标点。
         b:上一个词的词首。B:不含标点。
         <>: v 模式选中后进行缩进。
-        >><<:向前向后缩进。 
+        >><<:向前向后缩进。
     二. 跳转：
         %: 可以匹配{},"",(),[]之间跳转。
         H、M、L：直接跳转到当前屏幕的顶部、中部、底部。
@@ -157,7 +133,7 @@ sublime 支持 VIM 80% 左右的快捷键，以实际为准。
     三. 选择：
         1.v: 开启可视模式。 V: 开启逐行可视模式。
         2.^V: 矩形选择。
-        3.v3w: 选择三个字符。  
+        3.v3w: 选择三个字符。
         4.ab：包括括号和()内的区域。
         5.aB：包括括号和{}内的区域。
         6.ib：括号()内的区域。
@@ -190,7 +166,7 @@ sublime 支持 VIM 80% 左右的快捷键，以实际为准。
             #x: 删除光标所在位置后面6个字符。
             d^: 删至行首。
             d$: 删至行尾。
-            dd:(剪切)删除光标所在行。        
+            dd:(剪切)删除光标所在行。
             dw: 删除一个单词/光标之后的单词剩余部分。
             d4w: 删除4个word。
             #dd: 从光标所在行开始删除#行。
@@ -245,42 +221,33 @@ sublime 支持 VIM 80% 左右的快捷键，以实际为准。
         zi 這是個切換，是折疊與不折疊指令間的切換。
         zn 打開全文的所有折疊。fold none。
         zN 這是 zn 的相對指令，回復所有的折疊。
-    
-        
-## Document
-*   非官方文档：[Unofficial Document英文版](https://sublime-text-unofficial-documentation.readthedocs.org/en/latest/)
-[Unofficial Document中文版](http://baelabs.duapp.com/Sublime_unofficial/)
-*   sublime [配置详解](http://www.feelcss.com/sublime-text-2-settings.html)
-*   sublime [其它文档](http://baelabs.duapp.com/Sublime/)
+
+
++ 非官方文档：[Unofficial Document英文版](https://sublime-text-unofficial-documentation.readthedocs.org/en/latest/)
++ [Unofficial Document中文版](http://baelabs.duapp.com/Sublime_unofficial/)
++ sublime [配置详解](http://www.feelcss.com/sublime-text-2-settings.html)
++ sublime [其它文档](http://baelabs.duapp.com/Sublime/)
 
 ## FAQ
 
-*   如何删除安装的插件？
+如何删除安装的插件？
 
-1.  ctr+shift+P,输入package
-2.  查找remove package
-3.  输入你要删除的package
-4.  回车，OK
-
-*   百度输入造成sublime闪退(感谢[leohxj](https://github.com/leohxj)提供)
-    如果同时安装这两个软件，会造成sublime闪退，原因不详。但是测试过，是百度输入法的原因。希望能把这条信息加入到Wiki中，让更多人知道。
+1. ctr+shift+P,输入package
+2. 查找remove package
+3. 输入你要删除的package
+4. 回车，OK
 
 ## Guide
 
-*       [xdebug调试](https://github.com/martomo/SublimeTextXdebug)
-*   [sublimetext 3.0文档](http://baelabs.duapp.com/Sublime%20text3)
-*   [Sublime Text 3 绝对神器](http://www.cnblogs.com/bananaplan/p/Sublime-Text-3-Powerful.html)
-*   [SublimeText手册-tw](http://docs.sublimetext.tw/)
-*   [怎样从直接Github的repository安装Sublime Text插件](http://code-tech.diandian.com/post/2012-11-10/40041273125)
-*   [Sublime text2的ThinkPHP插件](http://code-tech.diandian.com/post/2012-11-14/40041132753)
-*   [Ubuntu 下Sublime Text 2 输入中文解决方法](http://code-tech.diandian.com/post/2012-11-14/40042622351)
-*   [如何开发Sublime Text2插件_衍生篇](http://code-tech.diandian.com/post/2012-11-16/40042306130)
-*   [用sublime构建phonegap项目](http://code-tech.diandian.com/post/2012-11-16/40042845471)
-*   [超级牛B编码王（二）：Sublime2之Zencoding快速上手](http://code-tech.diandian.com/post/2012-11-16/40041334087)
-*   [sublime text 左侧菜单美化1](http://code-tech.diandian.com/post/2012-11-21/40042403501)
-*   [在 Ubuntu 12 下安装 Sublime Text 2](http://code-tech.diandian.com/post/2012-11-29/40043724758)
-*   [Sublime Text 全程指南](http://zh.lucida.me/blog/sublime-text-complete-guide/)
-*   [Sublime Text 全程指引 by Lucida](http://www.cnblogs.com/figure9/p/sublime-text-complete-guide.html)
-*   [sublime 有哪些使用技巧](http://www.zhihu.com/question/24896283)
-*   [前端工程师手中的Sublime Text](http://www.html-js.com/article/The-frontend-tool-Megamix)
++ [xdebug调试](https://github.com/martomo/SublimeTextXdebug)
++ [sublimetext 3.0文档](http://baelabs.duapp.com/Sublime%20text3)
++ [Sublime Text 3 绝对神器](http://www.cnblogs.com/bananaplan/p/Sublime-Text-3-Powerful.html)
++ [SublimeText手册-tw](http://docs.sublimetext.tw/)
++ [怎样从直接Github的repository安装Sublime Text插件](http://code-tech.diandian.com/post/2012-11-10/40041273125)
++ [Sublime text2的ThinkPHP插件](http://code-tech.diandian.com/post/2012-11-14/40041132753)
++ [sublime text 左侧菜单美化1](http://code-tech.diandian.com/post/2012-11-21/40042403501)
++ [Sublime Text 全程指南](http://zh.lucida.me/blog/sublime-text-complete-guide/)
++ [Sublime Text 全程指引 by Lucida](http://www.cnblogs.com/figure9/p/sublime-text-complete-guide.html)
++ [sublime 有哪些使用技巧](http://www.zhihu.com/question/24896283)
++ [前端工程师手中的Sublime Text](http://www.html-js.com/article/The-frontend-tool-Megamix)
 
