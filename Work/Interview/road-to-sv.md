@@ -1,6 +1,6 @@
 # 硅谷之路
 
-已经基本整合到gitbook中 
+已经基本整合到gitbook中
 
 ## 写在前面
 
@@ -88,7 +88,7 @@ Sep 27 | 简历已投至 10.12 日合适的 26 间公司 | 下一次 10.13- 10.1
 28. Software Engineer @ twilio
 29. Software Engineer @ Intentional
 30. Data Platform Software Engineer @ AppDynamics
-31. 
+31.
 
 关于投简历：
 
