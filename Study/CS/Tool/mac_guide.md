@@ -1,5 +1,12 @@
 # Mac 指南
 
+## 关闭 rootles
+
+开机按住Command＋R，进入恢复模式，打开terminal，键入：
+
+csrutil disable
+
+回车，重新启动即可。要重新恢复，只需将disable改为enabl
 ## 重建 Mail 索引
 
 当邮箱出现问题时，您可能会看到提醒信息说“邮件”需要通过重新索引邮件来修复邮箱。
