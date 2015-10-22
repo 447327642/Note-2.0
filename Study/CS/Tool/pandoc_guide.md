@@ -65,6 +65,18 @@ pandoc --latex-engine=xelatex -V mainfont='Lantinghei SC' --template=/Users/dawa
 
 装了 MacTex 就行了，就是中文比较麻烦，需要用额外的模板
 
+    pandoc source.md -o target.pdf --latex-engine=xelatex --template=template.tex
+
+自定义命令减少繁琐输入
+
+在 `.bash_profile` 中加入
+
+    alias pdf="pandoc -s $@ -o output.pdf --latex-engine=xelatex --template=/Users/dawang/Documents/template.tex"
+
+然后使用时只需要
+
+    pdf xxx.md 即可以在对应目录下生成 pdf 文件
+
 
 - [ ] a bigger project
     - [ ] test

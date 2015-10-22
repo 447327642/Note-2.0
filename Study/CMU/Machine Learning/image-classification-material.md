@@ -4,10 +4,10 @@
 
 - 【拯救世界】 MNIST, CIFAR-10, CIFAR-100, STL-10, SVHN目前最佳分类结果(技术)汇总
 - MATLAB and Octave Functions for Computer Vision and Image Processing
+- PCANet, Simple Deep Learning Baseline for Image Classification
 - 特征提取
 - ImageNet winners after 2012
 - 论文+代码:面向图像分类的多列深度网络(MCDNN)
-- PCANet, Simple Deep Learning Baseline for Image Classification
 - ECCV-2010 Tutorial: Feature Learning for Image Classification
 
 <!-- /MarkdownTOC -->
@@ -23,6 +23,69 @@
 http://www.peterkovesi.com/matlabfns/
 
 要好好研究
+
+## PCANet, Simple Deep Learning Baseline for Image Classification
+
+http://my.oschina.net/Ldpe2G/blog/275922
+
+之前看过一句话，未来领域类专家需求将越来越少，而相应的数据挖掘专家需求将不断增加，这时因为深度学习的核心在于其自适应的特征提取。PCANet是一个基于CNN的简化Deep Learning模型。之所以读它是因为它是基于PCA(SVD)的，其卷积核从图像信号的某种SVD分解得到的，而这也是张量列分解的核心之一。与CNN相比，该网络卷积核是直接通过PCA计算得到的，而不是像CNN一样通过反馈迭代得到的。
+
+![ic0](./_resources/ic0.png)
+
+![ic1](./_resources/ic1.png)
+
+从上图可以看到，PCANet的训练分为三个步骤(stage)，前两个stage很相似，都是去平均，然后PCA取主成分并卷积，最后一步是二值化和直方图量化。下面按步骤介绍PCANet的训练过程：
+
+一、特征提取
+
+1、First stage:
+
+![ic2](./_resources/ic2.png)
+
+1)、选取一个k1×k2的窗口(通常为3×3、5×5、7×7)来滑动选取图片的局部特征。每张m×n大小的图片Ii经过滑动窗口提取局部特征之后，就变成了(m−k1+1)⋅(n−k2+1)个k1k2大小的patch(注：在论文中patch个数是mn，代码中是(m-k1+1)(n-k2+1), 为方便书写，以下都写为mn),将其写成k1k2×mn列的矩阵Bi，每一列代表一个局部特征patch。相应的滑动选取公式为：
+
+xij=Vec(Ii(j1:j1+k1−1,j2:j2+k2−1))
+其中j=j1+(j2−1)∗(m−k1+1).
+
+2)、将以上矩阵按列进行去平均，便完成了对单张图片的特征提取操作。
+
+3、对所有N张图片执行以上操作，将特征并排在一起，得到一个新的数据矩阵X，每一列含有k1k2个元素，一共有Nmn列。
+
+4、对这个X矩阵做PCA，取前L1个特征向量，作为该步骤的filter。
+
+5、把这L1个特征向量的每一列（每一列含有k1k2个元素）重排列为一个patch，这样就得到了L1个k1×k2的卷积核{Wil}L1l=1。
+
+6、然后就是对每一张图片，都用这L1个卷积核做一次卷积。Ili=Ii⋆Wil
+
+---
+
+2、 Second stage：
+
+![ic3](./_resources/ic3.png)
+
+步骤同first stage，此时输入图片数为N*L1张，通过PCA得到L2个卷积核，输出NL1L2张图片.
+
+---
+
+Hashing: 二值化
+
+首先是对Second stage的每个卷积的结果做二值化，每一组得到L2张二值图片，对这L2张二值图片进行十进制编码，得到一张新的十进制图片，元素取值范围为[0, 2L1−1]
+
+Histogram：直方图统计
+
+对每L1张图片做histBlock到vector的变换，假设对原图128×48的图选取32×32的histBlock，overlap系数0.5，原图有14个histBlock，将histBlock变换为vector，得到1024×14的矩阵。对这个1024×14的矩阵做直方图统计，因为选了256个区间，所以得到的Bhist矩阵大小为256×14。最后将这个矩阵转化为$28672(L1=8，28672=256\times 14\times 8）维的vector，这样就完成了一张图片的PCANet的特征提取。
+
+二、分类器训练
+
+将列向量放到训练好的SVM中进行分类
+
+三、论文及代码下载：
+
+论文：http://arxiv.org/abs/1404.3606v2
+
+matlab代码：https://github.com/alanhuang1990/PCANET
+
+c++代码：https://github.com/Ldpe2G/PCANet
 
 ## 特征提取
 
@@ -247,68 +310,7 @@ HOG, LBP, Haar, SIFT, SURF
 
 《Multi-column Deep Neural Networks for Image Classification》D Cireşan, U Meier, J Schmidhuber (CVPR2012)  [Code(Theano)](https://github.com/ilyakava/ciresan)
 
-## PCANet, Simple Deep Learning Baseline for Image Classification
 
-http://my.oschina.net/Ldpe2G/blog/275922
-
-之前看过一句话，未来领域类专家需求将越来越少，而相应的数据挖掘专家需求将不断增加，这时因为深度学习的核心在于其自适应的特征提取。PCANet是一个基于CNN的简化Deep Learning模型。之所以读它是因为它是基于PCA(SVD)的，其卷积核从图像信号的某种SVD分解得到的，而这也是张量列分解的核心之一。与CNN相比，该网络卷积核是直接通过PCA计算得到的，而不是像CNN一样通过反馈迭代得到的。
-
-![ic0](./_resources/ic0.png)
-
-![ic1](./_resources/ic1.png)
-
-从上图可以看到，PCANet的训练分为三个步骤(stage)，前两个stage很相似，都是去平均，然后PCA取主成分并卷积，最后一步是二值化和直方图量化。下面按步骤介绍PCANet的训练过程：
-
-一、特征提取
-
-1、First stage:
-
-![ic2](./_resources/ic2.png)
-
-1)、选取一个k1×k2的窗口(通常为3×3、5×5、7×7)来滑动选取图片的局部特征。每张m×n大小的图片Ii经过滑动窗口提取局部特征之后，就变成了(m−k1+1)⋅(n−k2+1)个k1k2大小的patch(注：在论文中patch个数是mn，代码中是(m-k1+1)(n-k2+1), 为方便书写，以下都写为mn),将其写成k1k2×mn列的矩阵Bi，每一列代表一个局部特征patch。相应的滑动选取公式为：
-
-xij=Vec(Ii(j1:j1+k1−1,j2:j2+k2−1))
-其中j=j1+(j2−1)∗(m−k1+1).
-
-2)、将以上矩阵按列进行去平均，便完成了对单张图片的特征提取操作。
-
-3、对所有N张图片执行以上操作，将特征并排在一起，得到一个新的数据矩阵X，每一列含有k1k2个元素，一共有Nmn列。
-
-4、对这个X矩阵做PCA，取前L1个特征向量，作为该步骤的filter。
-
-5、把这L1个特征向量的每一列（每一列含有k1k2个元素）重排列为一个patch，这样就得到了L1个k1×k2的卷积核{Wil}L1l=1。
-
-6、然后就是对每一张图片，都用这L1个卷积核做一次卷积。Ili=Ii⋆Wil
-
----
-
-2、 Second stage：
-
-![ic3](./_resources/ic3.png)
-
-步骤同first stage，此时输入图片数为N*L1张，通过PCA得到L2个卷积核，输出NL1L2张图片.
-
----
-
-Hashing: 二值化
-
-首先是对Second stage的每个卷积的结果做二值化，每一组得到L2张二值图片，对这L2张二值图片进行十进制编码，得到一张新的十进制图片，元素取值范围为[0, 2L1−1]
-
-Histogram：直方图统计
-
-对每L1张图片做histBlock到vector的变换，假设对原图128×48的图选取32×32的histBlock，overlap系数0.5，原图有14个histBlock，将histBlock变换为vector，得到1024×14的矩阵。对这个1024×14的矩阵做直方图统计，因为选了256个区间，所以得到的Bhist矩阵大小为256×14。最后将这个矩阵转化为$28672(L1=8，28672=256\times 14\times 8）维的vector，这样就完成了一张图片的PCANet的特征提取。
-
-二、分类器训练
-
-将列向量放到训练好的SVM中进行分类
-
-三、论文及代码下载：
-
-论文：http://arxiv.org/abs/1404.3606v2
-
-matlab代码：https://github.com/alanhuang1990/PCANET
-
-c++代码：https://github.com/Ldpe2G/PCANet
 
 ## ECCV-2010 Tutorial: Feature Learning for Image Classification
 
