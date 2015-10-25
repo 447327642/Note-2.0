@@ -2,6 +2,7 @@
 
 <!-- MarkdownTOC -->
 
+- 学会思考
 - 互联网
 - 综合
 - 历史
@@ -14,6 +15,50 @@
 
 <!-- /MarkdownTOC -->
 
+## 学会思考
+
++ Asking the Right Questions
++ 与『众』不同的心理学
++ 追寻记忆的痕迹
++ 找寻逝去的自我
++ How to Solve It
++ 你的灯亮着吗?
++ How We Know What Isn't So
++ A Rulebook for Arguments
++ Crimes Against Logic
++ How We Decide
++ Nonsense, Gula
++ 别做正常的傻瓜
++ 决策与判断
++ 摇摆, 布莱福曼
++ Why Smart People Make Big Money Mistakes and How to Correct Them
++ Predictably Irrational
++ 无从选择
++ Mistakes Were Made
++ Simple Heuristics That Make Us Smart
++ 简捷启发式
++ 失败的逻辑
++ Blackwell Handbook of Judgment and Decision Making (Blackwell Handbooks of Experimental Psychology)
++ Advances in Behavioral Economics
++ Synaptic Self
++ 数学与猜想（第一卷）
++ 数学与猜想（第二卷）
++ 数学的发现
++ 影响力
++ 欲望之源
++ 社会性动物
++ 学会提问
++ How to Think Straight About Psychology
++ 统计陷阱
++ The Cambridge Handbook of Thinking and Reasoning
++ 性越多越安全
++ 费马大定理
++ The Psychology of Problem Solving
++ Solving Mathematical Problems
++ The Psychology of Invention in the Mathematical Field
++ The Optimism Bias
++ 证明与反驳
++
 ## 互联网
 
 1. 人类简史
