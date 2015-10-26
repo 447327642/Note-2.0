@@ -7,7 +7,7 @@ andrew id: dawang
 
 ### 3.1
 
-$$P(Y,A,B,C)=P(A)P(B)P(C)P(Y\;|\;A,B,C)$$
+$$P(Y,A,B,C)=P(Y)P(A|Y)P(B|Y)P(C|Y)$$
 
 The corresponding Bayesian Network is
 
