@@ -14,5 +14,8 @@ Here is how I arrange my personal notebook
 + Inbox
 + Life
 + List
-+ Study
-+ Work
++ CMU
++ CS
++ Explore
+
+
