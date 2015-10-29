@@ -130,5 +130,12 @@ Sep 28 | TOC 第一天十来家公司 | 明天继续投
 62. Software Engineer - New Graduate @ Whitepages.
 63. Application Developer @ ClickTime
 64. Software Engineer – NLP & Computational Linguist @ Seerflix Inc
+65. Software Engineer @ IXL Learning
+66. Software Engineer @ swiftstack
+67. Software Engineer @ Onera
+68. Software Engineer @ InfoScout
+69. Software Engineer (Python) @ Exablox
+70. (**rejected**)Software Engineer @ athenahealth
+71. Software Engineer @ NDT
 
 

@@ -29,6 +29,16 @@ void InOrderTraversal(TreeNode *root) {
 
 这类题目要求将树的结构转化成其他数据结构，例如链表、数组等，或者反之，从数组等结构构成一棵树。前者通常是通过树的遍历，合并局部解来得到全局解，而后者则可以利用D&C的策略，递归将数据结构的两部分分别转换成子树，再合并。
 
+### 寻找特定节点
+
+此类题目通常会传入一个当前节点，要求找到与此节点具有一定关系的特定节点：例如前驱、后继、左／右兄弟等。
+
+对于这类题目，首先可以了解一下常见特定节点的定义及性质。在存在指向父节点指针的情况下，通常可以由当前节点出发，向上倒推解决。如果节点没有父节点指针，一般需要从根节点出发向下搜索，搜索的过程就是DFS。
+
+### 图的访问
+
+关于图的问题一般有两类。一类是前面提到的关于图的基本问题，例如图的遍历、最短路径、可达性等；另一类是将问题转化成图，再通过图的遍历解决问题。第二类问题有一定的难度，但也有一些规律可循：如果题目有一个起始点和一个终止点，可以考虑看成图的最短路径问题。
+
 ## 树
 
 ### 树的概念
@@ -250,5 +260,168 @@ For k = 1 to n
         For j = 1 to n
 Distance(k)ij = min(Distance (k-1)ij, Distance (k-1)ik+ Distance(k-1)kj)  
 Return Distance(n)
+```
+
+## 工具箱
+
+### 二叉树类
+
+一个最基本的二叉树类可以如下定义：
+
+```
+class TreeNode {
+public:
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode *parent;
+    int val;
+};
+
+class BinaryTree {
+public:
+    BinaryTree(int rootValue);
+    ~BinaryTree();
+    bool insertNodeWithValue(int value);
+    bool deleteNodeWithValue(int value);
+    void printTree();
+
+private:
+    TreeNode *root;
+};
+```
+
+### 平衡二叉树
+
+关于平衡二叉树的理论讨论请见：
+《算法导论》(Introduction to Algorithms, 2nd Edition), Thomas H. Corman, Charles E.Leiserson, Ronald L.Rivest, Clifford Stein, 第13章，红黑树
+
+### 二叉树的遍历
+
+DFS Traversal: In-order traversal, pre-order and post-order of tree
+
+```
+void preOrderTraversal(TreeNode *root) {
+    if (!root) {
+        return;
+    }
+    visit(root);
+    preOrderTraversal(root->left);
+    preOrderTraversal(root->right);
+}
+
+void inOrderTraversal(TreeNode *root) {
+    if (!root) {
+        return;
+    }
+    inOrderTraversal(root->right);
+    visit(root);
+    inOrderTraversal(root->left);
+}
+
+void postOrderTraversal(TreeNode *root) {
+    if (!root) {
+        return;
+    }
+    postOrderTraversal(root->left);
+    postOrderTraversal(root->right);
+    visit(root);
+}
+```
+
+BFS Traversal
+
+```
+void levelTraversal(TreeNode *root)
+{
+    queue<TreeNode *> nodeQueue;
+    TreeNode *currentNode;
+    if (!root) {
+        return;
+    }
+    nodeQueue.push(root);
+    while (!nodeQueue.empty()) {
+        currentNode = nodeQueue.front();
+        processNode(currentNode);
+        if (currentNode->left) {
+            nodeQueue.push(currentNode->left);
+        }
+        if (currentNode->right) {
+            nodeQueue.push(currentNode->right);
+        }
+        nodeQueue.pop();
+    }
+}
+```
+
+### 字典数类
+
+可以如下定义一个字典树:
+
+```
+class TrieNode {
+private:
+    char mContent;
+    bool mMarker;
+    vector<TrieNode *> mChildren;
+public:
+    TrieNode() {
+        mContent = ' '; mMarker = false;
+    }
+    ~TrieNode() {
+    }
+    friend class Trie;
+};
+class Trie {
+public:
+    Trie();
+    ~Trie();
+    void addWord(string s);
+    bool searchWord(string s);
+    void deleteWord(string s);
+private:
+    TrieNode *root;
+};
+```
+
+### 堆的重要函数
+
+《算法导论》(Introduction to Algorithms, 2nd Edition), Thomas H. Corman, Charles E.Leiserson, Ronald L.Rivest, Clifford Stein, 第6章，堆排序
+
+### priority_queue
+
+`priority_queue`在C++标准模版库(Standard Template Library, STL)中实现，使用时需要`include<priority_queue>`。 简要介绍如下常见函数，更多信息请参考[这里](http://www.cplusplus.com/reference/queue/priority_queue/)：
+
+```
+// Returns whether the priority queue is empty: i.e. whether its size is zero.
+bool empty() const;    
+
+// Inserts a new element in the priority queue, effectively increasing its size by one.
+void push (const value_type& val);    
+
+Example:
+priority_queue<int> myPriorityQueue;
+myPriorityQueue.push(20);
+myPriorityQueue.push(50);
+myPriorityQueue.push(30);    // queue contains 3 elements, will be accessed in the order of 50, 30, 20
+
+// Removes the element on top of the priority queue, effectively reducing its size by one.
+void pop();
+
+// Returns a constant reference to the top element in the priority queue.
+const value_type& top() const;    
+
+Example:
+priority_queue<int> myPriorityQueue;
+myPriorityQueue.push(30);
+myPriorityQueue.push(10);
+myPriorityQueue.push(50);
+myPriorityQueue.push(40);
+
+cout << "Popping out elements...";
+while (!myPriorityQueue.empty()) {
+    cout << ' ' << myPriorityQueue.top();
+    myPriorityQueue.pop();
+}
+cout << endl;// output: Popping out elements... 50 40 30 10
 ```
 

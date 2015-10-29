@@ -12,3 +12,35 @@
 
 ## Code
 
+```java
+Node arrayToBst(int[] arr){
+	if (arr.length == 0) return null;
+	if (arr.length == 1) {
+		Node head = new Node(arr[0]);
+		return head;
+	}
+	
+	return helper(arr, 0, arr.length-1);
+}
+
+Node helper(int[] arr, int low, int high){
+	if (low > high){
+		return null;
+	}
+	if (low == high){
+		Node head = new Node(arr[low]);
+		return head;
+	}
+	
+	int mid = (low+high)/2;
+	Node left = helper(arr, low, mid - 1);
+	Node right = helper(arr, high, mid + 1);
+	Node head = new Node(arr[mid]);
+	head.left = left;
+	head.right = right;
+	return head;
+}
+
+```
+
+
