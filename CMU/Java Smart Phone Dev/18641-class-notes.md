@@ -20,10 +20,12 @@
 + Assignment2 19.5/20
 	+ Abstract class should have method
 + Project1 Unit1 20/20
-+ Project2 Unit2 20/20
-+ Project3 Unit3 19/20
-+ Project4 Unit4 40/40
-+ Project5 Unit5 40/40
++ Project1 Unit2 20/20
++ Project1 Unit3 19/20
++ Project1 Unit4 40/40
++ Project1 Unit5 40/40
++ Project1 Unit6 38/40
++ Project1 Lessons Learnt 50/50
 
 ## TA 信息
 
