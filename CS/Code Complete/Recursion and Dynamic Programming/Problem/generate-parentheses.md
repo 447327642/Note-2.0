@@ -1,4 +1,4 @@
-# All Valid Parentheses
+# Generate Parentheses
 
 出处
 

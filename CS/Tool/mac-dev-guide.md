@@ -1,4 +1,11 @@
-# 强迫症的 Mac 设置指南
+# Mac 设置指南
+
+## 自定义命令
+
++ pdfen filename: pandoc 生成 pdf，输出在桌面
++ pdfcn filename: pandoc 生成 pdf，输出在桌面
++ post: 发布新文章
++ newpost title: 生成标题为 title 的新文章
 
 ## 如何配置一个高效的 Mac 工作环境
 
@@ -483,3 +490,5 @@ plugins=(git z sublime history rbenv bundler rake)
 - [Setting up a new (OS X) development machine](https://mattstauffer.co/blog/setting-up-a-new-os-x-development-machine-part-1-core-files-and-custom-shell)
 - [高效 MacBook 工作环境配置](http://www.xialeizhou.com/?p=71)
 - [程序员如何优雅地使用 Mac？](http://www.zhihu.com/question/20873070)
+
+

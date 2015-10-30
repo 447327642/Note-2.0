@@ -30,32 +30,33 @@
 
 ## Code
 
-```python
-class Solution:
-    # @param {int} n the nth
-    # @return {string} the nth sequence
-    def countAndSay(self, n):
-        # Write your code here
-        say = '1'
-        for i in range(n-1):
-            say = self._count_say(say)
-        return say
-
-    def _count_say(self, s):
-        curr = None
-        count = 0
-        say = ""
-        for c in s:
-            if c == curr:
-                count += 1
-            else:
-                if curr:
-                    say += str(count)+str(curr)
-                curr = c
-                count = 1
-        say += str(count)+str(curr)
-        return say
-
+```java
+public class Solution {
+    public String countAndSay(int n) {
+        StringBuffer s = new StringBuffer("1");
+        StringBuffer res = new StringBuffer();
+        while((--n) != 0){
+            res.setLength(0);
+            int size = s.length();
+            int cnt = 1;
+            char cur = s.charAt(0);
+            for(int i=1;i<size;i++){
+                if(s.charAt(i)!=cur){
+                    res.append(cnt);
+                    res.append(cur);
+                    cur = s.charAt(i);
+                    cnt = 1;
+                }else ++cnt;
+            }
+            res.append(cnt);
+            res.append(cur);
+            StringBuffer tmp = s;
+            s = res;
+            res = tmp;
+        }
+        return s.toString();
+    }
+}
 ```
 
 
