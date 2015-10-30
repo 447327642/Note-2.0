@@ -29,5 +29,36 @@ An array is sorted without duplicates. However, someone mysteriously shifted all
 
 ## Code
 
+```java
+int searchInRotatedArray(int[] arr, int target){
+	int len = arr.length;
+	return helper(arr, 0, len-1, target);
+}
 
+int helper(int[] arr, int low, int high, int target){
+	if (low > high) return -1;
+
+	int mid = high - (high - low) / 2;
+	if (arr[mid] == target)
+		return mid;
+	
+	
+	if (arr[low] <= arr[mid]){
+		// left part is sorted
+		if (target >= arr[low] && target <= arr[mid]){
+			return helper(arr, low, mid-1, target);
+		} else {
+			return helper(arr, mid+1, high, target);
+		}
+	} else {
+		// right part is sorted
+		if (target >= arr[mid] && target <= arr[high]){
+			return helper(arr, mid+1, high, target);
+		} else {
+			return helper(arr, low, mid-1, target);
+		}
+	}
+}
+
+```
 
