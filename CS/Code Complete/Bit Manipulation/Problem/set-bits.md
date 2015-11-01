@@ -1,6 +1,6 @@
 # Set Bits
 
-出处
+出处 Insertion
 
 Given N and M, 32bit integers, how to set i to j bits (bit position as 1,2,3,…32) of N as the value of bits in M.
 

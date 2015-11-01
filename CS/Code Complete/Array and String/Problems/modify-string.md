@@ -1,6 +1,6 @@
 # Modify String
 
-出处
+出处 replace space
 
 Replace space in the string with “%20”. E.g. given "Big mac", return “Big%20mac
 

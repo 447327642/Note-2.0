@@ -33,6 +33,24 @@ Visually, the graph looks like the following:
 1. DFS. 
 2. BFS.
 
+使用BFS来解决此问题。用一个Queue来记录遍历的节点，遍历原图，并且把复制过的节点与原节点放在MAP中防止重复访问。
+
+图的遍历有两种方式，BFS和DFS
+
+这里使用BFS来解本题，BFS需要使用queue来保存neighbors
+
+但这里有个问题，在clone一个节点时我们需要clone它的neighbors，而邻居节点有的已经存在，有的未存在，如何进行区分？
+
+这里我们使用Map来进行区分，Map的key值为原来的node，value为新clone的node，当发现一个node未在map中时说明这个node还未被clone，
+
+将它clone后放入queue中处理neighbors。
+
+使用Map的主要意义在于充当BFS中Visited数组，它也可以去环问题，例如A--B有条边，当处理完A的邻居node，然后处理B节点邻居node时发现A已经处理过了
+
+处理就结束，不会出现死循环。
+
+queue中放置的节点都是未处理neighbors的节点。
+
 ## Complexity
 
 时间复杂度 O(n)，空间复杂度 O(n)

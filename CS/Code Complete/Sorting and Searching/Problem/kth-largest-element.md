@@ -29,6 +29,9 @@ Quickselect uses the same overall approach as quicksort, choosing one element as
 
 时间复杂度为O(n），空间复杂度为O(1）
 
+1. sort O(nlogn)
+2. quickselect O(n)
+
 ## Code
 
 ```java

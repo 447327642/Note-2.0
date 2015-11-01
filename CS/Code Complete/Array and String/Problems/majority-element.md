@@ -1,4 +1,4 @@
-# Majority
+# Majority Element
 
 数组中有一个数字出现的次数超过了数组长度的一半，找出这个数字。
 
@@ -86,6 +86,44 @@ int FindOneNumber(int* a, int length)
     i=4，candidate=1，nTimes=1；
 
 如果是`0，1，2，1，1，1`的话，那么`i=5`，`a[5] == candidate`，`nTimes++`，`=2`；......
+
+```java
+public class Solution {
+    public int majorityElement_1(int[] num) {
+        int n = num.length;
+        if (n == 0) return 0;
+        if (n == 1) return num[0];
+        int res = num[0], cnt = 1;
+        for (int i = 1; i < n; ++i) {
+            if (cnt == 0) {
+                res = num[i];
+                ++cnt;
+                continue;
+            }
+            if (res == num[i]) ++cnt;
+            else --cnt;
+        }
+        return res;
+    }
+    
+    
+    public int majorityElement_2(int[] num) {
+        int n = num.length;
+        if (n == 0) return 0;
+        if (n == 1) return num[0];
+        int res = 0;
+        for (int i = 0; i < 32; ++i) {
+            int one = 0, zero = 0;
+            for (int j = 0; j < n; ++j) {
+                if (((num[j]>>i) & 1) == 1) ++one;
+                else ++zero;
+            }
+            if (one > zero) res = res | (1<<i);
+        }
+        return res;
+    }
+}
+```
 
 ## 举一反三
 

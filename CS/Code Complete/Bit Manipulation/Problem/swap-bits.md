@@ -1,6 +1,6 @@
 # Swap Bits
 
-出处
+出处 Pairwise Swap
 
 Swap the neighboring odd and even bits in a integer (bit position as 1,2,3,…32).
 

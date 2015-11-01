@@ -312,3 +312,53 @@ Command模式可以说是回调机制(Callback)的一个面向对象的替代品
 
 很重要的一点是模板方法必须指明哪些操作是钩子操作(可以被重定义的，比如Step3),以及哪些操作是抽象操作“(必须被重定义，比如Step1和Step2)。要有效地重用一个抽象类，子类编写者必须明确了解哪些操作是设计为有待重定义的。
 
+---
+
+1. Handle Ambiguity
+	+ make assumptions & ask clarifying questions
+	+ **who** is going to use it and **how** they are going to use it
+	+ who, what, where, when, how, why
+2. Define the core objects
+	Suppose we are designing for a restaurant. Our core objects might be things like `Table`, `Guest`, `Party`, `Order`, `Meal`, `Employee`, `Server`, and `Host`.
+3. Analyze Relationships
+4. Investigate Actions
+
+# Design Patterns
+
+Singleton and Factory Method design patterns are widely used in intervies.
+
+## Singleton Class
+
+Ensures that a class has only on instance and ensures access to the instance through the application. It can be useful in cases where you have a "global" object with exactly one instance.
+
+```java
+public class Restaurant{
+	private static Restaurant _instance = null;
+	protected Restaurant() {...}
+	public static Restaurant getInstance(){
+		if (_instance == null){
+			_instance = new Restaurant();
+		}
+		return _instance;
+	}
+}
+```
+
+## Factory Method
+
+Offers an interface for creating an instance of a class, with its subclasses deciding which class to instantiate.
+
+```java
+public class CardGame {
+	public static CardGame createCardGame(GameType type){
+		if (type == GameType.Poker) {
+			return new PokerGame();
+		}
+		else if (type == GameType.BlackJack) {
+			return new BlackJackGame();
+		}
+		return null;
+	}
+}
+```
+

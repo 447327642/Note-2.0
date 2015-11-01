@@ -59,3 +59,67 @@ int indexSearch(int[] arr, int low, int high){
 }
 ```
 
+---
+
+可能有重复的情况
+
+```java
+int magicIndex1(int[] array){
+    for (int i = 0; i < array.length; i++){
+        if (array[i] == i){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int magicIndex2(int[] array){
+    int start = 0;
+    int end = array.length - 1;
+
+    while (end > start){
+        int mid = (start + end) / 2;
+        if (array[mid] == mid){
+            return mid;
+        }
+        else if (array[mid] > mid){
+            end = mid - 1;
+        }
+        else {
+            start = mid + 1;
+        }
+    }
+    return -1;
+}
+
+// FOLLOW UP, Use the solution to help understanding
+int magicFast3(int[] array){
+    return magicFast3(array, 0, array.length - 1);
+}
+
+int magicFast3(int[] array, int start, int end){
+    if (end < start)
+        return -1;
+
+    int midIndex = (start + end) / 2;
+    int midValue = array[midIndex];
+    if (midValue == midIndex){
+        return midIndex;
+    }
+
+    // search left
+    int leftIndex = Math.min(midIndex - 1, midValue);
+    int left = magicFast3(array, start, leftIndex);
+    if (left >= 0){
+        return left;
+    }
+
+    // seach right
+    int rightIndex = Math.max(midIndex + 1, midValue);
+    int right = magicFast3(array, rightIndex, end);
+
+    return right;
+}
+```
+
+
