@@ -2,6 +2,8 @@
 
 Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
 
+给出一个所有元素以升序排序的单链表，将它转换成一棵高度平衡的二分查找树
+
 ## Solution
 
 1. Recursion. In-order. O(n)

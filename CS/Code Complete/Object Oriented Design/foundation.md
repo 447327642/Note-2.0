@@ -362,3 +362,112 @@ public class CardGame {
 }
 ```
 
+---
+
+# 设计模式
+
+## 面向对象
+
+**面向对象的三个基本特征是：封装、继承、多态**
+
++ 封装
+    + 封装最好理解了。封装是面向对象的特征之一，是对象和类概念的主要特性。封装，也就是把客观事物封装成抽象的类，并且类可以把自己的数据和方法只让可信的类或者对象操作，对不可信的进行信息隐藏。
++ 继承
+    + 继承是指这样一种能力：它可以使用现有类的所有功能，并在无需重新编写原来的类的情况下对这些功能进行扩展。通过继承创建的新类称为“子类”或“派生类”，被继承的类称为“基类”、“父类”或“超类”。
+    + 要实现继承，可以通过“继承”（Inheritance）和“组合”（Composition）来实现。
++ 多态性
+    + 多态性（polymorphisn）是允许你将父对象设置成为和一个或更多的他的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作。简单的说，就是一句话：允许将子类类型的指针赋值给父类类型的指针。
+    + 实现多态，有两种方式，覆盖和重载。覆盖和重载的区别在于，覆盖在运行时决定，重载是在编译时决定。并且覆盖和重载的机制不同，例如在 Java 中，重载方法的签名必须不同于原先方法的，但对于覆盖签名必须相同。
+
+
+---
+
+# Handling the Question
+
++ **Communicate**: A key goal of system design questions is to evaluate your ability to communicate. Stay engaged with the interviewer. Ask them questions. Be open about the issues of your system.
++ **Go broad first**: Don't dive straight into the algorithm part or get excessively focused on one part.
++ **Use the whiteboard**: Using a whiteboard helps your interviewer follow your proposed design. Get up to the whiteboard in the very beginning and use it to draw a picture of what you're proposing.
++ **Acknowledge interview concerns**: Your interviewer will likely jump in with concers. Don't brush them off; validate them. Acknowledge the issues your interviewer points out and make changes accordingly.
++ **Be careful about assumptions**: An incorrect assumption can dramatically change the problem.
++ **State your assumptions explicitly**: When you do make assumptions, state them. This allows your interviewer to correct you if you're mistaken, and shows that you at least know what assumptions you're making.
++ **Estimate when necessary**: In many cases, you might not have the data you need. You can estimate this with other data you know.
++ **Drive**: As the candidate, you should stay in the driver's seat. This doesn't mean you don't talk to your interviewer; in fact, you *must* talk to your interviewer. However, you should be driving through the question. Ask questions. Be open about tradeoffs. Continue to go deeper. Continue to make improvements.
+
+## Design
+
+1. Scope the Problem
+2. Make Reasonable Assumption
+3. Draw the Major Components
+4. Identify the Key Issues
+5. Redesign for the Key Issues
+
+## Algorithms that Scale
+
+In some cases, you're being asked to design a single feature or algorithm, but you have to do it in a scalable way.
+
+1. Ask Questiosn
+2. Make Believe
+3. Get Real
+4. Solve Problems
+
+# Key Concepts
+
+## Horizontal vs. Vertical Scaling
+
++ Vertical scaling means increasing the resoures of a specific node. For example, you might add additional memory to a server to improve its ability to handle load changes.
++ Horizontal scaling means increasing the number of nodes. For example, you might add additional servers, thus decreasing the load on any one server.
+
+Vertiacal scaling is generally easer than horizontal scaling, but it's limited.
+
+## Load Balancer
+
+Typically, some frontend parts of a scalable website will be thrown behind a load balancer. This allows a system to distribute the load evenly so that one server doesn't crash and take down the whole system. To do so, of course, you have to build out a network of cloned servers that all have essentially the same code and access to the same data.
+
+## Database Denormalization and NoSQL
+
+Joins in a relational database such as SQL can get very slow as the system grows bigger. For this reason, you would generally avoid them.
+
+Denormalization is one part of this. Denormalization means adding redundant information into a database to speed up reads. For example, imagine a database describing projects and tasks (in addition to the project table).
+
+Or, you can go with a NoSQL database. A NoSQL database does not support joins and might structure data in a different way. It is designed to scale better..
+
+## Database Partitioning (Sharding)
+
+Sharding means splitting the data across multiple machines while ensuring you have a way of figuring out which data is on which machine.
+
+A few common ways of partitioning include:
+
++ **Vertical Partitioning**: This is basically partitioning by feature.
++ **Key-Based (or Hash-Based) Partitioning**: This uses some part of the data to partition it. A very simple way to do this is to allocate N servers and put he data on mode(key, n). One issue with this is that the number of servers you have is effectively fixed. Adding additional servers means reallocating all the data -- a very expensive task.
++ **Directory-Based Partitioning**: In this scheme, you maintain a lookup table for where the data can be found. This makes it relatively easy to add additional servers, but it comes with two major drawbacks. First the lookup table can be a single point of failure. Second, constantly access this table impacts performance.
+
+## Caching
+
+An in-memory cache can deliver very rapid results. It is a simple key-value pairing and typically sits between your application layer and your data store.
+
+## Asynchronous Processing & Queues
+
+Slow operations should ideally be done asynchronously. Otherwise, a user might get stuck waiting and waiting for a process to complete.
+
+## Networking Metrics
+
++ **Bandwidth**: This is the maximum amount of data that can be transferred in a unit of time. It is typically expressed in bits per seconds.
++ **Throughput**: Whereas bandwidth is the maximum data that can be transferred in a unit of time, throughput is the actual amoutn of data that is transferred.
++ **Latency**: This is how long it takes data to go from one end to the other. That is, it is the delay between the sender sending information (even a very small chunk of data) and the receiver receiving it.
+
+## MapReduce
+
+A MapReduce program is typically used to process large amounts of data.
+
++ Map takes in some data and emits a <key, value> pair
++ Reduce takes a key and a set of associated values and "reduces" them in some way, emitting a new key and value.
+
+MapReduce allows us to do a lot of processing in parallel, which makes processing huge amounts of data more scalable.
+
+# Considerations
+
++ **Failures**: Essentially any part of a system can fail. You'll need to plan for many or all of these failures.
++ **Availability and Reliability**: Availability is a function of the percentage of time the system is operatoinal. Redliability is a function of the probability that the system is operational for a certain unit of time.
++ **Read-heavy vs. Write-heavy**: Whether an application will do a lot of reads or a lot of writes implacts the design. If it's write-heavy, you could consider queuing up the writes (but think about potential failure here!). If it's read-heavy, you might want to cache.
++ **Security**: Security threats can, of course, be devastating for a system. Think about the tyupes of issues a system might face and design around thos.
+

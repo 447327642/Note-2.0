@@ -11,7 +11,7 @@ Some examples:
 
 ## Solution
 
-stack.
+利用栈就可以完美解决，每次弹出两个，如果有需要压回去一个
 
 ## Complexity
 

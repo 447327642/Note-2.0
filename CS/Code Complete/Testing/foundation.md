@@ -68,4 +68,46 @@ Alpha测试通常是阶段性开发完成后开始进行。主要是面向内部
 
 当Alpha阶段完成后，可以进入由公众参与的beta测试阶段。Beta测试通常使用真实的运行环境，并且使用实际数据进行测试，以确认系统效率。测试的主要目的在于进一步测试及完善功能。
 
+---
+
+## What the Interviewer Is Looking For
+
++ Big Picture Understanding
++ Knowing How the Pieces Fit Together
++ Organization
++ Practicality
+
+## Testing a Real World Object
+
+1. Who will use it? And why?
+2. What are the use cases?
+3. What are the bounds of use?
+4. What are the stress / failure conditions?
+5. How would you perform the testing?
+
+## Testing a Piece of Software
+
+1. Are we doing Black Box Testing or White Box Tesing?
+2. Who will use it? And why?
+3. What are the use cases?
+4. What are the bounds of use?
+5. What are the stress conditions / failure conditions
+6. What are the test cases? How would you perform the testing?
+
+## Testing a Function
+
+1. Define the test cases
+	+ The normal case
+	+ The extremes
+	+ Nulls and "illegal" input
+	+ Strange input
+2. Define the expected result
+3. Write test code
+
+## Troubleshooting Questions
+
+1. Understand the Scenario
+2. Break Down the Problem
+3. Create Specific, Manageable Tests
+
 
