@@ -2,6 +2,8 @@
 
 出处
 
+最长连续序列
+
 Get the length of the longest consecutive elements sequence in an array. For example, given [31, 6, 32, 1, 3, 2],the longest consecutive elements sequence is [1, 2, 3]. Return its length: 3.
 
 ## Solution

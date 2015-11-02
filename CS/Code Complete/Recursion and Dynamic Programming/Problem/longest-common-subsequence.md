@@ -14,6 +14,8 @@ LCS for input Sequences “AGGTAB” and “GXTXAYB” is “GTAB” of length 4
 
 Length(i,j) = (str1[i-1] == str2[j-1]) ? Length(i-1, j-1) + 1 ： Max { Length(i,j-1), Length(i-1,j) }
 
+当char i != char j, D[i ][j - 1], D[i - 1][j] 里取一个大的（因为最后一个不相同，所以有可能s1的最后一个字符会出现在s2的前部分里，反之亦然。
+
 ## Complexity
 
 循环遍历两次，时间复杂度 O(n^2 ) 空间复杂度 O(n^2 )
