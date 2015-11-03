@@ -1,47 +1,8 @@
 # Matlab 指南
 
-<!-- MarkdownTOC -->
+## 有趣的命令
 
-- MIT Matlab 2-day Tutorial
-    - The Basics
-    - Dealing with Matrices
-    - useful functions
-    - Help and other tools
-    - Plotting
-    - Printing, Saving, and Loading
-    - Polynomials and Fitting
-    - Logical Conditions and Matrices
-    - Writing Functions and Scripts
-        - Scripts
-        - Functions
-        - Some useful tools for functions and scripts
-    - Global Variables
-    - Loops and Control
-        - While Loops
-        - For
-        - If
-        - break
-    - Debugging Functions
-    - Vectorization
-- 语言基础
-- 基本数学运算
-    - 矩阵的代数运算
-    - 矩阵的逻辑运算
-    - 基本数论运算
-- 流程控制
-- 函数编写
-- 二维图形绘制
-- Introducing Matlab
-    - (1) Help and basics
-    - (2) Objects in matlab
-    - (3) Simple operations on vectors and matrices
-    - (4) Saving your work
-    - (5) Relations and control statements
-    - (6) Creating functions using m-files:
-    - (7) Plotting
-    - (8) Working with the Images and the Matlab Image Processing Toolbox
-
-<!-- /MarkdownTOC -->
++ 在命令行敲入 `dbstop if error`。如果运行出现错误，matlab会自动停在出错的那行，并且保存所有相关变量
 
 ## MIT Matlab 2-day Tutorial
 
@@ -939,3 +900,5 @@ Functions in matlab are written in m-files. Create a file called 'thres.m' In th
                                             %  math operations
     imagesc(I3.^2)                          % display squared image (pixel-wise)
     imagesc(log(I3))                        % display log of image
+
+

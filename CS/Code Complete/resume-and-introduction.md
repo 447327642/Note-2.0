@@ -1,5 +1,95 @@
 # 简历和自我介绍
 
+## 内推相关文书
+
+### 已发内推邮件的公司列表
+
++ 微软
+	+ 职位 id：U16-000172
+	+ Full-time opportunities in Development (engineering)
+	+ msrefxx@outlook.com
++ EADP Data Team
+	+ com.ea.seanzhang@gmail.com
++ AOL(有回应，已投)
+	+ Mobile Engineer ( iOS Developer ), Engadget & TechCrunch
+	+ https://www.smartrecruiters.com/Aol/86437923-full-stack-developer
+	+ cli2@alumni.cmu.edu
+	+ Vanessa
++ Ebay	
+	+ http://ebay.referrals.selectminds.com/jobs/search/7197763?et=tTPROId3
+	+ Software Engineer Requisition No.	118182BR
+	+ pilixiaoxi@gmail.com
+	+ 没有冷冻起，不用担心面不好，继续投即可
++ SAP
+	+ apollo.synth@gmail.com
++ Amazon
+	+ luojirome@gmail.com
+	+ 如果三天内我都没回复，请务必提醒我一下
++ Aruba Networks
+	+ neu.jingmuhuang@gmail.com
+	+ New Grad Software Engineer 9562
++ Uber
+	+ kevinhanece@gmail.com
++ Storage start up
+	+ siyuweicmu@yahoo.com
++ Qualtrics
+	+ weatherisgoodinseattle@gmail.com
+	+ 一亩三分地refer
++ Bloomberg（有回应，已投）
+	+ bbgoldrefer@gmail.com
++ Storm8
+	+ e.magic.chan@gmail.com 
+	+ http://www.storm8.com/job/?jvi=otnh0fwR
+	+ #LI-CK1
++ Machine Zone
+	+ referencetomz@gmail.com
+	+ Software Engineer Game Engineering 
+	+ #LI-POST, #GLDR
++ Asana
+	+ asana.referral@gmail.com
++ Pocket Gem
+	+ pocketgemsrefer@gmail.com
++ TwoSigma
+	+ rainzforever@hotmail.com
++ Workday
+	+ workdayreferral@gmail.com
+	+ JR10147
+	+ JR10206
++ IBM
+	+ IBM内推的大致流程是：我帮你在系统里提交，你会收到系统自动邮件，你点击邮件里的链接，注册一个IBM账号去完成application，最后提交。这个步骤，缺少任何都是无效的推荐，不能流到HR那里
+	+ referral4ibm@outlook.com
++ WalmartLabs
+	+ walmartlabsrefer@gmail.com 
+	+ Job ID: 554042BR
++ Cogent Infotech
+	+ yilin.gu@cogentinfo.com
++ Tableau
+	+ jointableau@gmail.com
+
+### 写给内推人的信件内容
+
+xxx 您好
+
+我叫王达，现在是 CMU 的 Graduate 在读，将于2016年5月毕业。在一亩三分地论坛的内推版看到您发布的内推信息，前一段时间一直在刷题和找小公司练手，现在感觉已经有了一定的准备。虽然不知道还能不能推，但是抱着交朋友和试试看的心理，犹豫再三还是写了这封信。
+
+本科我在中山大学修的是软件工程，研究生在 Carnegie Mellon University 修 Electrical and Computer Engineering。主要对 computer graphic 和 machine learning 比较感兴趣，也比较擅长移动应用开发(iOS, Android, WP 都有做过)，比较熟悉的语言是 Java, C++, Python, matlab 以及移动端开发的相关语言。
+
+英文的第三人称介绍如下：
+
+He is a talented student from Carnegie Mellon University majored in Electrical and Computer Engineering. Having good understanding on both software and hardware, he has great interest in machine learning as well as computer graphics. He also has experience on mobile phone development such as iOS, Android and Windows Phone. One of his apps has over 700K downloads with average 4.5 stars in rating. Familiar with Java, C++ as well as python, he has the ability to be a great team member and write efficient code. Also,He used to be a program manager intern in Microsoft for half a year.
+
+简历在附件中，非常感谢您能为大家提供这样的机会，好人一生平安！
+
+我的手机是 412 726 2145，微信是 wdxtub，不知道能否加一下微信如果有什么疑问向您请教呢？
+
+### Profile 相关
+
++ Linkedin: https://www.linkedin.com/in/wdxtub
++ Github: https://github.com/wdxtub
+
+---
+
+
 ## 简历内容与格式
 
 1. 保证在一页以内

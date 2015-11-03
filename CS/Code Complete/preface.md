@@ -77,12 +77,12 @@ Sep 28 | TOC 第一天十来家公司 | 明天继续投
 10. (**Rejected**)Generalist Software Engineer @ LiveRamp # 130K
 11. (**Rejected**)Software Engineer @ Course Hero
 12. (**Phone Screen**)Software Development Engineer @ Yahoo
-13. (**Phone Screen**)Software Engineer @ cPacket Networks Inc
+13. (**2nd Phone Screen**)Software Engineer @ cPacket Networks Inc
 14. (**Rejected**)Mobile Engineer @ Expensify
 15. (**Rejected**)Software Engineer @ Aribnb
 16. (**2nd Phone Screen -> Rejected**)Server Software Engineer @ zazzle
 17. Systems Engineer @ Sojern
-18. Software Developer @ Epic
+18. (**Rejected**)Software Developer @ Epic
 19. (**Rejected**)Software Engineer @ Eventbrite (要做题，有点意思)
 20. (**Rejected**)Software Engineer, New College Grad @ Medallia
 21. Software Engineer - Computer Vision @ Samsung
@@ -104,7 +104,7 @@ Sep 28 | TOC 第一天十来家公司 | 明天继续投
 37. Backend Software Developer @ Pixured, Inc
 38. Software Engineer in Test (San Francisco) @ Leanplum
 39. iOS Software Engineer (San Francisco) @ Leanplum
-39. (**Arrangement**))Software Developer @ Oracle Corporation
+39. (**Arrangement**)Software Developer @ Oracle Corporation
 40. Software Engineer @ Nextdoor.com, Inc
 41. Software Engineer @ PatternEx
 42. (**Rejected**)Software Engineer @ Domeyard LP
