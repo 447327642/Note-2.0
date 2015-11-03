@@ -5,7 +5,18 @@ python crawler，可以用库，但是需要更多自己实现的 feature
 ## Teammate:
 
 hongyis,zhizhouy,dawang,yangqiup,yitingh
-## Webcrawler### Task
+## Webcrawler## 需要讨论确定的问题
+
+1. Python 版本
+2. topic specific 的设计
+3. minimum feature 分工
+4. extra feature brain storm
+5. 代码架构设计(解耦，方便异步开发)
+	+ 爬取
+	+ 数据库
+	+ 内容检测
+	+ unittest 
+6. wiki 更新计划### Task
 The amount of information accessible via the web has become truly staggering. A virtually unlimited amount of information is now available at the fingertips of anyone who can access an internet connection. It is becoming a goal of many sophisticated projects to access this trove of data and learn from it in increasingly clever ways. Regardless of how the data of the web is converted into information, the universal first step is to retrieve the data with a crawler of some kind.In this task, you will install develop a topic-specific web crawler that will crawl the web looking for information on a specific topic. Exactly how you accomplish this task is largely up to your team, within the boundaries set by the project.### Minimum deliverables+ A vision document with a list of planned features+ Functioning web crawler written entirely in Python. All code must be checked into the Gitlab repository on Argonne. 	+ The version of the crawler you will be evaluated on is the trunk of your project. Anything not in trunk won’t be evaluated.	+ Check in code and update the wiki with your iteration plan and review every two days.
 		+ Iteration plan must include:
 			+ The list of features each member of the group will attempt to implement
