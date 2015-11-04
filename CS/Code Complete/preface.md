@@ -121,7 +121,7 @@ Sep 28 | TOC 第一天十来家公司 | 明天继续投
 53. Junior Software Engineer @ Data Capital Management
 54. (**Code Challenge**)Software Engineer - New Grad @ Quora
 55. 2016 New Graduate - Software Engineering @ Quantcast
-56. Software Engineer @ imo.im
+56. (**Rejected**)Software Engineer @ imo.im
 57. (**Rejected**)ios @ wealthfront
 58. Software Developer @ Tower Research Capital LLC
 59. C++ Software Engineer @ KCG Holdings

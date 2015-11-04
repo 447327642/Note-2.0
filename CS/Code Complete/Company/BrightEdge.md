@@ -6,7 +6,171 @@
 
 questions about computer science fundamentals like data structures, algorithms and OOP.
 
+二面是另外一个人：Divya Shah
+
 下面是具体的面试题准备
+
+## 两个 List 相加
+
+两个linkedlist
+
+    1 => 3 => 5 => 7 => 9
+    2 => 4 => 6 => 8 => 10
+
+output：
+
+	3 => 8=> 2 => 6 => 9
+
+```java
+Node reverseList(Node head){
+	if (head == null) return null;
+	Node prev = null;
+	Node next = null;
+	while (head.next != null){
+		Node next = head.next;
+		head.next = prev;
+		prev = head;
+		head = next;
+	}
+	
+	return head;
+}
+
+Node addList(Node head1, Node head2){
+	Node revhead1 = reverseList(head1);
+	Node revhead2 = reverseList(head2);
+	int addon = 0;
+	Node dummy = new Node(-1);
+	Node backup = dummy;
+	
+	while(revhead1 != null || revhead2 != null || addon == 1){
+		if (revhead1 != null){
+			addon += revhead1.value;
+			revhead1 = revhead1.next;
+		}
+		
+		if (revhead2 != null){
+			addon += revhead2.value;
+			revhead2 = revhead2.next;
+		}
+		dummy.next = new Node(addon % 10);
+		addon /= 10;
+		dummy = dummy.next;
+	}
+	
+	return reverseList(backup.next);
+}
+
+
+```
+
+或者也可以直接转换成数字，加完之后再把数字组合回链表
+
+
+## Merge all interval
+
+[4,8] [19,24][7,12][28,35][10,14] ==> [4,14][19,24][28,35]
+
+```java
+class Interval{
+	int low;
+	int high;
+	
+	public Interval(int low, int high){
+		this.low = low;
+		this.high = high;
+	}
+}
+	
+ArrayList<Interval>	mergeInterval(ArrayList<Inteval> intervals){
+	if (intervals == null || intervals.size() <= 1)
+			return intervals;
+	// sort intervals by using self-defined Comparator
+	Collections.sort(intervals, new IntervalComparator());
+	
+	ArrayList<Interval> result = new ArrayList<Interval>();
+	Interval prev = intervals.get(0);
+	for (int i = 1; i < intervals.size(); i++) {
+		Interval curr = intervals.get(i);
+ 
+		if (prev.end >= curr.start) {
+			// merged case
+			Interval merged = new Interval(prev.start, Math.max(prev.end, curr.end));
+			prev = merged;
+		} else {
+			result.add(prev);
+			prev = curr;
+		}
+	}
+ 
+	result.add(prev);
+ 
+	return result;
+	
+}
+
+class IntervalComparator implements Comparator<Interval> {
+	public int compare(Interval i1, Interval i2) {
+		return i1.low - i2.low;
+	}
+}
+
+```
+
+
+## 买卖股票
+
+### 只能买卖一次
+
+一次的话就是找当前值与当前之前的最小值之间差最大的那个
+
+```java
+int maxProfit(int[] stocks){
+	if (stocks == null || stocks.length < 1) return 0;
+	int len = stocks.length;
+	int curMin = stocks[0];
+	int maxProfit = 0;
+	for (int i = 1; i < len; i++){
+		maxProfit = Math.max(maxProfit, stocks[i] - curMin);
+		curMin = Math.min(curMin, stocks[i]);
+	}
+	return maxProfit;
+}
+
+```
+
+
+### 只能买卖两次
+
+
+两次的话就是从左往右 dp 一次，算出以当前节点为终点可能得到的最大利润，然后从右往左 dp 一次，算出以当前节点为起点可能得到的最大利润
+
+```java
+int maxProfit(int[] stocks){
+	if (stocks == null || stocks.length < 1) return 0;
+	int len = stocks.length;
+	int curMin = stocks[0];
+	int curMax = stocks[len-1];
+	int max = 0;
+	int[] dp = new int[len];
+	dp[0] = 0;
+	for (int i = 1; i < len; i++){
+		dp[i] = Math.max(dp[i-1],prices[i] - minPrice);
+		if (curMin > stocks[i]){
+			curMin = stocks[i];
+		}
+		
+	}
+	max = dp[len-1];
+	for (int i = len -2; i >=0; i--){
+		if (curMax < stocks[i]){
+			curMax = stocks[i];
+		}
+		max = Math.max(max, dp[i] + curMax - stocks[i]);
+	}
+	return max;
+}
+```
 
 ## Fibonacci 数列
 
@@ -52,6 +216,8 @@ int fibonacci(int n){
 1. Add lower & upper bound. O(n)
 2. Inorder traversal with one additional parameter (value of predecessor). O(n)
 
+用中序遍历的方法遍历BST，BST的性质是遍历后数组是有序的。根据这一点我们只需要中序遍历这棵树，然后保存前驱结点，每次检测是否满足递增关系即可。注意以下代码我么用一个一个变量的数组去保存前驱结点，原因是java没有传引用的概念，如果传入一个变量，它是按值传递的，所以是一个备份的变量，改变它的值并不能影响它在函数外部的值，算是java中的一个小细节。
+
 ```java
 public class Solution {
     boolean isValidBSTRe(TreeNode root, long left, long right)
@@ -84,31 +250,6 @@ public class Solution {
 
 ```
 
-用中序遍历的方法遍历BST，BST的性质是遍历后数组是有序的。根据这一点我们只需要中序遍历这棵树，然后保存前驱结点，每次检测是否满足递增关系即可。注意以下代码我么用一个一个变量的数组去保存前驱结点，原因是java没有传引用的概念，如果传入一个变量，它是按值传递的，所以是一个备份的变量，改变它的值并不能影响它在函数外部的值，算是java中的一个小细节。
-
-```java
-public class Solution {
-    /**
-     * @param root: The root of binary tree.
-     * @return: True if the binary tree is BST, or false
-     */
-    public boolean isValidBST(TreeNode root) {
-        ArrayList<Integer> pre = new ArrayList<Integer>();
-        pre.add(null);
-        return helper(root, pre);
-    }
-    private boolean helper(TreeNode root, ArrayList<Integer> pre)
-    {
-        if(root == null)
-            return true;
-        boolean left = helper(root.left,pre);
-        if(pre.get(0)!=null && root.val<=pre.get(0))
-            return false;
-        pre.set(0,root.val);
-        return left && helper(root.right,pre);
-    }
-}
-```
 
 ## String permutation
 
@@ -300,7 +441,7 @@ public class Solution {
 TreeNode commonAncestor(TreeNode p, TreeNode q){
     if (p == q) return null;
 
-    TreeNOde ancestor = p;
+    TreeNode ancestor = p;
     while (ancestor != null){
         if (isOnPath(ancestor, q)){
             return ancestor;
