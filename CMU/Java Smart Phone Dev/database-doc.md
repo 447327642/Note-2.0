@@ -1,6 +1,6 @@
-# Database Doc V0.1
+# Database Doc V0.2
 
-Basically there will be 3 tables in the database: `User`, `Post` and `Comment`. Here is the detail description of these three tables.
+Basically there will be 3 tables in the database: `User`, `Note` and `Comment`. Here is the detail description of these three tables.
 
 ## User Table
 
@@ -22,18 +22,29 @@ The content store in the `info` part includes:
 
 (this part is for extenstion)
 
-## Post Table
+## Note Table
 
 Name | Type | Comment
 :--: | :--: | :--:
-postid | INT | `AUTO_INCREMENT` `PRIMARY_KEY`
-location | VARCHAR(256) | json location information
+noteid | INT | `AUTO_INCREMENT` `PRIMARY_KEY`
+longitude | VARCHAR(16) | longitude
+latitude | VARCHAR(16) | Latitude
 date | DATE | date of the post
 content | VARCHAR(256) | content of the post
 type | SMALLINT | different type of post
-tag | VARCHAR(256) | json tag list
 userid | INT | `FOREIGN_KEY`
 info | TEXT | json description content
+
+type detail
+
++ 0: Text
++ 1: Image
++ 2: Sound
++ 3: Video
++ 4: Lost&Found
++ 5: Poster/Activity
++ 6: Emotion
++ 7: Gossip
 
 The content store in the `infor` part includes:
 
@@ -51,5 +62,5 @@ commentid | INT | `AUTO_INCREMENT` `PRIMARY_KEY`
 date | DATE | date of the post
 content | VARCHAR(256) | content of the post
 userid | INT | `FOREIGN_KEY` (this is the user who posts the comment)
-postid | INT | `FOREIGN_KEY`
+noteid | INT | `FOREIGN_KEY`
 

@@ -7,10 +7,14 @@ python crawler，可以用库，但是需要更多自己实现的 feature
 hongyis,zhizhouy,dawang,yangqiup,yitingh
 ## Webcrawler## 需要讨论确定的问题
 
-1. Python 版本
+1. Python 版本 
+	+ Python 2.7 
 2. topic specific 的设计
+	+ imdb 
 3. minimum feature 分工
+	+  
 4. extra feature brain storm
+	+  
 5. 代码架构设计(解耦，方便异步开发)
 	+ 爬取
 	+ 数据库
@@ -33,7 +37,27 @@ hongyis,zhizhouy,dawang,yangqiup,yitingh
 + Stores data in a database
 + Provides real-time status to the user about how many pages has been crawled, what is currently being crawled, what is planned, etc. (use some creativity here)
 + May be either command line or web-based application.
-+ Define at least four additional features not listed above### Due Date
++ Define at least four additional features not listed aboveAdditional features:
+
++ sending email
++ logging
++ user query
++ data recommendation
+
++ imdb movie
++ reconnect
++ unittest
+
+分工
+
++ 数据库 query done mysql
++ flask ui done bootstrap
++ parser
++ crawler 
+	+ recommendation
+	+ bfs
+	+ dfs
+### Due Date
 Two weeks from assignment (11/13/15)Hints:+ Follow the Agile development pattern
 + Work at least 60-90 minutes on the project each and every day to stay ahead### Readings and Resources
 + [Python web crawling1](http://null-byte.wonderhowto.com/inspiration/basic-website-crawler-python-12-lines-code-0132785/)+ [Python web crawling2](http://www.netinstructions.com/how-to-make-a-web-crawler-in-under-50-lines-of-python-code/)+ [Agile](http://www.agilemanifesto.org)+ [This link has more process than necessary – take a lightweight version of this](http://www.allaboutagile.com/category/how-to-implement-scrum-in-10-easy-steps/)

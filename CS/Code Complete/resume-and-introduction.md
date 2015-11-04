@@ -20,7 +20,7 @@
 	+ Software Engineer Requisition No.	118182BR
 	+ pilixiaoxi@gmail.com
 	+ 没有冷冻起，不用担心面不好，继续投即可
-+ SAP
++ SAP(有回应，已投)
 	+ apollo.synth@gmail.com
 + Amazon
 	+ luojirome@gmail.com
@@ -45,7 +45,7 @@
 	+ referencetomz@gmail.com
 	+ Software Engineer Game Engineering 
 	+ #LI-POST, #GLDR
-+ Asana
++ Asana(有回应，被转去 uber)
 	+ asana.referral@gmail.com
 + Pocket Gem
 	+ pocketgemsrefer@gmail.com
@@ -63,8 +63,13 @@
 	+ Job ID: 554042BR
 + Cogent Infotech
 	+ yilin.gu@cogentinfo.com
-+ Tableau
++ Tableau(有回应，已投)
 	+ jointableau@gmail.com
++ ServiceNow
+	+ ReferServiceNow@gmail.com 
++ Linkedin
+	+ friedrich17@126.com
+
 
 ### 写给内推人的信件内容
 
