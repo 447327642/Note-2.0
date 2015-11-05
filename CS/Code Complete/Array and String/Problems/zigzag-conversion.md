@@ -16,6 +16,8 @@ convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 
 ## Solution
 
+找规律题目
+
 ```java
 public class Solution {
     public String convert(String s, int numRows) {

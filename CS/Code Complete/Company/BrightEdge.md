@@ -209,7 +209,7 @@ int fibonacci(int n){
 时间复杂度 O(n) 空间复杂度 O(1)
 
 
-## 如何判断一个BST是否valid。
+## 如何判断一个BST是否valid
 
 也就是判断一个Binary Tree是不是Binary Search Tree
 

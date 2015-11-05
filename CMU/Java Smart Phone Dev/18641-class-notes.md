@@ -26,6 +26,8 @@
 + Project1 Unit5 40/40
 + Project1 Unit6 38/40
 + Project1 Lessons Learnt 50/50
++ Assignment1 9/10
++ 
 
 ## TA 信息
 

@@ -73,7 +73,7 @@ Sep 28 | TOC 第一天十来家公司 | 明天继续投
 6. Software Developer @ 2redbeans
 7. Graphics Architecture Engineer @ NVIDIA
 8. OpenGL Software Engineer(MAC) @ NVIDIA
-9. (**2nd Phone Screen**)Software Engineer @ BrightEdge # 100K
+9. (**2nd Phone Screen -> Rejected**)Software Engineer @ BrightEdge # 100K
 10. (**Rejected**)Generalist Software Engineer @ LiveRamp # 130K
 11. (**Rejected**)Software Engineer @ Course Hero
 12. (**Phone Screen**)Software Development Engineer @ Yahoo

@@ -17,6 +17,33 @@
 
 ## Solution
 
+```java
+public class Solution {
+    public int reverse(int x) {
+        int flag = 0;
+        if (x > 0){
+            flag = 1;
+        } else if (x < 0) {
+            flag = -1;
+        }
+        
+        long tmp = (long)x;
+        long answer = 0;
+        tmp *= flag;
+        while(tmp > 0){
+            answer = answer * 10 + tmp % 10;
+            tmp = (tmp - tmp % 10) / 10;
+            if (answer > Integer.MAX_VALUE || flag * answer < Integer.MIN_VALUE) return 0;
+        }
+        return (int)answer*flag;
+    }
+}
+```
+
+---
+
+Reference
+
 ```python
 class Solution:
     # @param {int} n the integer to be reversed

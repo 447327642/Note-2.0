@@ -8,9 +8,34 @@ Pay attention when moving the 'start' pointer forward.
 
 ## Complexity
 
-时间复杂度 O(n)，空间复杂度 O(1)
+时间复杂度 O(n)，空间复杂度 O(n)
 
 ## Code
+
+```
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() < 1) return 0;
+        int len = s.length();
+        int maxCount = 0;
+        int curStart = -1;
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        for (int i = 0; i < len ;i++){
+            if (map.containsKey(s.charAt(i))){
+                curStart = Math.max(curStart,map.get(s.charAt(i)));
+            }
+            map.put(s.charAt(i),i);
+            maxCount = Math.max(maxCount, i-curStart);
+        }
+        
+        return maxCount;
+    }
+}
+```
+
+---
+
+Reference
 
 ```java
 public class Solution {
