@@ -459,7 +459,7 @@ $$
 同理，对于观测概率，得到
 
 $$
-b_{ik}=\frac{\sum_{t=1}^{T}P(O,i_t=i\;|\;\bar{\lambda})I(o_t=v_k)}{\sum_{t=1}^{T}P(O,i_t=i\;|\;\bar{\lambda})}\frac{\sum_{t=1,o_t=v_k}^{T}\gamma_t(i)}{\sum_{t=1}^{T}\gamma_t(i)}
+b_{ik}=\frac{\sum_{t=1}^{T}P(O,i_t=i\;|\;\bar{\lambda})I(o_t=v_k)}{\sum_{t=1}^{T}P(O,i_t=i\;|\;\bar{\lambda})}=\frac{\sum_{t=1,o_t=v_k}^{T}\gamma_t(i)}{\sum_{t=1}^{T}\gamma_t(i)}
 $$
 
 ## 预测算法

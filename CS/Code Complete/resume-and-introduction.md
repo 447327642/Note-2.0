@@ -22,13 +22,13 @@
 	+ 没有冷冻起，不用担心面不好，继续投即可
 + SAP(有回应，已投)
 	+ apollo.synth@gmail.com
-+ Amazon
++ Amazon(已推)
 	+ luojirome@gmail.com
 	+ 如果三天内我都没回复，请务必提醒我一下
 + Aruba Networks
 	+ neu.jingmuhuang@gmail.com
 	+ New Grad Software Engineer 9562
-+ Uber
++ Uber(已被拒)
 	+ kevinhanece@gmail.com
 + Storage start up
 	+ siyuweicmu@yahoo.com
