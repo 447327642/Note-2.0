@@ -9,6 +9,340 @@
     * Werkzeug 一个WSGI(在 web 应用和多种服务器之间开发和部署的标准 Python 接口)
     * Jinja2 渲染模板
 
+## 基本知识与技巧
+
+	app = Flask(__name__)
+
+The `name` argument that is passed to the Flask application constructor is used to determine the root path of the application so that later flask can find resource files to the location of the application.
+
+---
+
+Decorators are a standard feature of the Python language; they can modify the behavior of a function in different ways. A common pattern is to used decorators to register functions as handlers for an event.
+
+---
+
+Response strings embedded in Python code lead to code that is difficult to maintain, and it is done here only to introduce the concept of responses.
+
+---
+
+A thread is the smallest sequence of instruction that can be managed independently. It is common for a process to have multiple active threads, sometimes sharing resources auch as memory or file handles. Multithreaded web servers tart a pool of threads and select a thread from the pool to handle each incoming request.
+
+### The request-Response Cycle
+
+To avoid cluttering view function with lots of arguments that amy or may not be needed, Flask uses `contexts` to  temporarily make certain objects globally accessible. Contexts enable Flask to make certain variables globally accessible to a thread without interfering with the other threads.
+
+Table: Flask context globals
+
+Variable name | Context | Description
+:--: | :--: | :--:
+current_app | Application context | The application instance for the acitve application
+g | Application context | An object that the application can use for temporary storage during the handling of a request. This variable is reset with each request
+request | Request context | The request object, which encapsulates the contents of a HTTP request sent by the client
+session | Request context | The user session, a dictionary that the application can use to store values that are "remembered" between requests.
+
+Flask activates the application and request contexts before dipatching a request and then removes them when the request is handled.
+
+#### Request Dispatching
+
+Flask looks up the URL given in the request in the applications's URL map. Flask builds this map using the `app.route` decorators or the equivalent nondecorator version `app.add_url_rule()`
+
+可以通过以下命令来查看具体 map 长啥样
+
+	from hello import app
+	app.url_map
+
+#### Request Hooks
+
+Sometimes it is useful to execute code before or after each request is processed. Instead of duplicating the code in every view function, Flask gives you the option to register common functions to be invoked before or after a request is dispatched to a view function.
+
+There are four hooks supported by Flask:
+
++ `before_first_request`: Register a function to run before the first request is handled.
++ `before_request`: Register a function to run before each request.
++ `after_request`: Register a function to run after each request, if no unhandled exceptions occurred.
++ `teardown_request`: Register a function to run after each request, even  if unhandled exceptions occurred.
+
+#### Responses
+
+When Flask invokes a view function , it expects its return value to be the response to the request. In most cases the response is a simple string that is sent back to the client as HTML page.
+
+When a function needs to responde with a different status code, it can add numeric code as a second return value after the response text.
+
+	@app.rout('/')
+	def index():
+		return 'Bad Request', 400
+
+但是一个更好的方式是使用 `make_response()` 来做这个事情，因为可以有更多额外操作
+
+```python
+@app.rout('/')
+def index():
+	response = make_response(This document carres a cookie!)
+	response.set_cookie('answer', '42')
+	return response
+```
+
+还有另一种 return 方式，叫做 `redirect`. A redirect is typically indicated with a 302 response status code and the URL to redirect to given in a Location header. A redirect response can be generated using a three-value return , or also with a `Response` object, but iven its frequent use, Flask provides a `redirect()` helper function that creates this response:
+
+```python
+from flask import redirect
+	
+@app.route('/')
+def index():
+	return redirect('http://www.wdxtub.com')
+```
+
+Another special response is issued with the abort function, which is used for error handling. 
+
+```python
+from flask import abort
+
+@app.route('/user/<id>')
+def get_user(id):
+	user = load_user(id)
+	if not user:
+		abort(404)
+	return 'Hello, %s' % user.name
+```
+
+Note that `abort` does not return control back to the function that calls it but gives control back to the web server by raising an exception.
+
+## Template
+
+Jinja2 的感觉跟 jsp 页面还是很像的，就是通过占位符来控制动态元素
+
+例如 `templates/user.html`
+
+```html
+<h1>Hello, {{ name }}!</h1>
+```
+
+使用时，可以直接传值进去
+
+```python
+from flask import Flask, render_template
+
+@app.route('/user/<name>')
+def user(name):
+	return render_template('user.html', name=name)
+```
+
+### Variables
+
+Jinja2 recognizes variables of any type, even complex types such as lists, dictionaires and objects:
+
+```
+{{ mydict['key'] }}
+{{ mylist[2] }}
+{{ myobj.somemethod() }}
+```
+
+Variables can be modified with `filters`, which are added after the variable name with a pip character as separator. For example, the following template show the `name` variable capitalized:
+
+	Hello, {{ name|capitalize }}
+
+下面是 Jinja2 variable filters
+
+Filter name | Description
+:--: | :--:
+safe | Renders the value without applying escaping
+capitalize | Converst the first character of the value to uppercase and the rest to lowercase
+lower | Converts the value to lowercase characters
+upper | Converts the value to uppercase characters
+title | Capitalizes each word in the value
+trim | Removes leading and trailing whitespace from the value
+striptags | Removes any HTML tags from the value before rendering
+
+### Control Structures
+
+同样提供控制流程来根据变量显示不同的内容
+
+```
+{% if user %}
+	Hello, {{ user }}!
+{% else %}
+	Hello, Stranger!
+{% endif %}
+```
+
+也支持 for 循环，可以用来渲染列表
+
+```
+<ul>
+	{% for comment in comments %}
+		<li>{{ comment }}</li>
+	{% endfor %}
+</ul>
+```
+
+Jinja2 也支持 `marcos`，例如
+
+```
+{% macro render_comment(comment) %}
+	<li>{{ comment }}</li>
+{% endmacro %}
+
+<ul>
+	{% for comment in comments %}
+		{{ render_comment(comment) }}
+	{% endfor %}
+</ul>
+```
+
+也可以把 macros 存到文件中，直接进行引用即可
+
+```
+{% import 'macros.html' as macros %}
+
+<ul>
+	{% for comment in comments %}
+		{{ macros.render_comment(comment) }}
+	{% endfor %}
+</ul>
+```
+
+所以根据这种方式，我们可以把所有的常用 macros 放到一个统一的文件中，方便管理。
+
+另一个重用的方式是模板继承，首先我们先要有一个 base template: base.html
+
+```
+<html>
+<head>
+	{% block head %}
+	<title>{% block title %}{% endblock %} - My Application</title>
+	{% endblock %}
+</head>
+<body>
+	{% block body %}
+	{% endblock %}
+</body>
+</html>
+```
+
+Here the `block` tags define elements that a derived template can change.  下面就是一个继承的例子
+
+```
+{% extends "base.html" %}
+{% block title %}
+	Index
+{% endblock %}
+{% block head %}
+	{{ super() }}
+	<style>
+	</style>
+{% endblock %}
+{% block body %}
+	<h1>Hello, World!</h1>
+{% endblock %}
+```
+
+### Use Twitter Bootstrap Integration with Flask-Bootstrap
+
+先安装 `pip install flask-bootstrap`
+
+然后引入
+
+```
+from flask.ext.bootstrap import Bootstrap
+
+app = Flask(__name__)
+bootstrap = Bootstrap(app)
+```
+
+具体的用法参见下面的例子：
+
+```html
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flasky</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Hello, {{ name }}!</h1>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Custom Error Pages
+
+主要就是处理 404 和 500 页面，可以用以下的语句
+
+```python
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+```
+
+### Localization of Dates and Times with Flask-Moment
+
+首先安装 extension `pip install flask-moment`
+
+同样需要在 app 中引入和启动
+
+```python
+from flask.ext.moment import Moment
+moment = Moment(app)
+```
+
+然后在 base.html 引入 moment.js 库
+
+```html
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{% endblock %}
+```
+
+然后更新调用的代码
+
+```python
+from datetime import datetime
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html',
+                           current_time=datetime.utcnow())
+```
+
+对应在 index.html 加上两句
+
+```html
+<p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
+<p>That was {{ moment(current_time).fromNow(refresh=True) }}.</p>
+```
+
+## Web Forms
+
+
+
 ## 如何开始一个项目
 
 ### 步骤 0 ：创建文件夹
