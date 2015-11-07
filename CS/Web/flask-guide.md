@@ -27,6 +27,10 @@ Response strings embedded in Python code lead to code that is difficult to maint
 
 A thread is the smallest sequence of instruction that can be managed independently. It is common for a process to have multiple active threads, sometimes sharing resources auch as memory or file handles. Multithreaded web servers tart a pool of threads and select a thread from the pool to handle each incoming request.
 
+---
+
+By default, user sessions are stored in client-side cookies that are cryptographically signed using the configured SECRET_KEY. Any tampering with the cookie content would render the signature invalid, thus invalidating the session.
+
 ### The request-Response Cycle
 
 To avoid cluttering view function with lots of arguments that amy or may not be needed, Flask uses `contexts` to  temporarily make certain objects globally accessible. Contexts enable Flask to make certain variables globally accessible to a thread without interfering with the other threads.
@@ -341,6 +345,162 @@ def hello_world():
 
 ## Web Forms
 
+通常使用 Flask-WTF 来处理 web form
+
+安装 `pip install flask-wtf`
+
+配置一个 key 来防止 CSRF(Cross-Site Request Forgery)
+
+```python
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'GODUCKYOURSELF'
+```
+
+### Form Classes
+
+When using Flask-WTF, each web form is represented by a class that inherits from class `Form`. The class defines the list of fields in the form, each represented by an object. Each field object can have on or more `validators` attached; validators are fucntions that check wheterh the input submitted by the user is valid.
+
+```python
+from flask.ext.wtf import Form
+from wtforms import StringField, SubmitField
+from wtforms.validators import Required
+
+class NameForm(Form):
+    name = StringField('What is your name?', validators=[Required()])
+    submit = SubmitField('Submit')
+```
+
+WTForm 支持的 HTML fields
+
+Field Type | Description
+:--: | :--:
+StringField | Text field
+TextAreaField | Multiple-line text field
+PasswordField | Password text field
+HiddenField | Hidden text field
+DateField | Text field that accepts a `datetime.date` value in a given format
+DateTimeField | Text field that accepts a `datetime.datetime` value in a given format
+IntegerField | Text field that accepts an integer value
+DecimalField | Text field that accepts a `decimal.Decimal` value
+FloatField | Text field that accepts a floating-point value
+BooleanField | Checkbox with `True` and `False` values
+RadioField | List of radio buttons
+SelectField | Drop-down list of choices
+SelectMultipleField | Drop-down list of choices with multiple selectoin
+FileField | File upload field
+SubmitField | Form submission button
+FormField | Embed a form as a field in a container form
+FieldList | List of fields of a given type
+
+WTForms validators
+
+Validator | Description
+:--: | :--:
+Email | Validates an email address
+EqualTo | Compares the values of two fields; useful when requesting a password to be entered twice for confirmation
+IPAddress | Validates an IPv4 network address
+Length | Validates the lenth of the string entered
+NumberRange | validates that the value entered is within a numeric range
+Optional | Allows empty input on the field, skipping additional validators
+Required | Validates that the field contains data
+Regexp | Validates the input against a regular expression
+URL | Validates a URL
+AnyOf | Validates that the input is one of  a list of possible values
+NoneOf | Validates that the input is none of a list of possible values
+
+### HTML Rendering of Forms
+
+利用 bootstrap 可以快速创建表格，而摆脱繁琐的设置，同时顺带更新以下 h1 中的内容，加入了一个判断语句来显示内容
+
+``` 
+index.html
+{% import "bootstrap/wtf.html" as wtf %}
+
+<h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
+
+{{ wtf.quick_form(form) }}
+```
+
+### Form Handling in View Functions
+
+现在需要对应修改一下 hello.py 中的内容以配合 form 的实现
+
+加入了 POST 的支持，以及在提交表格的时候会根据 validator 来进行验证判断，也就是 `from.validate_on_submit()` 这里
+
+```python
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+    return render_template('index.html', form=form, name=name,current_time=datetime.utcnow())
+```
+
+就可以看到有更新了
+
+### Redirects and User Sessions
+
+The last version of `hello.py` has a usability problem. If you enter your name and submit it and then clikc the refresh button on your browser, you will likely get an obscure warning that asks for confirmation before submitting the form again. This happens because browsers repeat the las request they have sent when they are asked to refresh the page. When the last request sent is a POST request with form data, a refresh would cause a duplicate form submission, whcih in almost all cases is not the desired action.
+
+解决方案一，通过一个重定向，把原来 POST 的内容转为 GET，这样用户再怎么刷新，也就是一个 GET. This trick is known as the Post/Redirect/Get pattern.
+
+但是这个做法却带来了另一个问题，post 的内容在 redirect 的时候就丢失了，为此，我们可以把内容存在 session 里。
+
+于是我们的 index()函数可以改成这样
+
+```python
+from flask import Flask, render_template, session, redirect, url_for
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = NameForm()
+    if form.validate_on_submit():
+        session['name'] = form.name.data
+        return redirect(url_for('index'))
+    return render_template('index.html', form=form, name=session.get('name'),current_time=datetime.utcnow())
+```
+
+### Message Flashing
+
+可以利用 flash 实现类似于 Toast 的提示。具体可以把代码改成
+
+```python
+from flask import Flask, render_template, session, redirect, url_for, flash
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    form = NameForm()
+    if form.validate_on_submit():
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Looks like you have changed your name!')
+        session['name'] = form.name.data
+        return redirect(url_for('index'))
+    return render_template('index.html', form=form, name=session.get('name'),current_time=datetime.utcnow())
+```
+
+In this example, each time a name is submitted it is compared against the name stored in the user session, which would have been put there during a previous submission of the same form.
+
+当然还需要对应更新我们的 template 来显示 flash 的内容。为了让每个页面都能享受 flash 的功能，我们把代码加在 base.html 里，使用 `get_flashed_messages()` 来完成这个工作
+
+```html
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+```
+
+基本上这样就过了一遍大概的功能，剩下的等实际做项目的时候再仔细研究
 
 
 ## 如何开始一个项目
