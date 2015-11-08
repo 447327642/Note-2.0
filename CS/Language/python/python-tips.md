@@ -1,5 +1,105 @@
 # Python Tips
 
+## 字典推导(Dictionary comprehensions)和集合推导(Set comprehensions)
+
+大多数的Python程序员都知道且使用过列表推导(list comprehensions)。如果你对list comprehensions概念不是很熟悉——一个list comprehension就是一个更简短、简洁的创建一个list的方法。
+
+```python
+>>> some_list = [1, 2, 3, 4, 5]
+
+>>> another_list = [ x + 1 for x in some_list ]
+
+>>> another_list
+[2, 3, 4, 5, 6]
+```
+
+自从python 3.1 (甚至是Python 2.7)起，我们可以用同样的语法来创建集合和字典表：
+
+```python
+>>> # Set Comprehensions
+>>> some_list = [1, 2, 3, 4, 5, 2, 5, 1, 4, 8]
+
+>>> even_set = { x for x in some_list if x % 2 == 0 }
+
+>>> even_set
+set([8, 2, 4])
+
+>>> # Dict Comprehensions
+
+>>> d = { x: x % 2 == 0 for x in range(1, 11) }
+
+>>> d
+{1: False, 2: True, 3: False, 4: True, 5: False, 6: True, 7: False, 8: True, 9: False, 10: True}
+```
+
+在第一个例子里，我们以some_list为基础，创建了一个具有不重复元素的集合，而且集合里只包含偶数。而在字典表的例子里，我们创建了一个key是不重复的1到10之间的整数，value是布尔型，用来指示key是否是偶数。
+
+这里另外一个值得注意的事情是集合的字面量表示法。我们可以简单的用这种方法创建一个集合：
+
+```python
+>>> my_set = {1, 2, 1, 2, 3, 4}
+
+>>> my_set
+set([1, 2, 3, 4])
+```
+
+而不需要使用内置函数set()。
+
+## 计数时使用Counter计数对象。
+
+这听起来显而易见，但经常被人忘记。对于大多数程序员来说，数一个东西是一项很常见的任务，而且在大多数情况下并不是很有挑战性的事情——这里有几种方法能更简单的完成这种任务。
+
+Python的collections类库里有个内置的dict类的子类，是专门来干这种事情的：
+
+```python
+>>> from collections import Counter
+>>> c = Counter('hello world')
+
+>>> c
+Counter({'l': 3, 'o': 2, ' ': 1, 'e': 1, 'd': 1, 'h': 1, 'r': 1, 'w': 1})
+
+>>> c.most_common(2)
+[('l', 3), ('o', 2)]
+```
+
+## 漂亮的打印出JSON
+
+JSON是一种非常好的数据序列化的形式，被如今的各种API和web service大量的使用。使用python内置的json处理，可以使JSON串具有一定的可读性，但当遇到大型数据时，它表现成一个很长的、连续的一行时，人的肉眼就很难观看了。
+
+为了能让JSON数据表现的更友好，我们可以使用indent参数来输出漂亮的JSON。当在控制台交互式编程或做日志时，这尤其有用：
+
+```python
+>>> import json
+
+>>> print(json.dumps(data))  # No indention
+{"status": "OK", "count": 2, "results": [{"age": 27, "name": "Oz", "lactose_intolerant": true}, {"age": 29, "name": "Joe", "lactose_intolerant": false}]}
+
+>>> print(json.dumps(data, indent=2))  # With indention
+
+{
+  "status": "OK",
+  "count": 2,
+  "results": [
+
+    {
+      "age": 27,
+      "name": "Oz",
+
+      "lactose_intolerant": true
+    },
+    {
+      "age": 29,
+
+      "name": "Joe",
+      "lactose_intolerant": false
+    }
+  ]
+
+}
+```
+
+同样，使用内置的pprint模块，也可以让其它任何东西打印输出的更漂亮
+
 ## 拆箱
 
 ```python
@@ -136,7 +236,7 @@ slice(-3, None, None)
 >>> a = [1, 2, 3, 4, 5, 6]
 >>> zip(*([iter(a)] * 2))
 [(1, 2), (3, 4), (5, 6)]
- 
+
 >>> group_adjacent = lambda a, k: zip(*([iter(a)] * k))
 >>> group_adjacent(a, 3)
 [(1, 2, 3), (4, 5, 6)]
@@ -144,13 +244,13 @@ slice(-3, None, None)
 [(1, 2), (3, 4), (5, 6)]
 >>> group_adjacent(a, 1)
 [(1,), (2,), (3,), (4,), (5,), (6,)]
- 
+
 >>> zip(a[::2], a[1::2])
 [(1, 2), (3, 4), (5, 6)]
- 
+
 >>> zip(a[::3], a[1::3], a[2::3])
 [(1, 2, 3), (4, 5, 6)]
- 
+
 >>> group_adjacent = lambda a, k: zip(*(a[i::k] for i in range(k)))
 >>> group_adjacent(a, 3)
 [(1, 2, 3), (4, 5, 6)]
@@ -195,17 +295,17 @@ slice(-3, None, None)
 >>> a = [[1, 2], [3, 4], [5, 6]]
 >>> list(itertools.chain.from_iterable(a))
 [1, 2, 3, 4, 5, 6]
- 
+
 >>> sum(a, [])
 [1, 2, 3, 4, 5, 6]
- 
+
 >>> [x for l in a for x in l]
 [1, 2, 3, 4, 5, 6]
- 
+
 >>> a = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
 >>> [x for l1 in a for l2 in l1 for x in l2]
 [1, 2, 3, 4, 5, 6, 7, 8]
- 
+
 >>> a = [1, 2, [3, 4], [[5, 6], [7, 8]]]
 >>> flatten = lambda x: [y for l in x for y in flatten(l)] if type(x) is list else [x]
 >>> flatten(a)
@@ -236,7 +336,7 @@ slice(-3, None, None)
 >>> m = {x: x ** 2 for x in range(5)}
 >>> m
 {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
- 
+
 >>> m = {x: 'A' + str(x) for x in range(10)}
 >>> m
 {0: 'A0', 1: 'A1', 2: 'A2', 3: 'A3', 4: 'A4', 5: 'A5', 6: 'A6', 7: 'A7', 8: 'A8', 9: 'A9'}
@@ -623,7 +723,7 @@ KeyError: 'a'
 >>> def print_data(rows):
 ...     print '\n'.join('\t'.join('{: <16}'.format(s) for s in row) for row in rows)
 ...
- 
+
 >>> print_data(data)
 young               myope                   no                      reduced                 none
 young               myope                   no                      normal                  soft
@@ -649,7 +749,7 @@ presbyopic          hypermetrope            no                      reduced     
 presbyopic          hypermetrope            no                      normal                  soft
 presbyopic          hypermetrope            yes                     reduced                 none
 presbyopic          hypermetrope            yes                     normal                  none
- 
+
 >>> data.sort(key=lambda r: r[-1])
 >>> for value, group in itertools.groupby(data, lambda r: r[-1]):
 ...     print '-----------'
@@ -693,15 +793,15 @@ presbyopic          hypermetrope            no                      normal
 目标: 将字符串line中的 overview.gif 替换成其他字符串
 
 ```python
->>> line = '<IMG ALIGN="middle" SRC=\'#\'" /span> 
+>>> line = '<IMG ALIGN="middle" SRC=\'#\'" /span>
 >>> mo=re.compile(r'(?<=SRC=)"([\w+\.]+)"',re.I)  
- 
+
 >>> mo.sub(r'"\1****"',line)  
-'<IMG ALIGN="middle" SRC=\'#\'" /span> 
- 
+'<IMG ALIGN="middle" SRC=\'#\'" /span>
+
 >>> mo.sub(r'replace_str_\1',line)  
-'<IMG ALIGN="middle" replace_str_overview.gif BORDER="0" ALT="">'< /span> 
- 
+'<IMG ALIGN="middle" replace_str_overview.gif BORDER="0" ALT="">'< /span>
+
 >>> mo.sub(r'"testetstset"',line)  
 '<IMG ALIGN="middle" SRC=\'#\'" /span>
 ```
@@ -724,7 +824,7 @@ for file in files:
 # 查找特定扩展名的文件
       file_dir_path = os.path.join(root,file)
       fileList.append(file_dir_path)  
- 
+
 print fileList
 ```
 
@@ -859,7 +959,7 @@ set([1, 3, 4, 5, 6, 7])
 # -*- coding: utf-8 -*-
 import sys,os,getopt
 def usage():
-print 
+print
 '''''
 Usage: analyse_stock.py [options...]
 Options:
@@ -872,7 +972,7 @@ Options:
 -h : this help info
 test.py -s haha -n "HA Ha"
 '''
- 
+
 try:
 opts, args = getopt.getopt(sys.argv[1:],'he:c:f:d:n:s:')
 except getopt.GetoptError:
@@ -881,7 +981,7 @@ sys.exit()
 if len(opts) == 0:
 usage()
 sys.exit()  
- 
+
 for opt, arg in opts:
 if opt in ('-h', '--help'):
   usage()
@@ -898,7 +998,7 @@ elif opt == '-s':
   print "Stock code %s" % arg
 elif opt == '-n':
   print "Stock name %s" % arg  
- 
+
 sys.exit()
 ```
 
@@ -976,7 +1076,7 @@ sys.exit()
   -r--r--r-- 1 root root 0  3月 29 16:53 /proc/cpuinfo
   0
 ```
- 
+
 使用 os.popen() 调用系统命令, 程序中可以获得命令输出，但是不能得到执行的返回值
 
 ```python
@@ -1031,7 +1131,7 @@ fd.close()
 ```
 
 写文件 write 与 writelines 的区别   
- 
+
 + Fd.write(str) : 把str写到文件中，write()并不会在str后加上一个换行符
 + Fd.writelines(content) : 把content的内容全部写到文件中,原样写入，不会在每行后面加上任何东西
 
@@ -1040,7 +1140,7 @@ fd.close()
     >>> x = 5
     >>> 1 < x < 10
     True
-    >>> 10 < x < 20 
+    >>> 10 < x < 20
     False
     >>> x < 10 < x*10 < 100
     True
@@ -1092,7 +1192,7 @@ enumerate 还可以接收一个可选参数start，默认start等于0。`enumera
 ## iter()可接收callable参数
 
 iter()内建函数接收的参数分为两种，第一种是：  
-    
+
     iter(collection)---> iterator
 
 参数collection必须是可迭代对象或者是序列 ，第二种是：  
@@ -1111,7 +1211,7 @@ callable函数会一直被调用，直到它的返回结果等于sentinel，例�
     >>> def foo(x=[]):
     ...     x.append(1)
     ...     print x
-    ... 
+    ...
     >>> foo()
     [1]
     >>> foo()
@@ -1138,7 +1238,7 @@ callable函数会一直被调用，直到它的返回结果等于sentinel，例�
         a = 5
         while True:
             f = (yield a) #yield a and possibly get f in return
-            if f is not None: 
+            if f is not None:
                 a = f  #store the new value
 
 你可以：  
@@ -1197,11 +1297,11 @@ callable函数会一直被调用，直到它的返回结果等于sentinel，例�
     >>>         print 'Arguments:', args, kwargs
     >>>         return function(*args, **kwargs)
     >>>     return wrapper
-    
+
     >>> @print_args
     >>> def write(text):
     >>>     print text
-    
+
     >>> write('foo')
     Arguments: ('foo',) {}
     foo
@@ -1228,7 +1328,7 @@ else代码块只有在for循环正常结束后执行如果遇到break语句那�
         if i == 0:
             found = True
             break
-    if not found: 
+    if not found:
         print("i was never 0")
 
 不过这种语法看起来怪怪地，让人感觉是else块是在for语句块没有执行的时候执行的，很容易让人去类比 if else 的语法，如果是把else换成finally或许更容易理解    
@@ -1239,7 +1339,7 @@ else代码块只有在for循环正常结束后执行如果遇到break语句那�
     >>> b = 5
     >>> a, b
     (10, 5)
-    
+
     >>> a, b = b, a
     >>> a, b
     (5, 10)
@@ -1271,10 +1371,10 @@ else代码块只有在for循环正常结束后执行如果遇到break语句那�
 
     def draw_point(x, y):
         # do some magic
-    
+
     point_foo = (3, 4)
     point_bar = {'y': 3, 'x': 2}
-    
+
     draw_point(*point_foo)
     draw_point(**point_bar)
 
@@ -1344,7 +1444,7 @@ collections.Counter是dict的子类,用来统计可哈稀对象,
 
 这个表达式的意思就是:如果y等于那么就把3赋值给x,否则把2赋值给x, 条件中的括号是可选的,为了可读性可以考虑加上去.if else中的表达式可以是任何类型的,既可以函数,还可以类  
 
-    (func1 if y == 1 else func2)(arg1, arg2) 
+    (func1 if y == 1 else func2)(arg1, arg2)
 
 如果y等于1,那么调用func1(arg1,arg2)否则调用func2(arg1,arg2)  
 
@@ -1448,5 +1548,3 @@ else语句块会在没有异常的情况下执行,先于finally,它的好处就�
 + 从模块中导入所有函数，不推荐使用：`from math import *`
 + 简写模块名：`import math as m`
 + 查看属性：`dir(math)`
-
-
