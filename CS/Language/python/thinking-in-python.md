@@ -2,6 +2,198 @@
 
 这里主要是比较深入 python 机制的内容
 
+## 深拷贝与浅拷贝
+
+Python中，对象的赋值，拷贝（深/浅拷贝）之间是有差异的，如果使用的时候不注意，就可能产生意外的结果。
+
+直接看一段代码
+
+```python
+will = ["Will", 28, ["Python", "C#", "JavaScript"]]
+wilber = will
+print id(will)
+print will
+print [id(ele) for ele in will]
+print id(wilber)
+print wilber
+print [id(ele) for ele in wilber]
+
+will[0] = "Wilber"
+will[2].append("CSS")
+print id(will)
+print will
+print [id(ele) for ele in will]
+print id(wilber)
+print wilber
+print [id(ele) for ele in wilber]
+```
+
+## Python 中 self 的含义
+
+刚开始学习Python的类写法的时候觉得很是麻烦，为什么定义时需要而调用时又不需要，为什么不能内部简化从而减少我们敲击键盘的次数？
+
+### self代表类的实例，而非类。
+
+实例来说明
+
+```python
+class Test:
+    def prt(self):
+        print(self)
+        print(self.__class__)
+
+t = Test()
+t.prt()
+```
+
+执行结果如下
+
+```python
+<__main__.Test object at 0x000000000284E080>
+<class '__main__.Test'>
+```
+从上面的例子中可以很明显的看出，self代表的是类的实例。而self.class则指向类。
+
+### self不必非写成self
+
+有很多童鞋是先学习别的语言然后学习Python的，所以总觉得self怪怪的，想写成this，可以吗？
+
+当然可以，还是把上面的代码改写一下。
+
+```python
+class Test:
+    def prt(this):
+        print(this)
+        print(this.__class__)
+
+t = Test()
+t.prt()
+```
+
+改成this后，运行结果完全一样。
+
+当然，最好还是尊重约定俗成的习惯，使用self。
+
+### self可以不写吗
+
+在Python的解释器内部，当我们调用t.prt()时，实际上Python解释成Test.prt(t)，也就是说把self替换成类的实例。
+
+有兴趣的童鞋可以把上面的t.prt()一行改写一下，运行后的实际结果完全相同。
+
+实际上已经部分说明了self在定义时不可以省略，如果非要试一下，那么请看下面：
+
+```python
+class Test:
+    def prt():
+        print(self)
+
+t = Test()
+t.prt()
+```
+
+运行时提醒错误如下：prt在定义时没有参数，但是我们运行时强行传了一个参数。
+由于上面解释过了t.prt()等同于Test.prt(t)，所以程序提醒我们多传了一个参数t。
+
+```
+Traceback (most recent call last):
+  File "h.py", line 6, in <module>
+    t.prt()
+TypeError: prt() takes 0 positional arguments but 1 was given
+```
+
+当然，如果我们的定义和调用时均不传类实例是可以的，这就是类方法。
+
+```python
+class Test:
+    def prt():
+        print(__class__)
+Test.prt()
+```
+
+运行结果如下
+
+	<class '__main__.Test'> 
+
+在继承时，传入的是哪个实例，就是那个传入的实例，而不是指定义了self的类的实例。
+先看代码
+
+```python
+class Parent:
+    def pprt(self):
+        print(self)
+
+class Child(Parent):
+    def cprt(self):
+        print(self)
+c = Child()
+c.cprt()
+c.pprt()
+p = Parent()
+p.pprt()
+```
+
+运行结果如下
+
+```
+<__main__.Child object at 0x0000000002A47080>
+<__main__.Child object at 0x0000000002A47080>
+<__main__.Parent object at 0x0000000002A47240>
+```
+
+解释：
+
+运行c.cprt()时应该没有理解问题，指的是Child类的实例。
+
+但是在运行c.pprt()时，等同于Child.pprt(c)，所以self指的依然是Child类的实例，由于self中没有定义pprt()方法，所以沿着继承树往上找，发现在父类Parent中定义了pprt()方法，所以就会成功调用。
+
+在描述符类中，self指的是描述符类的实例
+
+不太容易理解，先看实例：
+
+```python
+class Desc:
+    def __get__(self, ins, cls):
+        print('self in Desc: %s ' % self )
+        print(self, ins, cls)
+class Test:
+    x = Desc()
+    def prt(self):
+        print('self in Test: %s' % self)
+t = Test()
+t.prt()
+t.x
+```
+
+运行结果如下：
+
+```
+self in Test: <__main__.Test object at 0x0000000002A570B8>
+self in Desc: <__main__.Desc object at 0x000000000283E208>
+<__main__.Desc object at 0x000000000283E208> <__main__.Test object at 0x0000000002A570B8> <class '__main__.Test'>
+```
+
+大部分童鞋开始有疑问了，为什么在Desc类中定义的self不是应该是调用它的实例t吗？怎么变成了Desc类的实例了呢？
+
+注意：此处需要睁大眼睛看清楚了，这里调用的是t.x，也就是说是Test类的实例t的属性x，由于实例t中并没有定义属性x，所以找到了类属性x，而该属性是描述符属性，为Desc类的实例而已，所以此处并没有顶用Test的任何方法。
+
+那么我们如果直接通过类来调用属性x也可以得到相同的结果。
+
+下面是把t.x改为Test.x运行的结果。
+
+```
+self in Test: <__main__.Test object at 0x00000000022570B8>
+self in Desc: <__main__.Desc object at 0x000000000223E208>
+<__main__.Desc object at 0x000000000223E208> None <class '__main__.Test'>
+```
+
+题外话：由于在很多时候描述符类中仍然需要知道调用该描述符的实例是谁，所以在描述符类中存在第二个参数ins，用来表示调用它的类实例，所以t.x时可以看到第三行中的运行结果中第二项为<main.Test object at 0x0000000002A570B8>。而采用Test.x进行调用时，由于没有实例，所以返回None。
+
+### 总结
+
++ self在定义时需要定义，但是在调用时会自动传入。
++ self的名字并不是规定死的，但是最好还是按照约定是用self
++ self总是指调用时的类的实例。
+
 ## Python 类库引入机制
 
 首先，看一个简单的例子：
@@ -28,21 +220,24 @@ a = 2
 
 为了搞清楚上面的问题，我们需要了解关于Python类库引入的机制。
 
-## Python的两种引入机制
 Python 提供了二种引入机制：
 
 1. relative import
 2. absolute import
 
 ### relative import
-  relative import 也叫作相对引入，在Python2.5及之前是默认的引入方法。它的使用方法如下：
-  ```python
-  from .string import a
-  from ..string import a
-  from ...string import a
-  ```
-  这种引入方式使用一个点号来标识引入类库的精确位置。与linux的相对路径表示相似，一个点表示当前目录，每多一个点号则代表向上一层目录。
-   ```python
+
+relative import 也叫作相对引入，在Python2.5及之前是默认的引入方法。它的使用方法如下：
+  
+```python
+from .string import a
+from ..string import a
+from ...string import a
+```
+  
+这种引入方式使用一个点号来标识引入类库的精确位置。与linux的相对路径表示相似，一个点表示当前目录，每多一个点号则代表向上一层目录。
+  
+```python
 """
 ├── __init__.py
 ├── foo.py
@@ -56,9 +251,10 @@ from .foo import a
 print a
 ```
 
-  相对引入，那么我们需要知道相对什么来引入。相对引入使用被引入文件的`__name__`属性来决定该文件在整个包结构的位置。那么如果文件的`__name__`没有包含任何包的信息，例如`__name__`被设置为了`__main__`，则认为其为‘top level script'，而不管该文件的位置，这个时候相对引入就没有引入的参考物。如上面的程序所示，当我们执行`python main.py`时，Python解释器会抛出 ValueError: Attempted relative import in non-package的异常。
+相对引入，那么我们需要知道相对什么来引入。相对引入使用被引入文件的`__name__`属性来决定该文件在整个包结构的位置。那么如果文件的`__name__`没有包含任何包的信息，例如`__name__`被设置为了`__main__`，则认为其为‘top level script'，而不管该文件的位置，这个时候相对引入就没有引入的参考物。如上面的程序所示，当我们执行`python main.py`时，Python解释器会抛出 ValueError: Attempted relative import in non-package的异常。
   
- 为了解决这个问题，[PEP 0366 -- Main module explicit relative imports](https://www.python.org/dev/peps/pep-0366/)提出了一个解决方案。允许用户使用`python -m ex2.main`的方式,来执行该文件。在这个方案下，引入了一个新的属性`__package__`。
+为了解决这个问题，[PEP 0366 -- Main module explicit relative imports](https://www.python.org/dev/peps/pep-0366/)提出了一个解决方案。允许用户使用`python -m ex2.main`的方式,来执行该文件。在这个方案下，引入了一个新的属性`__package__`。
+
 ```bash
 
 ╭─liuchang@localhost  ~/Codes/pycon
@@ -73,20 +269,23 @@ __main__
 ex2
 2
 ```
+
 ### absolute import
-  absolute import 也叫作完全引入，非常类似于Java的引入进制，在Python2.5被完全实现，但是是需要通过`from __future__ import absolute_import`来打开该引入进制。在Python2.6之后以及Python3，完全引用成为Python的默认的引入机制。它的使用方法如下：
+
+absolute import 也叫作完全引入，非常类似于Java的引入进制，在Python2.5被完全实现，但是是需要通过`from __future__ import absolute_import`来打开该引入进制。在Python2.6之后以及Python3，完全引用成为Python的默认的引入机制。它的使用方法如下：
   
-  ```
-  from pkg import foo
-  from pkg.moduleA import foo
-  ```
+```
+from pkg import foo
+from pkg.moduleA import foo
+```
   
-  要注意的是，需要从包目录最顶层目录依次写下，而不能从中间开始。
+要注意的是，需要从包目录最顶层目录依次写下，而不能从中间开始。
   
-  在使用该引入方式时，我们碰到比较多的问题就是因为位置原因，Python找不到相应的库文件，抛出ImportError的异常。让我们看一个完全引用的例子:
-  ```python
-  """
-  ex3
+在使用该引入方式时，我们碰到比较多的问题就是因为位置原因，Python找不到相应的库文件，抛出ImportError的异常。让我们看一个完全引用的例子:
+
+```python
+"""
+ex3
 ├── __init__.py
 ├── foo.py
 └── main.py
@@ -99,10 +298,12 @@ print __name__
 print __package__
 from ex2.foo import a
 print a
-  ```
-  我们尝试着去运行main.py文件，Python解释器会抛出ImportError。那么我们如何解决这个问题呢？
-  ```python
-  ╰─$ python ex3/main.py
+```
+
+我们尝试着去运行main.py文件，Python解释器会抛出ImportError。那么我们如何解决这个问题呢？
+  
+```python
+╰─$ python ex3/main.py
 __main__
 None
 Traceback (most recent call last):
@@ -110,40 +311,45 @@ Traceback (most recent call last):
     from ex2.foo import a
 ImportError: No module named ex2.foo
 ```
-  首先，我们也可以使用前文所述的module的方式去运行程序，通过-m参数来告诉解释器`__package__`属性。如下：
-  ``` python
-  ╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon
-  ╰─$ python -m ex3.main                                                                             
-  __main__
-  ex3
-  2
-  ```
-  另外，我们还有一个办法可以解决该问题，在描述之前，我们介绍一个关于Python的非常有用的小知识：**Python解释器会自动将当前工作目录添加到PYTHONPATH**。如下所示，可以看到我们打印出的`sys.path`已经包含了当前工作目录。
-  ```python
-  ╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon/ex4
+
+首先，我们也可以使用前文所述的module的方式去运行程序，通过-m参数来告诉解释器`__package__`属性。如下：
+
+``` python
+╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon
+╰─$ python -m ex3.main                                                                             
+__main__
+ex3
+2
+```
+
+另外，我们还有一个办法可以解决该问题，在描述之前，我们介绍一个关于Python的非常有用的小知识：**Python解释器会自动将当前工作目录添加到PYTHONPATH**。如下所示，可以看到我们打印出的`sys.path`已经包含了当前工作目录。
+
+```python
+╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon/ex4
 ╰─$ cat main.py
 import sys
 print sys.path
 ╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon/ex4
 ╰─$ python main.py
 ['/Users/liuchang/Codes/pycon/ex4', '/Library/Python/2.7/site-packages/pip-7.1.0-py2.7.egg', '/Library/Python/2.7/site-packages/mesos-_PACKAGE_VERSION_-py2.7.egg', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python27.zip', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages', '/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old', '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload', '/Users/liuchang/Library/Python/2.7/lib/python/site-packages', '/usr/local/lib/python2.7/site-packages', '/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/PyObjC', '/Library/Python/2.7/site-packages']
-  ```
-  了解了Python解释器的这个特性后，我们就可以解决完全引用的找不到类库的问题：执行的时候，让解释器自动的将类库的目录添加到PYTHONPATH中。
+```
+
+了解了Python解释器的这个特性后，我们就可以解决完全引用的找不到类库的问题：执行的时候，让解释器自动的将类库的目录添加到PYTHONPATH中。
   
-  我们可以在顶层目录中添加一个run_ex3.py的文件，文件内容和运行结果如下，可以看到Python解释器正确的执行了ex3.main文件。
-  ```python
-  ╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon
-  ╰─$ cat run_ex3.py
-  from ex3 import main
-  ╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon
-  ╰─$ python run_ex3.py
-  ex3.main
-  None
-  2
-  ```
-  
-# 一些实践经验
-## 相对引用还是绝对引用？
+我们可以在顶层目录中添加一个run_ex3.py的文件，文件内容和运行结果如下，可以看到Python解释器正确的执行了ex3.main文件。
+
+```python
+╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon
+╰─$ cat run_ex3.py
+from ex3 import main
+╭─liuchang@liuchangdeMacBook-Pro  ~/Codes/pycon
+╰─$ python run_ex3.py
+ex3.main
+None
+2
+```
+
+### 相对引用还是绝对引用？
 上面介绍了Python的两种引用方式，都可以解决引入歧义的问题。那我们应该使用哪一种呢？
 
 先说明一下Python的默认引用方式，在Python2.4及之前，Python只有相对引用这一种方式，在Python2.5中实现了绝对引用，但默认没有打开，需要用户自己指定使用该引用方式。在之后的版本和Python3版本，绝对引用已经成为默认的引用方式。
@@ -168,19 +374,22 @@ from .sibling import example
 > Standard library code should avoid complex package layouts and always use absolute imports.
 > Implicit relative imports should never be used and have been removed in Python 3.
 
-## 规范打包发布
+### 规范打包发布
 
 为了别人使用自己代码的方便，应该尽量使用规范的包分发机制。为自己的Python包编写正确的setup.py文件，添加相应的README.md文件。对于提供一些可执行命令的包，则可以使用 console_entrypoint 的机制来提供。因为打包和分发不是本文重点，不再详细叙述，大家可以查看官方文档。
 
-## 使用virtualenv管理包依赖
+### 使用virtualenv管理包依赖
 
 在使用Python的时候，尽量使用virtualenv来管理项目，所有的项目从编写到运行都在特定的virtualenv中。并且为自己的项目生成正确的依赖描述文件。
+
 ```bash
 pip freeze > requirements.txt
 ```
+
 关于virtualenv的用法，可以参考我之前的一篇文章[virtualenv教程](http://lcblog-wordpress.stor.sinaapp.com/uploads/2015/10/virtualenv教程.pdf)。
 
-# Python import实现
+### Python import实现
+
 Python 提供了 import 语句来实现类库的引用，下面我们详细介绍当执行了 import 语句的时候，内部究竟做了些什么事情。
 
 当我们执行一行 `from package import module as mymodule`命令时，Python解释器会查找package这个包的module模块，并将该模块作为mymodule引入到当前的工作空间。所以import语句主要是做了二件事：
@@ -190,15 +399,17 @@ Python 提供了 import 语句来实现类库的引用，下面我们详细介�
 
 下面我们详细了解python是如何查找模块的。
 
-## 查找module的过程
-  在import的第一个阶段，主要是完成了查找要引入模块的功能，这个查找的过程如下：
+#### 查找module的过程
+
+在import的第一个阶段，主要是完成了查找要引入模块的功能，这个查找的过程如下：
   
 1. 检查 sys.modules (保存了之前import的类库的缓存），如果module被找到，则⾛到第二步。
 2. 检查 sys.meta\_path。meta\_path 是一个 list，⾥面保存着一些 finder 对象，如果找到该module的话，就会返回一个finder对象。
 3. 检查⼀些隐式的finder对象，不同的python实现有不同的隐式finder，但是都会有 sys.path\_hooks, sys.path\_importer\_cache 以及sys.path。
 4. 抛出 ImportError。
 
-### sys.modules
+#### sys.modules
+
 对于第一步中sys.modules，我们可以打开Python来实际的查看一下其内容：
 
 > 
@@ -216,7 +427,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 可以看到sys.modules已经保存了一些包的信息，由这些信息，我们就可以直接知道要查找的包的位置等信息。
 
-### finder、loader和importer
+#### finder、loader和importer
 
 在上文中，我们提到了sys.meta_path中保证了一些finder对象。在python中，不仅定义了finder的概念，还定义了loader和importor的概念。
 
@@ -227,16 +438,17 @@ Type "help", "copyright", "credits" or "license" for more information.
 ### sys.meta_path
 
 在Python查找的时候，如果在sys.modules没有查找到，就会依次调用sys.meta\_path中的finder对象。默认的情况下，sys.meta\_path是一个空列表，并没有任何finder对象。
+
 ```bash
 In [6]: sys.meta_path
 Out[6]: []
 ```
+
 我们可以向sys.meta_path中添加一些定义的finder，来实现对Python加载模块的修改。比如下例，我们实现了一个会将每次加载包的信息打印出来的finder。
 
 ```python
 from __future__ import print_function
 import sys
-
 
 class Watcher(object):
     @classmethod
@@ -248,6 +460,7 @@ sys.meta_path.insert(0, Watcher)
 
 import socket
 ```
+
 当我们执行的时候，就可以看到系统加载socket包时所发生的事情。
 
 >
@@ -263,7 +476,7 @@ import socket
 ```
 >
 
-### sys.path hook
+#### sys.path hook
 
 Python import的hook分为二类，一类是上一章节已经描述的meta hook，另一类是 path hook。
 
@@ -274,7 +487,7 @@ sys.path\_hooks 是由可被调用的对象组成，它会顺序的检查以决�
 
 详细可以参考[registering-hooks](https://www.python.org/dev/peps/pep-0302/#specification-part-2-registering-hooks)。
 
-# python import hooks
+### python import hooks
 
 在介绍完Python的引用机制与一些实现方法后，接下来我们介绍一些关于如何根据自己的需求来扩展Python的引用机制。
 
@@ -329,14 +542,16 @@ class AutoInstall(object):
 
 sys.meta_path.append(AutoInstall)
 ```
-## import hook的重要性
+### import hook的重要性
+
 我们为什么需要Python import的hook呢？使用import的hook可以让我们做到很多事情，比如说当我们的Python包存储在一个非标准的文件中，或者Python程序存储在网络数据库中，或者像py2exe一样将Python程序打包成了一个文件，我们需要一种方法来正确的解析它们。
 
 其次，我们希望在Python加载类库的时候，可以额外的做一些事情，比如上传审计信息，比如延迟加载，比如自动解决上例的依赖未安装的问题。
 
 所以，import系统的Hook技术是值的花时间学习的。
 
-## 如何实现import hooks
+### 如何实现import hooks
+
 Python提供了一些方法，让我们可以在代码中动态的调用import。主要有如下几种：
 
 1. \_\_import\_\_ : Python的内置函数
@@ -347,11 +562,16 @@ Python提供了一些方法，让我们可以在代码中动态的调用import�
 Python2 所有关于import的库的列表参见[Importing Modules](https://docs.python.org/2/library/modules.html)。Python3 的可以参考[Importing Modules](https://docs.python.org/3/library/modules.html)
 [PEP 0302 -- New Import Hooks](https://www.python.org/dev/peps/pep-0302) 提案详细的描述了importlib的目的、用法。
 
-## 一些Hook示例
-### Lazy化库引入
+### 一些Hook示例
+
+#### Lazy化库引入
+
 使用Import Hook，我们可以达到Lazy Import的效果，当我们执行import的时候，实际上并没引入该库，只有真正的使用这个库的时候，才会将其引入到当前工作空间。
+
 具体的代码可以参考[github](https://github.com/noahmorrison/limp)。
+
 实现的效果如下：
+
 ```python
 #!/usr/bin/python
 
@@ -364,7 +584,9 @@ print('json' in sys.modules)  # False
 print(', '.join(json.loads('["Hello", "World!"]')))
 print('json' in sys.modules)  # True
 ```
+
 它的实现也很简单：
+
 ```python
 import sys
 import imp
@@ -399,11 +621,12 @@ class LazyFinder(object):
 sys.meta_path.append(LazyFinder())
 ```
 
-### Flask 插件库统一入口
+#### Flask 插件库统一入口
 
 使用过Flask的同学都知道，Flask的对于插件提供了统一的入口。比如说我们安装了Flask\_API这个库，然后我们可以直接`import flask_api`来使用这个库，同时Flask还允许我们采用`import flask.ext.api`的方式来引用该库。
 
 这里Flask就是使用了import 的hook，当引入flask.ext的包时，就自动的引用相应的库。Flask实现了一个叫ExtensionImporter的类，这个类实现了find\_module和load\_module代码实现如下[github](https://github.com/mitsuhiko/flask/blob/master/flask/exthook.py#L27)：
+
 ```python
 class ExtensionImporter(object):
     """This importer redirects imports from this submodule to other locations.
