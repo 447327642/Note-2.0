@@ -22,6 +22,39 @@ ways(i, j) = ways(i-s(j), j) + ways(i, j-1);  i~[0,N], j~[1,m]
 
 ## Code
 
+```python
+stepstr = input()
+steps = stepstr.split()
+test = int(input())
+
+table = [[0 for x in range(len(steps))] for x in range(int(1E5+1))]
+# Fill the enteries for 0 value case (n = 0)
+for i in range(len(steps)):
+    table[0][i] = 1
+
+last = 1
+for t in range(0,test):
+    target = int(input())
+ 
+    # Fill rest of the table enteries in bottom up manner
+    for i in range(last, target+1):
+        for j in range(len(steps)):
+            # Count of solutions including S[j]
+            x = table[i - int(steps[j])][j] if i-int(steps[j]) >= 0 else 0
+ 
+            # Count of solutions excluding S[j]
+            y = table[i][j-1] if j >= 1 else 0
+ 
+            # total count
+            table[i][j] = x + y
+            table[i][j] %= 1E9+7;
+    if (target > last):
+        last = target
+    print(int(table[target][len(steps)-1]))
+ 
+```
+
+
 ```java
 int minNum(int[] S, int n) {
 	int[] dp = new int[n+1];

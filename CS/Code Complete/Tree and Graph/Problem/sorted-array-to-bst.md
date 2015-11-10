@@ -51,7 +51,7 @@ Node helper(int[] arr, int low, int high){
 	
 	int mid = (low+high)/2;
 	Node left = helper(arr, low, mid - 1);
-	Node right = helper(arr, high, mid + 1);
+	Node right = helper(arr, mid + 1, high);
 	Node head = new Node(arr[mid]);
 	head.left = left;
 	head.right = right;

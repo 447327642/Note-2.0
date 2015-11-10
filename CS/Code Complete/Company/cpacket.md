@@ -25,3 +25,118 @@ Mark Lewis，也是 firmware group 的小哥，问了我三个题目
 2. 返回链表的倒数第 n 个节点
 3. 如何设计一个文件系统
 
+进制转换
+
+```java
+// 递归
+void dTox(int n, int r){
+	if (n >= r){
+		dTox(n/r, r);
+	}
+	System.out.print(n%r);
+}
+
+// 非递归
+void dTox(int n, int r){
+	Stack<Integer> s = new Stack<Integer>();
+	while (n > 0){
+		s.push(n%r);
+		n = n/r;	
+	}
+	
+	while (!s.empty()){
+		System.out.print(s.top());
+		s.pop();
+	}
+}
+
+// 位操作 主要指二进制
+void dToX(int n, int r){
+	Stack<Integer> s = new Stack<Integer>();
+	while (n > 0){
+		s.push(n >> i) & 1;
+	}
+	while (!s.empty()){
+		System.out.print(s.top());
+		s.pop();
+	}
+}
+
+
+
+```
+
+---
+
+二面
+
+```
+// recursive method
+// given a sorted array
+// balanced
+// middle of the array 
+// left side [0 to mid-1] right side [mid+1 to len-1]
+// stop condition: left index > right index
+
+Node sortedArrayToBST(int[] arr){
+	// input checking
+  if (arr.length == 0 || arr == null) return null;
+  if (arr.length == 1) {
+  	Node head = new Node(arr[0]);
+    return head;
+  }
+  
+  // recursive
+  return help(arr, 0, arr.length -1);
+}
+
+// return the root node of the bst from arr[left to right]
+Node help(int[] arr, int left, int right){
+	if ( left > right ){
+  	return null;
+  } 
+  if (left == right) {
+  	Node head = new Node(arr[left]);
+    return head;
+  }
+  
+  int mid = (left + right) / 2;
+  // arr[left...mid-1, mid, mid+1...right]
+  Node left = help(arr, left, mid - 1);
+  Node right = help(arr, mid + 1, right);
+  Node head = new Node(arr[mid]);
+  head.left = left;
+  head.right = right;
+  return head;
+}
+
+// input : index number
+// output : fibonacci number
+input:		0	1	2	3	4	5	6	...
+output:		1	1	2	3	5	8	13
+
+// equation ele[i] = ele[i-1] + ele[i-2]
+// use array to store the result
+
+int N = 1000;
+
+int computedflag = 1;
+int[] resultSet = new int[N];
+resultSet[0] = 1;
+resultSet[1] = 1;
+// init state 
+
+int fibonacci(int n){
+  if (n <= computedflag)
+  	return resultSet[n];
+
+  // n = 2 -> output = 2
+  for (int i = computedflag + 1; i < n; i++){
+  	resultSet[i] = resultSet[i-1] + resultSet[i-2];
+  }
+  computedflag = n;
+  return resultSet[n];
+}
+```
+
+
