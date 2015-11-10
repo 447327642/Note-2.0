@@ -3335,176 +3335,145 @@ Python基本的对象概念和动态类型概念。可以参照快速教程，�
 
 我将从正则表达式开始讲Python的标准库。正则表达式是文字处理中常用的工具，而且不需要额外的系统知识或经验。我们会把系统相关的包放在后面讲解。
 
- 
-
 正则表达式(regular expression)主要功能是从字符串(string)中通过特定的模式(pattern)，搜索想要找到的内容。
 
-
-语法
+### 语法
 
 之前，我们简介了字符串相关的处理函数。我们可以通过这些函数实现简单的搜索功能，比如说从字符串“I love you”中搜索是否有“you”这一子字符串。但有些时候，我们只是模糊地知道我们想要找什么，而不能具体说出我是在找“you”，比如说，我想找出字符串中包含的数字，这些数字可以是0到9中的任何一个。这些模糊的目标可以作为信息写入正则表达式，传递给Python，从而让Python知道我们想要找的是什么。
 
-(官方documentation)
-
 在Python中使用正则表达式需要标准库中的一个包re。
 
+```python
 import re
 m = re.search('[0-9]','abcd4ef')
 print(m.group(0))
+```
+
 re.search()接收两个参数，第一个'[0-9]'就是我们所说的正则表达式，它告诉Python的是，“听着，我从字符串想要找的是从0到9的一个数字字符”。
 
 re.search()如果从第二个参数找到符合要求的子字符串，就返回一个对象m，你可以通过m.group()的方法查看搜索到的结果。如果没有找到符合要求的字符，re.search()会返回None。
 
- 
-
 如果你熟悉Linux或者Perl, 你应该已经熟悉正则表达式。当我们打开Linux shell的时候，可以用正则表达式去查找或着删除我们想要的文件，比如说：
 
-$rm book[0-9][0-9].txt
+	$rm book[0-9][0-9].txt
 
 这就是要删除类似于book02.txt的文件。book[0-9][0-9].txt所包含的信息是，以book开头，后面跟两个数字字符，之后跟有".txt"的文件名。如果不符合条件的文件名，比如说:
 
+```
 bo12.txt
-
 book1.txt
-
 book99.text
+```
 
 都不会被选中。
 
 Perl中内建有正则表达式的功能，据说是所有正则表达式系统中最强的，这也是Perl成为系统管理员利器的一个原因。
 
- 
+### 正则表达式的函数
 
-正则表达式的函数
-
+```
 m = re.search(pattern, string)  # 搜索整个字符串，直到发现符合的子字符串。
 m = re.match(pattern, string)   # 从头开始检查字符串是否符合正则表达式。必须从字符串的第一个字符开始就相符。
+```
+
 可以从这两个函数中选择一个进行搜索。上面的例子中，我们如果使用re.match()的话，则会得到None，因为字符串的起始为‘a’， 不符合'[0-9]'的要求。
 
 对于返回的m, 我们使用m.group()来调用结果。（我们会在后面更详细解释m.group()）
 
- 
-
 我们还可以在搜索之后将搜索到的子字符串进行替换：
 
+```python
 str = re.sub(pattern, replacement, string) 
 # 在string中利用正则变换pattern进行搜索，对于搜索到的字符串，用另一字符串replacement替换。返回替换后的字符串。
- 
+```
 
 此外，常用的正则表达式函数还有
 
+```
 re.split()    # 根据正则表达式分割字符串， 将分割后的所有子字符串放在一个表(list)中返回
-
 re.findall()  # 根据正则表达式搜索字符串，将所有符合的子字符串放在一给表(list)中返回
-
- 
+```
 
 (在熟悉了上面的函数后，可以看一下re.compile()，以便于提高搜索效率。)
 
- 
-
-写一个正则表达式
+### 写一个正则表达式
 
 关键在于将信息写成一个正则表达式。我们先看正则表达式的常用语法：
 
 1）单个字符:
 
+```
 .          任意的一个字符
-
 a|b        字符a或字符b
-
 [afg]      a或者f或者g的一个字符        
-
 [0-4]      0-4范围内的一个字符
-
 [a-f]      a-f范围内的一个字符
-
 [^m]       不是m的一个字符
-
 \s         一个空格
-
 \S         一个非空格
-
 \d         [0-9]
-
 \D         [^0-9]
-
 \w         [0-9a-zA-Z]
-
 \W         [^0-9a-zA-Z]
-
- 
+```
 
 2）重复
 
 紧跟在单个字符之后，表示多个这样类似的字符
 
+```
 *         重复 >=0 次
-
 +         重复 >=1 次
-
 ?         重复 0或者1 次
-
 {m}       重复m次。比如说 a{4}相当于aaaa，再比如说[1-3]{2}相当于[1-3][1-3]
-
 {m, n}    重复m到n次。比如说a{2, 5}表示a重复2到5次。小于m次的重复，或者大于n次的重复都不符合条件。
 
- 
-
 正则表达          相符的字符串举例
-
 [0-9]{3,5}       9678
-
 a?b              b
-
 a+b              aaaaab
-
- 
+```
 
 3) 位置
 
+```
 ^         字符串的起始位置
-
 $         字符串的结尾位置
 
- 
-
 正则表达          相符的字符串举例        不相符字符串
-
 ^ab.*c$          abeec               cabeec (如果用re.search(), 将无法找到。)
-
+```
 
 4）返回控制
 
 我们有可能对搜索的结果进行进一步精简信息。比如下面一个正则表达式：
 
-output_(\d{4})
+	output_(\d{4})
 
 该正则表达式用括号()包围了一个小的正则表达式，\d{4}。 这个小的正则表达式被用于从结果中筛选想要的信息（在这里是四位数字）。这样被括号圈起来的正则表达式的一部分，称为群(group)。
 我们可以m.group(number)的方法来查询群。group(0)是整个正则表达的搜索结果，group(1)是第一个群……
 
+```python
 import re
 m = re.search("output_(\d{4})", "output_1986.txt")
 print(m.group(1))
- 
+```
 
 我们还可以将群命名，以便更好地使用m.group查询:
 
+```python
 import re
 m = re.search("output_(?P<year>\d{4})", "output_1986.txt")   #(?P<name>...) 为group命名
 print(m.group("year"))
- 
+```
 
-练习
+**练习**
+
 有一个文件，文件名为output_1981.10.21.txt 。下面使用Python： 读取文件名中的日期时间信息，并找出这一天是周几。将文件改名为output_YYYY-MM-DD-W.txt (YYYY:四位的年，MM：两位的月份，DD：两位的日，W：一位的周几，并假设周一为一周第一天)
 
- 
+### 总结
 
- 
-
-总结
-
-re.search() re.match() re.sub() re.findall()
+	re.search() re.match() re.sub() re.findall()
 
 正则表达式构成方法
 
@@ -3512,36 +3481,37 @@ re.search() re.match() re.sub() re.findall()
 
 Python具有良好的时间和日期管理功能。实际上，计算机只会维护一个挂钟时间(wall clock time)，这个时间是从某个固定时间起点到现在的时间间隔。时间起点的选择与计算机相关，但一台计算机的话，这一时间起点是固定的。其它的日期信息都是从这一时间计算得到的。此外，计算机还可以测量CPU实际上运行的时间，也就是处理器时间(processor clock time)，以测量计算机性能。当CPU处于闲置状态时，处理器时间会暂停。
 
- 
-
-time包
+### time包
 
 time包基于C语言的库函数(library functions)。Python的解释器通常是用C编写的，Python的一些函数也会直接调用C语言的库函数。
 
+```python
 import time
 print(time.time())   # wall clock time, unit: second
 print(time.clock())  # processor clock time, unit: second
- 
+```
 
 time.sleep()可以将程序置于休眠状态，直到某时间间隔之后再唤醒程序，让程序继续运行。
 
+```python
 import time
 print('start')
 time.sleep(10)     # sleep for 10 seconds
 print('wake up')
+```
+
 当我们需要定时地查看程序运行状态时，就可以利用该方法。
 
- 
+time包还定义了struct_time对象。该对象实际上是将挂钟时间转换为年、月、日、时、分、秒……等日期信息，存储在该对象的各个属性中(`tm_year`, `tm_mon`, `tm_mday`...)。下面方法可以将挂钟时间转换为`struct_time`对象:
 
-time包还定义了struct_time对象。该对象实际上是将挂钟时间转换为年、月、日、时、分、秒……等日期信息，存储在该对象的各个属性中(tm_year, tm_mon, tm_mday...)。下面方法可以将挂钟时间转换为struct_time对象:
-
+```python
 st = time.gmtime()      # 返回struct_time格式的UTC时间
 st = time.localtime()   # 返回struct_time格式的当地时间, 当地时区根据系统环境决定。
 
 s  = time.mktime(st)    # 将struct_time格式转换成wall clock time
- 
+```
 
-datetime包
+### datetime包
 
 1) 简介
 
@@ -3551,22 +3521,22 @@ datetime可以理解为date和time两个组成部分。date是指年月日构成
 
 比如说我现在看到的时间，是2012年9月3日21时30分，我们可以用如下方式表达：
 
+```python
 import datetime
 t = datetime.datetime(2012,9,3,21,30)
 print(t)
+```
+
 所返回的t有如下属性:
 
-hour, minute, second, microsecond
-
-year, month, day, weekday   # weekday表示周几
-
- 
++ hour, minute, second, microsecond
++ year, month, day, weekday   # weekday表示周几
 
 2) 运算
 
 datetime包还定义了时间间隔对象(timedelta)。一个时间点(datetime)加上一个时间间隔(timedelta)可以得到一个新的时间点(datetime)。比如今天的上午3点加上5个小时得到今天的上午8点。同理，两个时间点相减会得到一个时间间隔。
 
-复制代码
+```python
 import datetime
 t      = datetime.datetime(2012,9,3,21,30)
 t_next = datetime.datetime(2012,9,5,23,30)
@@ -3575,15 +3545,13 @@ delta2 = datetime.timedelta(weeks = 3)
 print(t + delta1)
 print(t + delta2)
 print(t_next - t)
-复制代码
+```
+
 在给datetime.timedelta传递参数（如上的seconds和weeks）的时候，还可以是days, hours, milliseconds, microseconds。
 
- 
+两个datetime对象还可以进行比较。比如使用上面的t和`t_next`:
 
-两个datetime对象还可以进行比较。比如使用上面的t和t_next:
-
-print(t > t_next)
- 
+	print(t > t_next)
 
 3) datetime对象与字符串转换
 
@@ -3591,43 +3559,40 @@ print(t > t_next)
 
 一个方法是用上一讲的正则表达式来搜索字符串。但时间信息实际上有很明显的特征，我们可以用格式化读取的方式读取时间信息。
 
+```python
 from datetime import datetime
 format = "output-%Y-%m-%d-%H%M%S.txt" 
 str    = "output-1997-12-23-030000.txt" 
 t      = datetime.strptime(str, format)
 strptime, p = parsing
-
+```
 
 我们通过format来告知Python我们的str字符串中包含的日期的格式。在format中，%Y表示年所出现的位置, %m表示月份所出现的位置……。
 
-反过来，我们也可以调用datetime对象的strftime()方法，来将datetime对象转换为特定格式的字符串。比如上面所定义的t_next,
+反过来，我们也可以调用datetime对象的strftime()方法，来将datetime对象转换为特定格式的字符串。比如上面所定义的`t_next`,
 
+```python
 print(t_next.strftime(format))
 strftime, f = formatting
+```
 
 具体的格式写法可参阅官方文档。 如果是Linux系统，也可查阅date命令的手册($man date)，两者相通。
 
- 
+### 总结
 
-总结
-
-时间，休眠
-
-datetime, timedelta
-
-格式化时间
++ 时间，休眠
++ datetime, timedelta
++ 格式化时间
 
 ## Python标准库03 路径与文件 (os.path包, glob包)
 
 路径与文件的简介请参看Linux文件系统
 
- 
-
-os.path包
+### os.path包
 
 os.path包主要是处理路径字符串，比如说'/home/vamei/doc/file.txt'，提取出有用信息。
 
-复制代码
+```python
 import os.path
 path = '/home/vamei/doc/file.txt'
 
@@ -3639,16 +3604,15 @@ path2 = os.path.join('/', 'home', 'vamei', 'doc', 'file1.txt')  # 使用目录�
 
 p_list = [path, path2]
 print(os.path.commonprefix(p_list))    # 查询多个路径的共同部分
-复制代码
+```
+
 此外，还有下面的方法：
 
-os.path.normpath(path)   # 去除路径path中的冗余。比如'/home/vamei/../.'被转化为'/home'
-
- 
+	os.path.normpath(path)   # 去除路径path中的冗余。比如'/home/vamei/../.'被转化为'/home'
 
 os.path还可以查询文件的相关信息(metadata)。文件的相关信息不存储在文件内部，而是由操作系统维护的，关于文件的一些信息(比如文件类型，大小，修改时间)。
 
-复制代码
+```python
 import os.path 
 path = '/home/vamei/doc/file.txt'
 
@@ -3660,44 +3624,37 @@ print(os.path.getmtime(path))  # 查询文件上一次修改的时间
 
 print(os.path.isfile(path))    # 路径是否指向常规文件
 print(os.path.isdir(path))     # 路径是否指向目录文件
-复制代码
+```
+
  (实际上，这一部份类似于Linux中的ls命令的某些功能)
 
- 
-
-glob包
+### glob包
 
 glob包最常用的方法只有一个, glob.glob()。该方法的功能与Linux中的ls相似(参看Linux文件管理命令)，接受一个Linux式的文件名格式表达式(filename pattern expression)，列出所有符合该表达式的文件（与正则表达式类似），将所有文件名放在一个表中返回。所以glob.glob()是一个查询目录下文件的好方法。
 
 该文件名表达式的语法与Python自身的正则表达式不同 (你可以同时看一下fnmatch包，它的功能是检测一个文件名是否符合Linux的文件名格式表达式)。 如下：
 
+```
 Filename Pattern Expression      Python Regular Expression
-
 *                                .*
-
 ?                                .
-
 [0-9]                            same
-
 [a-e]                            same
-
 [^mnp]                           same
-
- 
+```
 
 我们可以用该命令找出/home/vamei下的所有文件:
 
+```python
 import glob
 print(glob.glob('/home/vamei/*'))
- 
+```
 
-总结
+### 总结
 
-文件系统
-
-os.path
-
-glob.glob
++ 文件系统
++ os.path
++ glob.glob
 
 ## Python标准库04 文件管理 (部分os包，shutil包)
 
@@ -3705,91 +3662,79 @@ glob.glob
 
 本文基于linux文件管理背景知识
 
- 
-
-os包 
+### os包 
 
 os包包括各种各样的函数，以实现操作系统的许多功能。这个包非常庞杂。os包的一些命令就是用于文件管理。我们这里列出最常用的:
 
-mkdir(path)
+	mkdir(path)
 
-创建新目录，path为一个字符串，表示新目录的路径。相当于$mkdir命令
+创建新目录，path为一个字符串，表示新目录的路径。相当于`$mkdir`命令
 
-rmdir(path)
+	rmdir(path)
 
-删除空的目录，path为一个字符串，表示想要删除的目录的路径。相当于$rmdir命令
+删除空的目录，path为一个字符串，表示想要删除的目录的路径。相当于`$rmdir`命令
 
-listdir(path)
+	listdir(path)
 
-返回目录中所有文件。相当于$ls命令。
+返回目录中所有文件。相当于`$ls`命令。
 
- 
-
-remove(path)
+	remove(path)
 
 删除path指向的文件。
 
-rename(src, dst)
+	rename(src, dst)
 
 重命名文件，src和dst为两个路径，分别表示重命名之前和之后的路径。 
 
- 
+	chmod(path, mode)
 
-chmod(path, mode)
+改变path指向的文件的权限。相当于`$chmod`命令。
 
-改变path指向的文件的权限。相当于$chmod命令。
+	chown(path, uid, gid)
 
-chown(path, uid, gid)
+改变path所指向文件的拥有者和拥有组。相当于`$chown`命令。
 
-改变path所指向文件的拥有者和拥有组。相当于$chown命令。
+	stat(path)
 
-stat(path)
+查看path所指向文件的附加信息，相当于`$ls -l`命令。
 
-查看path所指向文件的附加信息，相当于$ls -l命令。
+	symlink(src, dst)
 
-symlink(src, dst)
+为文件dst创建软链接，src为软链接文件的路径。相当于`$ln -s`命令。
 
-为文件dst创建软链接，src为软链接文件的路径。相当于$ln -s命令。
+	getcwd()
 
- 
-
-getcwd()
-
-查询当前工作路径 (cwd, current working directory)，相当于$pwd命令。
-
- 
+查询当前工作路径 (cwd, current working directory)，相当于`$pwd`命令。
 
 比如说我们要新建目录new：
 
+```python
 import os
 os.mkdir('/home/vamei/new')
- 
+```
 
-shutil包
+### shutil包
 
-copy(src, dst)
+	copy(src, dst)
 
-复制文件，从src到dst。相当于$cp命令。
+复制文件，从src到dst。相当于`$cp`命令。
 
-move(src, dst)
+	move(src, dst)
 
-移动文件，从src到dst。相当于$mv命令。
-
- 
+移动文件，从src到dst。相当于`$mv`命令。
 
 比如我们想复制文件a.txt:
 
+```python
 import shutil
 shutil.copy('a.txt', 'b.txt')
- 
+```
 
 想深入细节，请参照官方文档os, shutil。
 
 结合本章以及之前的内容，我们把Python打造成一个文件管理的利器了。
 
- 
-
-总结
+### 总结
 
 os包: rmdir, mkdir, listdir, remove, rename, chmod, chown, stat, symlink
 
@@ -3801,15 +3746,13 @@ shutil包: copy, move
 
 计算机的内存中存储的是二进制的序列 (当然，在Linux眼中，是文本流)。我们可以直接将某个对象所对应位置的数据抓取下来，转换成文本流 (这个过程叫做serialize)，然后将文本流存入到文件中。由于Python在创建对象时，要参考对象的类定义，所以当我们从文本中读取对象时，必须在手边要有该对象的类定义，才能懂得如何去重建这一对象。从文件读取时，对于Python的内建(built-in)对象 (比如说整数、词典、表等等)，由于其类定义已经载入内存，所以不需要我们再在程序中定义类。但对于用户自行定义的对象，就必须要先定义类，然后才能从文件中载入对象 (比如面向对象的基本概念中的对象那个summer)。
 
- 
-
-pickle包
+### pickle包
 
 对于上述过程，最常用的工具是Python中的pickle包。
 
 1) 将内存中的对象转换成为文本流：
 
-复制代码
+```python
 import pickle
 
 # define class
@@ -3819,14 +3762,13 @@ class Bird(object):
 
 summer       = Bird()                 # construct an object
 picklestring = pickle.dumps(summer)   # serialize object
-复制代码
-使用pickle.dumps()方法可以将对象summer转换成了字符串 picklestring(也就是文本流)。随后我们可以用普通文本的存储方法来将该字符串储存在文件(文本文件的输入输出)。
+```
 
- 
+使用pickle.dumps()方法可以将对象summer转换成了字符串 picklestring(也就是文本流)。随后我们可以用普通文本的存储方法来将该字符串储存在文件(文本文件的输入输出)。
 
 当然，我们也可以使用pickle.dump()的方法，将上面两部合二为一:
 
-复制代码
+```python
 import pickle
 
 # define class
@@ -3838,20 +3780,17 @@ summer       = Bird()                        # construct an object
 fn           = 'a.pkl'
 with open(fn, 'w') as f:                     # open file with write-mode
     picklestring = pickle.dump(summer, f)   # serialize and save object
-复制代码
-对象summer存储在文件a.pkl
+```
 
- 
+对象summer存储在文件a.pkl
 
 2) 重建对象
 
 首先，我们要从文本中读出文本，存储到字符串 (文本文件的输入输出)。然后使用pickle.loads(str)的方法，将字符串转换成为对象。要记得，此时我们的程序中必须已经有了该对象的类定义。
 
- 
-
 此外，我们也可以使用pickle.load()的方法，将上面步骤合并:
 
-复制代码
+```python
 import pickle
 
 # define the class before unpickle
@@ -3862,212 +3801,174 @@ class Bird(object):
 fn     = 'a.pkl'
 with open(fn, 'r') as f:
     summer = pickle.load(f)   # read file and build object
-复制代码
- 
+```
 
- 
-
-cPickle包
+### cPickle包
 
 cPickle包的功能和用法与pickle包几乎完全相同 (其存在差别的地方实际上很少用到)，不同在于cPickle是基于c语言编写的，速度是pickle包的1000倍。对于上面的例子，如果想使用cPickle包，我们都可以将import语句改为:
 
-import cPickle as pickle
-就不需要再做任何改动了。
+	import cPickle as pickle
 
- 
+### 总结
 
-总结
-
-对象 -> 文本 -> 文件
-
-pickle.dump(), pickle.load(), cPickle
++ 对象 -> 文本 -> 文件
++ pickle.dump(), pickle.load(), cPickle
 
 ## Python标准库06 子进程 (subprocess包)
 
 这里的内容以Linux进程基础和Linux文本流为基础。subprocess包主要功能是执行外部的命令和程序。比如说，我需要使用wget下载文件。我在Python中调用wget程序。从这个意义上来说，subprocess的功能与shell类似。
 
- 
-
-subprocess以及常用的封装函数
+### subprocess以及常用的封装函数
 
 当我们运行python的时候，我们都是在创建并运行一个进程。正如我们在Linux进程基础中介绍的那样，一个进程可以fork一个子进程，并让这个子进程exec另外一个程序。在Python中，我们通过标准库中的subprocess包来fork一个子进程，并运行一个外部的程序(fork，exec见Linux进程基础)。
 
- 
-
 subprocess包中定义有数个创建子进程的函数，这些函数分别以不同的方式创建子进程，所以我们可以根据需要来从中选取一个使用。另外subprocess还提供了一些管理标准流(standard stream)和管道(pipe)的工具，从而在进程间使用文本通信。
-
- 
 
 使用subprocess包中的函数创建子进程的时候，要注意:
 
-1) 在创建子进程之后，父进程是否暂停，并等待子进程运行。
+1. 在创建子进程之后，父进程是否暂停，并等待子进程运行。
+2. 函数返回什么
+3. 当returncode不为0时，父进程如何处理。
 
-2) 函数返回什么
+`subprocess.call()`
 
-3) 当returncode不为0时，父进程如何处理。
+父进程等待子进程完成 返回退出信息(returncode，相当于exit code，见Linux进程基础)
 
- 
+`subprocess.check_call()`
 
-subprocess.call()
-父进程等待子进程完成
-返回退出信息(returncode，相当于exit code，见Linux进程基础)
-
- 
-
-subprocess.check_call()
-
-父进程等待子进程完成
-
-返回0
+父进程等待子进程完成 返回0
 
 检查退出信息，如果returncode不为0，则举出错误subprocess.CalledProcessError，该对象包含有returncode属性，可用try...except...来检查(见Python错误处理)。
 
- 
+`subprocess.check_output()`
 
-subprocess.check_output()
-
-父进程等待子进程完成
-
-返回子进程向标准输出的输出结果
+父进程等待子进程完成 返回子进程向标准输出的输出结果
 
 检查退出信息，如果returncode不为0，则举出错误subprocess.CalledProcessError，该对象包含有returncode属性和output属性，output属性为标准输出的输出结果，可用try...except...来检查。
 
- 
-
 这三个函数的使用方法相类似，我们以subprocess.call()来说明:
 
+```python
 import subprocess
 rc = subprocess.call(["ls","-l"])
-我们将程序名(ls)和所带的参数(-l)一起放在一个表中传递给subprocess.call()
+```
 
- 
+我们将程序名(ls)和所带的参数(-l)一起放在一个表中传递给subprocess.call()
 
 可以通过一个shell来解释一整个字符串:
 
+```python
 import subprocess
 out = subprocess.call("ls -l", shell=True)
 out = subprocess.call("cd ..", shell=True)
+```
+
 我们使用了shell=True这个参数。这个时候，我们使用一整个字符串，而不是一个表来运行子进程。Python将先运行一个shell，再用这个shell来解释这整个字符串。
 
 shell命令中有一些是shell的内建命令，这些命令必须通过shell运行，$cd。shell=True允许我们运行这样一些命令。
 
- 
-
-Popen()
+### Popen()
 
 实际上，我们上面的三个函数都是基于Popen()的封装(wrapper)。这些封装的目的在于让我们容易使用子进程。当我们想要更个性化我们的需求的时候，就要转向Popen类，该类生成的对象用来代表子进程。
 
- 
-
 与上面的封装不同，Popen对象创建后，主程序不会自动等待子进程完成。我们必须调用对象的wait()方法，父进程才会等待 (也就是阻塞block)：
 
+```python
 import subprocess
 child = subprocess.Popen(["ping","-c","5","www.google.com"])
 print("parent process")
-从运行结果中看到，父进程在开启子进程之后并没有等待child的完成，而是直接运行print。
+```
 
- 
+从运行结果中看到，父进程在开启子进程之后并没有等待child的完成，而是直接运行print。
 
 对比等待的情况:
 
+```python
 import subprocess
 child = subprocess.Popen(["ping","-c","5","www.google.com"])
 child.wait()
 print("parent process")
- 
+```
 
 此外，你还可以在父进程中对子进程进行其它操作，比如我们上面例子中的child对象:
 
+```
 child.poll()           # 检查子进程状态
-
 child.kill()           # 终止子进程
-
 child.send_signal()    # 向子进程发送信号
-
 child.terminate()      # 终止子进程
-
- 
+```
 
 子进程的PID存储在child.pid
 
- 
-
-子进程的文本流控制
+### 子进程的文本流控制
 
 (沿用child子进程) 子进程的标准输入，标准输出和标准错误也可以通过如下属性表示:
 
-child.stdin
-
-child.stdout
-
-child.stderr
-
- 
++ child.stdin
++ child.stdout
++ child.stderr
 
 我们可以在Popen()建立子进程的时候改变标准输入、标准输出和标准错误，并可以利用subprocess.PIPE将多个子进程的输入和输出连接在一起，构成管道(pipe):
 
+```python
 import subprocess
 child1 = subprocess.Popen(["ls","-l"], stdout=subprocess.PIPE)
 child2 = subprocess.Popen(["wc"], stdin=child1.stdout,stdout=subprocess.PIPE)
 out = child2.communicate()
 print(out)
 subprocess.PIPE实际上为文本流提供一个缓存区。child1的stdout将文本输出到缓存区，随后child2的stdin从该PIPE中将文本读取走。child2的输出文本也被存放在PIPE中，直到communicate()方法从PIPE中读取出PIPE中的文本。
+```
 
 要注意的是，communicate()是Popen对象的一个方法，该方法会阻塞父进程，直到子进程完成。
 
- 
-
 我们还可以利用communicate()方法来使用PIPE给子进程输入:
 
+```python
 import subprocess
 child = subprocess.Popen(["cat"], stdin=subprocess.PIPE)
 child.communicate("vamei")
-我们启动子进程之后，cat会等待输入，直到我们用communicate()输入"vamei"。
+```
 
- 
+我们启动子进程之后，cat会等待输入，直到我们用communicate()输入"vamei"。
 
 通过使用subprocess包，我们可以运行外部程序。这极大的拓展了Python的功能。如果你已经了解了操作系统的某些应用，你可以从Python中直接调用该应用(而不是完全依赖Python)，并将应用的结果输出给Python，并让Python继续处理。shell的功能(比如利用文本流连接各个应用)，就可以在Python中实现。
 
- 
+### 总结
 
-总结
-
-subprocess.call, subprocess.check_call(), subprocess.check_output()
-
-subprocess.Popen(), subprocess.PIPE
-
-Popen.wait(), Popen.communicate()
++ subprocess.call, subprocess.check_call(), subprocess.check_output()
++ subprocess.Popen(), subprocess.PIPE
++ open.wait(), Popen.communicate()
 
 ## Python标准库07 信号 (signal包，部分os包)
 
 在了解了Linux的信号基础之后，Python标准库中的signal包就很容易学习和理解。signal包负责在Python程序内部处理信号，典型的操作包括预设信号处理函数，暂停并等待信号，以及定时发出SIGALRM等。要注意，signal包主要是针对UNIX平台(比如Linux, MAC OS)，而Windows内核中由于对信号机制的支持不充分，所以在Windows上的Python不能发挥信号系统的功能。
 
- 
-
-定义信号名
+### 定义信号名
 
 signal包定义了各个信号名及其对应的整数，比如
 
+```python
 import signal
 print signal.SIGALRM
 print signal.SIGCONT
+```
+
 Python所用的信号名和Linux一致。你可以通过
 
-$man 7 signal
+	$man 7 signal
 
-查询
-
- 
+### 查询
 
 预设信号处理函数
 
 signal包的核心是使用signal.signal()函数来预设(register)信号处理函数，如下所示：
 
-singnal.signal(signalnum, handler)
+	singnal.signal(signalnum, handler)
 
 signalnum为某个信号，handler为该信号的处理函数。我们在信号基础里提到，进程可以无视信号，可以采取默认操作，还可以自定义操作。当handler为signal.SIG_IGN时，信号被无视(ignore)。当handler为singal.SIG_DFL，进程采取默认操作(default)。当handler为一个函数名时，进程采取函数中定义的操作。
 
-复制代码
+```python
 import signal
 # Define signal handler function
 def myHandler(signum, frame):
@@ -4077,30 +3978,25 @@ def myHandler(signum, frame):
 signal.signal(signal.SIGTSTP, myHandler)
 signal.pause()
 print('End of Signal Demo')
-复制代码
- 
+```
 
 在主程序中，我们首先使用signal.signal()函数来预设信号处理函数。然后我们执行signal.pause()来让该进程暂停以等待信号，以等待信号。当信号SIGUSR1被传递给该进程时，进程从暂停中恢复，并根据预设，执行SIGTSTP的信号处理函数myHandler()。myHandler的两个参数一个用来识别信号(signum)，另一个用来获得信号发生时，进程栈的状况(stack frame)。这两个参数都是由signal.singnal()函数来传递的。
 
 上面的程序可以保存在一个文件中(比如test.py)。我们使用如下方法运行:
 
-$python test.py
+	$python test.py
 
-以便让进程运行。当程序运行到signal.pause()的时候，进程暂停并等待信号。此时，通过按下CTRL+Z向该进程发送SIGTSTP信号。我们可以看到，进程执行了myHandle()函数, 随后返回主程序，继续执行。(当然，也可以用$ps查询process ID, 再使用$kill来发出信号。)
+以便让进程运行。当程序运行到signal.pause()的时候，进程暂停并等待信号。此时，通过按下CTRL+Z向该进程发送SIGTSTP信号。我们可以看到，进程执行了myHandle()函数, 随后返回主程序，继续执行。(当然，也可以用`$ps`查询process ID, 再使用`$kill`来发出信号。)
 
 (进程并不一定要使用signal.pause()暂停以等待信号，它也可以在进行工作中接受信号，比如将上面的signal.pause()改为一个需要长时间工作的循环。)
 
- 
-
 我们可以根据自己的需要更改myHandler()中的操作，以针对不同的信号实现个性化的处理。
 
- 
-
-定时发出SIGALRM信号
+### 定时发出SIGALRM信号
 
 一个有用的函数是signal.alarm()，它被用于在一定时间之后，向进程自身发送SIGALRM信号:
 
-复制代码
+```python
 import signal
 # Define signal handler function
 def myHandler(signum, frame):
@@ -4112,36 +4008,27 @@ signal.signal(signal.SIGALRM, myHandler)
 signal.alarm(5)
 while True:
     print('not yet')
-复制代码
+```
+
 我们这里用了一个无限循环以便让进程持续运行。在signal.alarm()执行5秒之后，进程将向自己发出SIGALRM信号，随后，信号处理函数myHandler开始执行。
 
- 
-
-发送信号
+### 发送信号
 
 signal包的核心是设置信号处理函数。除了signal.alarm()向自身发送信号之外，并没有其他发送信号的功能。但在os包中，有类似于linux的kill命令的函数，分别为
 
-os.kill(pid, sid)
++ os.kill(pid, sid)
++ os.killpg(pgid, sid)
 
-os.killpg(pgid, sid)
-
-分别向进程和进程组(见Linux进程关系)发送信号。sid为信号所对应的整数或者singal.SIG*。
-
- 
+分别向进程和进程组(见Linux进程关系)发送信号。sid为信号所对应的整数或者`singal.SIG*`。
 
 实际上signal, pause，kill和alarm都是Linux应用编程中常见的C库函数，在这里，我们只不过是用Python语言来实现了一下。实际上，Python 的解释器是使用C语言来编写的，所以有此相似性也并不意外。此外，在Python 3.4中，signal包被增强，信号阻塞等功能被加入到该包中。我们暂时不深入到该包中。
 
- 
+### 总结
 
-总结
-
-signal.SIG*
-
-signal.signal()
-
-signal.pause()
-
-signal.alarm()
++ signal.SIG*
++ signal.signal()
++ signal.pause()
++ signal.alarm()
 
 ## Python标准库08 多线程与同步 (threading包)
 
@@ -4149,13 +4036,11 @@ Python主要通过标准库中的threading包来实现多线程。在当今网�
 
 (关于多线程的原理和C实现方法，请参考我之前写的Linux多线程与同步，要了解race condition, mutex和condition variable的概念)
 
- 
-
-多线程售票以及同步
+### 多线程售票以及同步
 
 我们使用Python来实现Linux多线程与同步文中的售票程序。我们使用mutex (也就是Python中的Lock类对象) 来实现线程的同步:
 
-复制代码
+```python
 # A program to simulate selling tickets in multi-thread way
 # Written by Vamei
 
@@ -4191,20 +4076,21 @@ lock = threading.Lock()              # Lock (i.e., mutex)
 for k in range(10):
     new_thread = threading.Thread(target=booth,args=(k,))   # Set up thread; target: the callable (function) to be run, args: the argument for the callable 
     new_thread.start()                                      # run the thread
-复制代码
+```
+
 我们使用了两个全局变量，一个是i，用以储存剩余票数；一个是lock对象，用于同步线程对i的修改。此外，在最后的for循环中，我们总共设置了10个线程。每个线程都执行booth()函数。线程在调用start()方法的时候正式启动 (实际上，计算机中最多会有11个线程，因为主程序本身也会占用一个线程)。Python使用threading.Thread对象来代表线程，用threading.Lock对象来代表一个互斥锁 (mutex)。
 
 有两点需要注意:
 
 我们在函数中使用global来声明变量为全局变量，从而让多线程共享i和lock (在C语言中，我们通过将变量放在所有函数外面来让它成为全局变量)。如果不这么声明，由于i和lock是不可变数据对象，它们将被当作一个局部变量(参看Python动态类型)。如果是可变数据对象的话，则不需要global声明。我们甚至可以将可变数据对象作为参数来传递给线程函数。这些线程将共享这些可变数据对象。
+
 我们在booth中使用了两个doChore()函数。可以在未来改进程序，以便让线程除了进行i=i-1之外，做更多的操作，比如打印剩余票数，找钱，或者喝口水之类的。第一个doChore()依然在Lock内部，所以可以安全地使用共享资源 (critical operations, 比如打印剩余票数)。第二个doChore()时，Lock已经被释放，所以不能再去使用共享资源。这时候可以做一些不使用共享资源的操作 (non-critical operation, 比如找钱、喝水)。我故意让doChore()等待了0.5秒，以代表这些额外的操作可能花费的时间。你可以定义的函数来代替doChore()。
  
-
-OOP创建线程
+### OOP创建线程
 
 上面的Python程序非常类似于一个面向过程的C程序。我们下面介绍如何通过面向对象 (OOP， object-oriented programming，参看Python面向对象的基本概念和Python面向对象的进一步拓展) 的方法实现多线程，其核心是继承threading.Thread类。我们上面的for循环中已经利用了threading.Thread()的方法来创建一个Thread对象，并将函数booth()以及其参数传递给改对象，并调用start()方法来运行线程。OOP的话，通过修改Thread类的run()方法来定义线程所要执行的命令。
 
-复制代码
+```python
 # A program to simulate selling tickets in multi-thread way
 # Written by Vamei
 
@@ -4242,151 +4128,110 @@ monitor = {'tick':100, 'lock':threading.Lock()}
 for k in range(10):
     new_thread = BoothThread(k, monitor)
     new_thread.start()
-复制代码
+```
+
 我们自己定义了一个类BoothThread, 这个类继承自thread.Threading类。然后我们把上面的booth()所进行的操作统统放入到BoothThread类的run()方法中。注意，我们没有使用全局变量声明global，而是使用了一个词典monitor存放全局变量，然后把词典作为参数传递给线程函数。由于词典是可变数据对象，所以当它被传递给函数的时候，函数所使用的依然是同一个对象，相当于被多个线程所共享。这也是多线程乃至于多进程编程的一个技巧 (应尽量避免上面的global声明的用法，因为它并不适用于windows平台)。
 
 上面OOP编程方法与面向过程的编程方法相比，并没有带来太大实质性的差别。
 
- 
-
-其他
+### 其他
 
 threading.Thread对象： 我们已经介绍了该对象的start()和run(), 此外：
 
 join()方法，调用该方法的线程将等待直到改Thread对象完成，再恢复运行。这与进程间调用wait()函数相类似。
  
-
 下面的对象用于处理多线程同步。对象一旦被建立，可以被多个线程共享，并根据情况阻塞某些进程。请与Linux多线程与同步中的同步工具参照阅读。
 
-threading.Lock对象: mutex, 有acquire()和release()方法。
-
-threading.Condition对象: condition variable，建立该对象时，会包含一个Lock对象 (因为condition variable总是和mutex一起使用)。可以对Condition对象调用acquire()和release()方法，以控制潜在的Lock对象。此外:
-
-wait()方法，相当于cond_wait()
-notify_all()，相当与cond_broadcast()
-nofify()，与notify_all()功能类似，但只唤醒一个等待的线程，而不是全部
-threading.Semaphore对象: semaphore，也就是计数锁(semaphore传统意义上是一种进程间同步工具，见Linux进程间通信)。创建对象的时候，可以传递一个整数作为计数上限 (sema = threading.Semaphore(5))。它与Lock类似，也有Lock的两个方法。
-threading.Event对象: 与threading.Condition相类似，相当于没有潜在的Lock保护的condition variable。对象有True和False两个状态。可以多个线程使用wait()等待，直到某个线程调用该对象的set()方法，将对象设置为True。线程可以调用对象的clear()方法来重置对象为False状态。
++ threading.Lock对象: mutex, 有acquire()和release()方法。
++ threading.Condition对象: condition variable，建立该对象时，会包含一个Lock对象 (因为condition variable总是和mutex一起使用)。可以对Condition对象调用acquire()和release()方法，以控制潜在的Lock对象。此外:
++ wait()方法，相当于cond_wait()
++ notify_all()，相当与cond_broadcast()
++ nofify()，与notify_all()功能类似，但只唤醒一个等待的线程，而不是全部
++ threading.Semaphore对象: semaphore，也就是计数锁(semaphore传统意义上是一种进程间同步工具，见Linux进程间通信)。创建对象的时候，可以传递一个整数作为计数上限 (sema = threading.Semaphore(5))。它与Lock类似，也有Lock的两个方法。
++ threading.Event对象: 与threading.Condition相类似，相当于没有潜在的Lock保护的condition variable。对象有True和False两个状态。可以多个线程使用wait()等待，直到某个线程调用该对象的set()方法，将对象设置为True。线程可以调用对象的clear()方法来重置对象为False状态。
  
- 
-练习
-参照Linux多线程与同步中的condition variable的例子，使用Python实现。同时考虑使用面向过程和面向对象的编程方法。
-更多的threading的内容请参考:
-http://docs.python.org/library/threading.html
+### 总结
 
-
-总结
-
-threading.Thread
-
-Lock, Condition, Semaphore, Event
++ threading.Thread
++ Lock, Condition, Semaphore, Event
 
 ## Python标准库09 当前进程信息 (os包)
 
 我们在Linux的概念与体系，多次提及进程的重要性。Python的os包中有查询和修改进程信息的函数。学习Python的这些工具也有助于理解Linux体系。
 
- 
-
-进程信息
+### 进程信息
 
 os包中相关函数如下：
 
-uname() 返回操作系统相关信息。类似于Linux上的uname命令。
-
-umask() 设置该进程创建文件时的权限mask。类似于Linux上的umask命令，见Linux文件管理背景知识
-
- 
-
-get*() 查询 (*由以下代替)
-
-    uid, euid, resuid, gid, egid, resgid ：权限相关，其中resuid主要用来返回saved UID。相关介绍见Linux用户与“最小权限”原则
-
-    pid, pgid, ppid, sid                 ：进程相关。相关介绍见Linux进程关系
-
- 
-
-put*() 设置 (*由以下代替)
-
-    euid, egid： 用于更改euid，egid。
-
-    uid, gid  ： 改变进程的uid, gid。只有super user才有权改变进程uid和gid (意味着要以$sudo python的方式运行Python)。
-
-    pgid, sid ： 改变进程所在的进程组(process group)和会话(session)。
-
- 
-
-getenviron()：获得进程的环境变量
-
-setenviron()：更改进程的环境变量
-
- 
++ uname() 返回操作系统相关信息。类似于Linux上的uname命令。
++ umask() 设置该进程创建文件时的权限mask。类似于Linux上的umask命令，见Linux文件管理背景知识
++ `get*()` 查询 (`*`由以下代替)
+	+ uid, euid, resuid, gid, egid, resgid ：权限相关，其中resuid主要用来返回saved UID。相关介绍见Linux用户与“最小权限”原则
+	+ pid, pgid, ppid, sid                 ：进程相关。相关介绍见Linux进程关系
++ `put*()` 设置 (`*`由以下代替)
+	+ euid, egid： 用于更改euid，egid。
+	+ uid, gid  ： 改变进程的uid, gid。只有super user才有权改变进程uid和gid (意味着要以$sudo python的方式运行Python)。
+	+ pgid, sid ： 改变进程所在的进程组(process group)和会话(session)。
++ getenviron()：获得进程的环境变量
++ setenviron()：更改进程的环境变量
 
 例1，进程的real UID和real GID
 
+```python
 import os
 print(os.getuid())
 print(os.getgid())
-将上面的程序保存为py_id.py文件，分别用$python py_id.py和$sudo python py_id.py看一下运行结果
+```
 
- 
+将上面的程序保存为py_id.py文件，分别用`$python py_id.py`和`$sudo python py_id.py`看一下运行结果
 
 saved UID和saved GID
 
 我们希望saved UID和saved GID如我们在Linux用户与“最小权限”原则中描述的那样工作，但这很难。原因在于，当我们写一个Python脚本后，我们实际运行的是python这个解释器，而不是Python脚本文件。对比C，C语言直接运行由C语言编译成的执行文件。我们必须更改python解释器本身的权限来运用saved UID机制，然而这么做又是异常危险的。
 
-比如说，我们的python执行文件为/usr/bin/python (你可以通过$which python获知)
+比如说，我们的python执行文件为/usr/bin/python (你可以通过`$which python`获知)
 
 我们先看一下
 
-$ls -l /usr/bin/python
+	$ls -l /usr/bin/python
 
 的结果:
 
--rwxr-xr-x root root
-
- 
+	-rwxr-xr-x root root
 
 我们修改权限以设置set UID和set GID位 (参考Linux用户与“最小权限”原则)
 
-$sudo chmod 6755 /usr/bin/python
+	$sudo chmod 6755 /usr/bin/python
 
 /usr/bin/python的权限成为:
 
--rwsr-sr-x root root
-
- 
+	-rwsr-sr-x root root
 
 随后，我们运行文件下面test.py文件，这个文件可以是由普通用户vamei所有:
 
+```python
 import os
 print(os.getresuid())
+```
+
 我们得到结果:
 
 (1000, 0, 0)
 
 上面分别是UID，EUID，saved UID。我们只用执行一个由普通用户拥有的python脚本，就可以得到super user的权限！所以，这样做是极度危险的，我们相当于交出了系统的保护系统。想像一下Python强大的功能，别人现在可以用这些强大的功能作为攻击你的武器了！使用下面命令来恢复到从前:
 
-$sudo chmod 0755 /usr/bin/python
-
- 
+	$sudo chmod 0755 /usr/bin/python
 
 关于脚本文件的saved UID/GID，更加详细的讨论见
 
-http://www.faqs.org/faqs/unix-faq/faq/part4/section-7.html
+### 总结
 
- 
-
-总结
-
-get*, set*
-
-umask(), uname()
++ `get*`, `set*`
++ umask(), uname()
 
 ## Python标准库10 多进程初步 (multiprocessing包)
 
 我们已经见过了使用subprocess包来创建子进程，但这个包有两个很大的局限性：1) 我们总是让subprocess运行外部的程序，而不是运行一个Python脚本内部编写的函数。2) 进程间只通过管道进行文本交流。以上限制了我们将subprocess包应用到更广泛的多进程任务。(这样的比较实际是不公平的，因为subprocessing本身就是设计成为一个shell，而不是一个多进程管理包)
-
- 
 
 threading和multiprocessing
 
@@ -4397,15 +4242,16 @@ multiprocessing包是Python中的多进程管理包。与threading.Thread类似�
 但在使用这些共享API的时候，我们要注意以下几点:
 
 在UNIX平台上，当某个进程终结之后，该进程需要被其父进程调用wait，否则进程成为僵尸进程(Zombie)。所以，有必要对每个Process对象调用join()方法 (实际上等同于wait)。对于多线程来说，由于只有一个进程，所以不存在此必要性。
-multiprocessing提供了threading包中没有的IPC(比如Pipe和Queue)，效率上更高。应优先考虑Pipe和Queue，避免使用Lock/Event/Semaphore/Condition等同步方式 (因为它们占据的不是用户进程的资源)。
-多进程应该避免共享资源。在多线程中，我们可以比较容易地共享资源，比如使用全局变量或者传递参数。在多进程情况下，由于每个进程有自己独立的内存空间，以上方法并不合适。此时我们可以通过共享内存和Manager的方法来共享资源。但这样做提高了程序的复杂度，并因为同步的需要而降低了程序的效率。
-Process.PID中保存有PID，如果进程还没有start()，则PID为None。
 
- 
+multiprocessing提供了threading包中没有的IPC(比如Pipe和Queue)，效率上更高。应优先考虑Pipe和Queue，避免使用Lock/Event/Semaphore/Condition等同步方式 (因为它们占据的不是用户进程的资源)。
+
+多进程应该避免共享资源。在多线程中，我们可以比较容易地共享资源，比如使用全局变量或者传递参数。在多进程情况下，由于每个进程有自己独立的内存空间，以上方法并不合适。此时我们可以通过共享内存和Manager的方法来共享资源。但这样做提高了程序的复杂度，并因为同步的需要而降低了程序的效率。
+
+Process.PID中保存有PID，如果进程还没有start()，则PID为None。
 
 我们可以从下面的程序中看到Thread对象和Process对象在使用上的相似性与结果上的不同。各个线程和进程都做一件事：打印PID。但问题是，所有的任务在打印的时候都会向同一个标准输出(stdout)输出。这样输出的字符会混合在一起，无法阅读。使用Lock同步，在一个任务输出完成之后，再允许另一个任务输出，可以避免多个任务同时向终端输出。
 
-复制代码
+```python
 # Similarity and difference of multi thread vs. multi process
 # Written by Vamei
 
@@ -4443,26 +4289,19 @@ for i in range(5):
 
 for process in record:
     process.join()
-复制代码
+```
+
 所有Thread的PID都与主程序相同，而每个Process都有一个不同的PID。
 
-(练习: 使用mutiprocessing包将Python多线程与同步中的多线程程序更改为多进程程序)
-
- 
-
-Pipe和Queue
+### Pipe和Queue
 
 正如我们在Linux多线程中介绍的管道PIPE和消息队列message queue，multiprocessing包中有Pipe类和Queue类来分别支持这两种IPC机制。Pipe和Queue可以用来传送常见的对象。
-
- 
 
 1) Pipe可以是单向(half-duplex)，也可以是双向(duplex)。我们通过mutiprocessing.Pipe(duplex=False)创建单向管道 (默认为双向)。一个进程从PIPE一端输入对象，然后被PIPE另一端的进程接收，单向管道只允许管道一端的进程输入，而双向管道则允许从两端输入。
 
 下面的程序展示了Pipe的使用:
 
- 
-
-复制代码
+```python
 # Multiprocessing with Pipe
 # Written by Vamei
 
@@ -4487,17 +4326,17 @@ p1.start()
 p2.start()
 p1.join()
 p2.join()
-复制代码
+```
+
 这里的Pipe是双向的。
 
 Pipe对象建立的时候，返回一个含有两个元素的表，每个元素代表Pipe的一端(Connection对象)。我们对Pipe的某一端调用send()方法来传送对象，在另一端使用recv()来接收。
 
- 
-
 2) Queue与Pipe相类似，都是先进先出的结构。但Queue允许多个进程放入，多个进程从队列取出对象。Queue使用mutiprocessing.Queue(maxsize)创建，maxsize表示队列中可以存放对象的最大数量。
+
 下面的程序展示了Queue的使用:
 
-复制代码
+```python
 # Written by Vamei
 import os
 import multiprocessing
@@ -4540,14 +4379,466 @@ queue.close()  # No more object will come, close the queue
 
 for p in record2:
     p.join()
-复制代码
+```
+
  一些进程使用put()在Queue中放入字符串，这个字符串中包含PID和时间。另一些进程从Queue中取出，并打印自己的PID以及get()的字符串。
 
+### 总结
+
++ Process, Lock, Event, Semaphore, Condition
++ Pipe, Queue
+
+## Python标准库11 多进程探索 (multiprocessing包)
+
+在初步了解Python多进程之后，我们可以继续探索multiprocessing包中更加高级的工具。这些工具可以让我们更加便利地实现多进程。
+
+### 进程池
+
+进程池 (Process Pool)可以创建多个进程。这些进程就像是随时待命的士兵，准备执行任务(程序)。一个进程池中可以容纳多个待命的士兵。
+
+比如下面的程序:
+
+```python
+import multiprocessing as mul
+
+def f(x):
+    return x**2
+
+pool = mul.Pool(5)
+rel  = pool.map(f,[1,2,3,4,5,6,7,8,9,10])
+print(rel)
+```
+
+我们创建了一个容许5个进程的进程池 (Process Pool) 。Pool运行的每个进程都执行f()函数。我们利用map()方法，将f()函数作用到表的每个元素上。这与built-in的map()函数类似，只是这里用5个进程并行处理。如果进程运行结束后，还有需要处理的元素，那么的进程会被用于重新运行f()函数。除了map()方法外，Pool还有下面的常用方法。
+
+apply_async(func,args)  从进程池中取出一个进程执行func，args为func的参数。它将返回一个AsyncResult的对象，你可以对该对象调用get()方法以获得结果。
+
++ close()  进程池不再创建新的进程
++ join()   wait进程池中的全部进程。必须对Pool先调用close()方法才能join。
+
+**练习**
+
+有下面一个文件download.txt。
+
+```
+www.sina.com.cn
+www.163.com
+www.iciba.com
+www.cnblogs.com
+www.qq.com
+www.douban.com
+```
+
+使用包含3个进程的进程池下载文件中网站的首页。(你可以使用subprocess调用wget或者curl等下载工具执行具体的下载任务)
+
+### 共享资源
+
+我们在Python多进程初步已经提到，我们应该尽量避免多进程共享资源。多进程共享资源必然会带来进程间相互竞争。而这种竞争又会造成race condition，我们的结果有可能被竞争的不确定性所影响。但如果需要，我们依然可以通过共享内存和Manager对象这么做。
+
+### 共享内存
+
+在Linux进程间通信中，我们已经讲述了共享内存(shared memory)的原理，这里给出用Python实现的例子:
+
+```python
+# modified from official documentation
+import multiprocessing
+
+def f(n, a):
+    n.value   = 3.14
+    a[0]      = 5
+
+num   = multiprocessing.Value('d', 0.0)
+arr   = multiprocessing.Array('i', range(10))
+
+p = multiprocessing.Process(target=f, args=(num, arr))
+p.start()
+p.join()
+
+print num.value
+print arr[:]
+```
+
+这里我们实际上只有主进程和Process对象代表的进程。我们在主进程的内存空间中创建共享的内存，也就是Value和Array两个对象。对象Value被设置成为双精度数(d), 并初始化为0.0。而Array则类似于C中的数组，有固定的类型(i, 也就是整数)。在Process进程中，我们修改了Value和Array对象。回到主程序，打印出结果，主程序也看到了两个对象的改变，说明资源确实在两个进程之间共享。
+
+### Manager
+
+Manager对象类似于服务器与客户之间的通信 (server-client)，与我们在Internet上的活动很类似。我们用一个进程作为服务器，建立Manager来真正存放资源。其它的进程可以通过参数传递或者根据地址来访问Manager，建立连接后，操作服务器上的资源。在防火墙允许的情况下，我们完全可以将Manager运用于多计算机，从而模仿了一个真实的网络情境。下面的例子中，我们对Manager的使用类似于shared memory，但可以共享更丰富的对象类型。
+
+```python
+import multiprocessing
+
+def f(x, arr, l):
+    x.value = 3.14
+    arr[0] = 5
+    l.append('Hello')
+
+server = multiprocessing.Manager()
+x    = server.Value('d', 0.0)
+arr  = server.Array('i', range(10))
+l    = server.list()
+
+proc = multiprocessing.Process(target=f, args=(x, arr, l))
+proc.start()
+proc.join()
+
+print(x.value)
+print(arr)
+print(l)
+```
+
+Manager利用list()方法提供了表的共享方式。实际上你可以利用dict()来共享词典，Lock()来共享threading.Lock(注意，我们共享的是threading.Lock，而不是进程的mutiprocessing.Lock。后者本身已经实现了进程共享)等。 这样Manager就允许我们共享更多样的对象。
+
+我们在这里不深入讲解Manager在远程情况下的应用。有机会的话，会在网络应用中进一步探索。
+
+### 总结
+
++ Pool
++ Shared memory, Manager
+
+## Python标准库12 数学与随机数 (math包，random包)
+
+我们已经在Python运算中看到Python最基本的数学运算功能。此外，math包补充了更多的函数。当然，如果想要更加高级的数学功能，可以考虑选择标准库之外的numpy和scipy项目，它们不但支持数组和矩阵运算，还有丰富的数学和物理方程可供使用。
+
+此外，random包可以用来生成随机数。随机数不仅可以用于数学用途，还经常被嵌入到算法中，用以提高算法效率，并提高程序的安全性。
+
+### math包
+
+math包主要处理数学相关的运算。math包定义了两个常数:
+
++ math.e   # 自然常数e
++ math.pi  # 圆周率pi
+
+此外，math包还有各种运算函数 (下面函数的功能可以参考数学手册)：
+
++ math.ceil(x)       # 对x向上取整，比如x=1.2，返回2
++ math.floor(x)      # 对x向下取整，比如x=1.2，返回1
++ math.pow(x,y)      # 指数运算，得到x的y次方
++ math.log(x)        # 对数，默认基底为e。可以使用base参数，来改变对数的基地。比如math.log(100,base=10)
++ math.sqrt(x)       # 平方根
+
+三角函数: math.sin(x), math.cos(x), math.tan(x), math.asin(x), math.acos(x), math.atan(x)
+
+这些函数都接收一个弧度(radian)为单位的x作为参数。
+
+角度和弧度互换: math.degrees(x), math.radians(x)
+
+双曲函数: math.sinh(x), math.cosh(x), math.tanh(x), math.asinh(x), math.acosh(x), math.atanh(x)
+
+特殊函数： math.erf(x), math.gamma(x)
+
+### random包
+
+如果你已经了解伪随机数(psudo-random number)的原理，那么你可以使用如下:
+
+	random.seed(x)
+
+来改变随机数生成器的种子seed。如果你不了解其原理，你不必特别去设定seed，Python会帮你选择seed。
+
+1) 随机挑选和排序
+
+```python
+random.choice(seq)   # 从序列的元素中随机挑选一个元素，比如random.choice(range(10))，从0到9中随机挑选一个整数。
+random.sample(seq,k) # 从序列中随机挑选k个元素
+random.shuffle(seq)  # 将序列的所有元素随机排序
+```
+
+2）随机生成实数
+
+下面生成的实数符合均匀分布(uniform distribution)，意味着某个范围内的每个数字出现的概率相等:
+
+```python
+random.random()          # 随机生成下一个实数，它在[0,1)范围内。
+random.uniform(a,b)      # 随机生成下一个实数，它在[a,b]范围内。
+```
+
+下面生成的实数符合其它的分布 (你可以参考一些统计方面的书籍来了解这些分布):
+
+```python
+random.gauss(mu,sigma)    # 随机生成符合高斯分布的随机数，mu,sigma为高斯分布的两个参数。 
+random.expovariate(lambd) # 随机生成符合指数分布的随机数，lambd为指数分布的参数。
+```
+
+此外还有对数分布，正态分布，Pareto分布，Weibull分布，可参考下面链接:
+
+http://docs.python.org/library/random.html
+
+假设我们有一群人参加舞蹈比赛，为了公平起见，我们要随机排列他们的出场顺序。我们下面利用random包实现：
+
+```python
+import random
+all_people = ['Tom', 'Vivian', 'Paul', 'Liya', 'Manu', 'Daniel', 'Shawn']
+random.shuffle(all_people)
+for i,name in enumerate(all_people):
+    print(i,':'+name)
+``` 
+
+**练习**
+
+设计下面两种彩票号码生成器:
+
+1. 从1到22中随机抽取5个整数 （这5个数字不重复）
+2. 随机产生一个8位数字，每位数字都可以是1到6中的任意一个整数。 
+
+### 总结
+
++ math.floor(), math.sqrt(), math.sin(), math.degrees()
++ random.random(), random.choice(), random.shuffle()
+
+## Python标准库13 循环器 (itertools)
+
+在循环对象和函数对象中，我们了解了循环器(iterator)的功能。循环器是对象的容器，包含有多个对象。通过调用循环器的next()方法 (`__next__()`方法，在Python 3.x中)，循环器将依次返回一个对象。直到所有的对象遍历穷尽，循环器将举出StopIteration错误。
+
+在for i in iterator结构中，循环器每次返回的对象将赋予给i，直到循环结束。使用iter()内置函数，我们可以将诸如表、字典等容器变为循环器。比如
+
+```python
+for i in iter([2, 4, 5, 6]):
+    print(i)
+```
+
+标准库中的itertools包提供了更加灵活的生成循环器的工具。这些工具的输入大都是已有的循环器。另一方面，这些工具完全可以自行使用Python实现，该包只是提供了一种比较标准、高效的实现方式。这也符合Python“只有且最好只有解决方案”的理念。
+
+```python
+# import the tools
+from itertools import *
+```
+
+无穷循环器
+
++ count(5, 2)     #从5开始的整数循环器，每次增加2，即5, 7, 9, 11, 13, 15 ...
++ cycle('abc')    #重复序列的元素，既a, b, c, a, b, c ...
++ repeat(1.2)     #重复1.2，构成无穷循环器，即1.2, 1.2, 1.2, ...
+
+repeat也可以有一个次数限制:
+
+	repeat(10, 5)   #重复10，共重复5次
+
+### 函数式工具
+
+函数式编程是将函数本身作为处理对象的编程范式。在Python中，函数也是对象，因此可以轻松的进行一些函数式的处理，比如map(), filter(), reduce()函数。
+
+itertools包含类似的工具。这些函数接收函数作为参数，并将结果返回为一个循环器。
+
+比如
+
+```python
+from itertools import *
+
+rlt = imap(pow, [1, 2, 3], [1, 2, 3])
+
+for num in rlt:
+    print(num)
+```
+
+上面显示了imap函数。该函数与map()函数功能相似，只不过返回的不是序列，而是一个循环器。包含元素1, 4, 27，即`1**1`, `2**2`, `3**3`的结果。函数pow(内置的乘方函数)作为第一个参数。pow()依次作用于后面两个列表的每个元素，并收集函数结果，组成返回的循环器。
+
+此外，还可以用下面的函数:
+
+	starmap(pow, [(1, 1), (2, 2), (3, 3)])
+
+pow将依次作用于表的每个tuple。
+
+ifilter函数与filter()函数类似，只是返回的是一个循环器。
+
+	ifilter(lambda x: x > 5, [2, 3, 5, 6, 7]
+
+将lambda函数依次作用于每个元素，如果函数返回True，则收集原来的元素。6, 7
+
+此外，
+
+	ifilterfalse(lambda x: x > 5, [2, 3, 5, 6, 7])
+
+与上面类似，但收集返回False的元素。2, 3, 5
+
+	takewhile(lambda x: x < 5, [1, 3, 6, 7, 1])
+
+当函数返回True时，收集元素到循环器。一旦函数返回False，则停止。1, 3
+
+	dropwhile(lambda x: x < 5, [1, 3, 6, 7, 1])
+
+当函数返回False时，跳过元素。一旦函数返回True，则开始收集剩下的所有元素到循环器。6, 7, 1
+
+### 组合工具
+
+我们可以通过组合原有循环器，来获得新的循环器。
+
+	chain([1, 2, 3], [4, 5, 7])      # 连接两个循环器成为一个。1, 2, 3, 4, 5, 7
+	product('abc', [1, 2])   # 多个循环器集合的笛卡尔积。相当于嵌套循环        
+	for m, n in product('abc', [1, 2]):
+		print m, n
+
+	permutations('abc', 2)   # 从'abcd'中挑选两个元素，比如ab, bc, ... 将所有结果排序，返回为新的循环器。
+
+注意，上面的组合分顺序，即ab, ba都返回。
+
+	combinations('abc', 2)   # 从'abcd'中挑选两个元素，比如ab, bc, ... 将所有结果排序，返回为新的循环器。
+
+注意，上面的组合不分顺序，即ab, ba的话，只返回一个ab。
+
+	combinations_with_replacement('abc', 2) # 与上面类似，但允许两次选出的元素重复。即多了aa, bb, cc
+
+### groupby()
+
+将key函数作用于原循环器的各个元素。根据key函数结果，将拥有相同函数结果的元素分到一个新的循环器。每个新的循环器以函数返回结果为标签。
+
+这就好像一群人的身高作为循环器。我们可以使用这样一个key函数: 如果身高大于180，返回"tall"；如果身高底于160，返回"short";中间的返回"middle"。最终，所有身高将分为三个循环器，即"tall", "short", "middle"。
+
+```python
+def height_class(h):
+    if h > 180:
+        return "tall"
+    elif h < 160:
+        return "short"
+    else:
+        return "middle"
+
+friends = [191, 158, 159, 165, 170, 177, 181, 182, 190]
+
+friends = sorted(friends, key = height_class)
+for m, n in groupby(friends, key = height_class):
+    print(m)
+    print(list(n))
+```
+
+注意，groupby的功能类似于UNIX中的uniq命令。分组之前需要使用sorted()对原循环器的元素，根据key函数进行排序，让同组元素先在位置上靠拢。
+
+### 其它工具
+
+	compress('ABCD', [1, 1, 1, 0])  # 根据[1, 1, 1, 0]的真假值情况，选择第一个参数'ABCD'中的元素。A, B, C
+	islice()                        # 类似于slice()函数，只是返回的是一个循环器
+	izip()                          # 类似于zip()函数，只是返回的是一个循环器。
+
+### 总结
+
+itertools的工具都可以自行实现。itertools只是提供了更加成形的解决方案。
+
+## Python标准库14 数据库 (sqlite3)
+
+Python自带一个轻量级的关系型数据库SQLite。这一数据库使用SQL语言。SQLite作为后端数据库，可以搭配Python建网站，或者制作有数据存储需求的工具。SQLite还在其它领域有广泛的应用，比如HTML5和移动端。Python标准库中的sqlite3提供该数据库的接口。
+
+我将创建一个简单的关系型数据库，为一个书店存储书的分类和价格。数据库中包含两个表：category用于记录分类，book用于记录某个书的信息。一本书归属于某一个分类，因此book有一个外键(foreign key)，指向catogory表的主键id。
+
+![](./_resources/pqg5.png)
+
+### 创建数据库
+
+我首先来创建数据库，以及数据库中的表。在使用connect()连接数据库后，我就可以通过定位指针cursor，来执行SQL命令：
+
+```python
+# By Vamei
+import sqlite3
+
+# test.db is a file in the working directory.
+conn = sqlite3.connect("test.db")
+
+c = conn.cursor()
+
+# create tables
+c.execute('''CREATE TABLE category
+      (id int primary key, sort int, name text)''')
+c.execute('''CREATE TABLE book
+      (id int primary key, 
+       sort int, 
+       name text, 
+       price real, 
+       category int,
+       FOREIGN KEY (category) REFERENCES category(id))''')
+
+# save the changes
+conn.commit()
+
+# close the connection with the database
+conn.close()
+```
+
+SQLite的数据库是一个磁盘上的文件，如上面的test.db，因此整个数据库可以方便的移动或复制。test.db一开始不存在，所以SQLite将自动创建一个新文件。
+
+利用execute()命令，我执行了两个SQL命令，创建数据库中的两个表。创建完成后，保存并断开数据库连接。
+
+### 插入数据
+
+上面创建了数据库和表，确立了数据库的抽象结构。下面将在同一数据库中插入数据：
+
+```python
+# By Vamei
+
+import sqlite3
+
+conn = sqlite3.connect("test.db")
+c    = conn.cursor()
+
+books = [(1, 1, 'Cook Recipe', 3.12, 1),
+            (2, 3, 'Python Intro', 17.5, 2),
+            (3, 2, 'OS Intro', 13.6, 2),
+           ]
+
+# execute "INSERT" 
+c.execute("INSERT INTO category VALUES (1, 1, 'kitchen')")
+
+# using the placeholder
+c.execute("INSERT INTO category VALUES (?, ?, ?)", [(2, 2, 'computer')])
+
+# execute multiple commands
+c.executemany('INSERT INTO book VALUES (?, ?, ?, ?, ?)', books)
+
+conn.commit()
+conn.close()
+```
+
+插入数据同样可以使用execute()来执行完整的SQL语句。SQL语句中的参数，使用"?"作为替代符号，并在后面的参数中给出具体值。这里不能用Python的格式化字符串，如"%s"，因为这一用法容易受到SQL注入攻击。
+
+我也可以用executemany()的方法来执行多次插入，增加多个记录。每个记录是表中的一个元素，如上面的books表中的元素。
+
+### 查询
+
+在执行查询语句后，Python将返回一个循环器，包含有查询获得的多个记录。你循环读取，也可以使用sqlite3提供的fetchone()和fetchall()方法读取记录：
+
+```python
+# By Vamei
+
+import sqlite3
+
+conn = sqlite3.connect('test.db')
+c = conn.cursor()
+
+# retrieve one record
+c.execute('SELECT name FROM category ORDER BY sort')
+print(c.fetchone())
+print(c.fetchone())
+
+# retrieve all records as a list
+c.execute('SELECT * FROM book WHERE book.category=1')
+print(c.fetchall())
+
+# iterate through the records
+for row in c.execute('SELECT name, price FROM book ORDER BY sort'):
+    print(row)
+```
  
+### 更新与删除
 
-总结
+你可以更新某个记录，或者删除记录：
 
-Process, Lock, Event, Semaphore, Condition
+```python
+# By Vamei
 
-Pipe, Queue
+conn = sqlite3.connect("test.db")
+c = conn.cursor()
+
+c.execute('UPDATE book SET price=? WHERE id=?',(1000, 1))
+c.execute('DELETE FROM book WHERE id=2')
+
+conn.commit()
+conn.close()
+```
+
+你也可以直接删除整张表：
+
+	c.execute('DROP TABLE book')
+
+如果删除test.db，那么整个数据库会被删除。
+
+### 总结
+
+sqlite3只是一个SQLite的接口。想要熟练的使用SQLite数据库，还需要学习更多的关系型数据库的知识。
+
 
