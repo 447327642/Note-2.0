@@ -4,6 +4,10 @@
 
 **Application Name**: Spotagram
 
+**Slack**
+
+lgm10086.slack.com
+
 **Team Member**:
 
 + Lei Yu(leiyu)
