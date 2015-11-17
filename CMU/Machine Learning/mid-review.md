@@ -148,6 +148,22 @@ $$\frac{1}{(2\pi)^{N/2}}exp[\sum_{i=1}^N\frac{-(y_i-sin(\omega x_i))^2}{2}]$$
 
 $$\sum_ix_isin(\omega x_i)cos(\omega x_i)=\sum_ix_iy_icos(\omega x_i)$$
 
+### 对错判断
+
+> Assuming you are not concerned with the training time, when using an artificial neural network it is best to include enough hidden units so the training error can be reduced as much as possible. Explain in 1 sentence
+
+False. Minimizing training error will not necessarily minimize true(future) error -- overfitting may set in
+
+> A single perceptron can only compute linear variations of AND, OR and XOR. Explain in 1 sentence.
+
+False. A single perceptron cannot compute an XOR.
+
+### 问答题
+
+> What it is possible to run a Gradient Descent algorithm, what is guaranteed by the algorithm and what is not guaranteed?
+
+The algorithm is guaranteed to converge to a local minimum of the error function. It is not guaranteed to converge to a global minimum.
+
 ## Concept
 
 + Concept Space = All possible concepts
