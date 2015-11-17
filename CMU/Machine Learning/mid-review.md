@@ -1,5 +1,10 @@
 # Mid Review
 
+## 要注意的内容
+
+- MAP
+- 
+
 ## 真题合集
 
 + 什么时候我们会想用 Decision Tree 而不是 Logistic Regression?
