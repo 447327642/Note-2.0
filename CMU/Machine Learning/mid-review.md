@@ -1,5 +1,155 @@
 # Mid Review
 
+## 真题合集
+
++ 什么时候我们会想用 Decision Tree 而不是 Logistic Regression?
+	+ If we want our learner to produce rules easily interpreted by humans
++ 什么时候我们会想用 Logistic Regression 而不是 Naive Bayes?
+	+ If we know that the conditional independence assumptions made by Naive Bayes are not true for our problem, and we have lots of training data
++ 为什么在 Linear Regression 中我们选择让训练误差平方和最小的参数？
+	+ Because this corresponds to MLE assuming that data is generated from a linear function plus Gaussian noise.
+
+---
+
+假设我们要训练一些分类器 $f:X\to Y$，这里 X 是特征向量 $X=<X_1,X_2,X_3>$，这下面哪种分类器包含足够的信息来计算 $P(X_1,X_2,X_3,Y)$?
+
++ Gaussian Naive Bayes
+	+ Yes, we can estimate $P(X_1,X_2,X_3,Y)=P(Y)P(X_1|Y)P(X_2|Y)P(X_3|Y)$
++ Logistic Regression
+	+ No, we cannot compute P(X)
++ Linear Regression
+	+ No, we cannot compute P(X)
+
+---
+
+Conditional independence 的定义是随机变量 X 在当且仅当满足下面条件时给定 Z 与 Y 条件独立：
+
+$$P(X\;|\;Y,Z)=P(X\;|\;Z)$$
+
+试证明给定 $P(XY|Z)=P(X|Z)P(Y|Z)$，在给定 Z 时 X 与 Y 条件独立
+
+证明如下
+
+$$
+Assume \; P(XY\;|\;Z)=P(X\;|\;Z)P(Y\;|\;Z) \\
+P(XY\;|\;Z)=P(X\;|\;Y,Z)P(Y\;|\;Z) \;(by\;Chain\;Rule) \\
+so \; P(X\;|\;Z)P(Y\;|\;Z)=P(X\;|\;Y,Z)P(Y\;|\;Z) \\
+aka P(X\;|\;Z)=P(X\;|\;Y,Z)
+$$
+
+---
+
+考虑下面的贝叶斯网络
+
+![](./_resources/mr2.jpg)
+
++ 定义这个 $P(X1,X2,X3,X4)$ 贝叶斯网络需要多少参数
+	+ 只需要考虑每个点的入度，设入度为 n，那么这个点需要的参数是 $2^n$ 个
+	+ 所以 1 + 2 + 2 + 4 = 9
++ 用上面的贝叶斯网络重写 $P(X1=1,X2=0,X3=1,X4=0)$
+	+ $P(X1=1,X2=0,X3=1,X4=0)=P(X1=1)P(X2=0\;|\;X1=1)P(X3=1\;|\;X1=1)P(X4=0\;|\;X2=0,X3=1)$
++ 列出计算 $P(X1=1,X4=0)$ 的公式
+	+ P(X1=1)P(X2=1|X1=1)P(X3=1|X1=1)P(X4=0|X2=1,X3=1)+ P(X1=1)P(X2=1|X1=1)P(X3=0|X1=1)P(X4=0|X2=1,X3=0)+ P(X1=1)P(X2=0|X1=1)P(X3=1|X1=1)P(X4=0|X2=0,X3=1)+ P(X1=1)P(X2=0|X1=1)P(X3=0|X1=1)P(X4=0|X2=0,X3=0)
+
+---
+
+画一个两层决策树可以分类，但 LR 不能分类的数据集
+
+![](./_resources/mr3.jpg)
+
+XOR 就是一个例子，只要线性不可分即可
+
+---
+
+画一个 LR 可以分类但是两侧决策树不能分类的数据集
+
+![](./_resources/mr4.jpg)
+
+Since the decision tree must make splits that are aligned with the axes, a data set with several points that could be separated by a diagonal line works here.
+
+---
+
+画一个 Gaussian Naive Bayes 模型不能完美分类，但是 LR 可以的数据集
+
+![](./_resources/mr5.jpg)
+
+GNB will learn the means of the data, and regardless of the learned value of $\sigma$, the decision boundary will be a line that runs exactly between the midpoint of the two means, and is perpendicular to the line that connects the means. A sufficiently skewed data set that is linearly separable makes it so that LR will learn to separate the data sets, while the means learned by GNB will result in a line that does not.
+
+---
+
+考虑下面这个有三个布尔变量构成的贝叶斯网络
+
+![](./_resources/mr6.jpg)
+
++ 分别写出对应两个贝叶斯网络的 $P(X1,X2,Y)$
+	+ Bayes net A: $P(X1,X2,Y)=P(Y)P(X1\;|\;Y)P(X2\;|\;Y)$
+	+ Bayes net B: $P(X1,X2,Y)=P(X1)P(Y\;|\;X1)P(X2\;|\;Y)$
++ 写出Bayes net A 对应的联合分布$P(X1,X2,Y)$，其中 X1=1，X2=1,Y=1的概率为 1，其他的都为 0
+	+ P(Y=1) = 1, P(X1=1 | Y=1) = 1, P(X2=1 | Y=1) = 1
+	+ The other two CPT entries do not matter since P(Y=0) = 0
++ 描述一个 Bayes Network A 无法表示的分布，给出你的解释
+	+ P(X1=0,X2=0,Y=0) = 0
+	+ P(X1=0,X2=0,Y=1) = 0
+	+ P(X1=0,X2=1,Y=0) = 0
+	+ P(X1=0,X2=1,Y=1) = 1
+	+ P(X1=1,X2=0,Y=0) = 0
+	+ P(X1=1,X2=0,Y=1) = 1
+	+ P(X1=1,X2=1,Y=0) = 0
+	+ P(X1=1,X2=1,Y=1) = 0
+	+ X1 and X2 are not conditionally independent given Y, so Bayes network A cannot represent this distribution
++ Bayes Net A 和 Bayes Net B 表示不同的条件独立关系吗？
+	+ 它们表示同样的条件独立关系: X1 is C.I. of X2 given Y 
+
+考虑下面的两个贝叶斯网络，能否说这两个贝叶斯网络的 joint probability distribution $P(X1,X2,X3,Y)$ 是相同的？
+
+![](./_resources/mr7.jpg)
+
+不行。这两个网络有不同的 CI assumptions. 在 C 中， X1 is C.I. of X2 given Y，但是在 D 中, this is not true.
+
+---
+
+找出给定 Gaussian Naive Bayes 的决策边界
+
+	x | y=0 ~ N(0,1)
+	x | y=1 ~ N(2,1)
+	P(y=1) = 0.5
+
+上面模型的决策边界是线性的吗，也就是说，能不能用 $\omega_0+\omega_1x \ge 0$ 来表达决策边界。
+
+答：决策边界是线性的。It classifies a point x as 1 if x >= 1, and 0 otherwise. Hence the coefficients are $\omega_0=-k,\;\omega_1=k$ for any k > 0
+
+	x | y=0 ~ N(0,0.25)
+	x | y=1 ~ N(0,1)
+	P(y=1) = 0.5
+	
+上面模型的决策边界是线性的吗
+
+答：决策边界不是线性的. The class distributions have differetn variances. Hence we will have a quadratic decision boudary
+
+考虑 quadratic decision boundary，判断边界直接把图像画出来就非常清晰了
+
+---
+
+MLE 问题
+
+You are given a dataset with N records in which the ith record has a real-valued input attribute $x_i$ and a real-valued output $y_i$, which is generated from a Gaussian distribution with mean $sin(\omega x_i)$, and variance 1.
+
+$$P(y_i\;|\;\omega,x_i)=\frac{1}{\sqrt{2\pi}}exp\frac{-(y_i-sin(\omega x_i))^2}{2}$$
+
+要求出参数 $\omega$ 的最大似然估计
+
+Write down the expression for the data likelihood as a function of $\omega$ and the observed x and y values.
+
+The conditional data likelihood is given by 
+
+$$\frac{1}{(2\pi)^{N/2}}exp[\sum_{i=1}^N\frac{-(y_i-sin(\omega x_i))^2}{2}]$$
+
+对上式的 $\omega$ 求偏导可得
+
+$$\sum_ix_isin(\omega x_i)cos(\omega x_i)=\sum_ix_iy_icos(\omega x_i)$$
+
+## Concept
+
 + Concept Space = All possible concepts
 	+ $Size = 2^{Size\;of\;input\;space}$
 + Hard bias makes hypothesis space smaller than concept space
@@ -112,6 +262,8 @@ Sum $\sum$ col | $P(O\;\vert \;\lambda)$ | $P(O\;\vert \;\lambda)$ | $P(O\;\vert
 	+ How connected? (Features...)
 + Problem of deep networks: Vanishing gradient
 + General Problem: Non-convexity
+
+
 
 
 
