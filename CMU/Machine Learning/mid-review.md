@@ -2,8 +2,26 @@
 
 ## 要注意的内容
 
-- MAP
-- 
+Control Model Complexity
+
++ Neural Nets
+	+ change size of hidden layer. size decreases -> simple
++ K Nearest Neighbor
+	+ k increases -> simple
++ SVM
+	+ kernel function
++ Logistic regression
+	+ regularization, $\lambda$ increases -> simple , bias increase, variance decrease
++ Decision Tree
+	+ pruning, stop early -> simple
+
+---
+
++ GNB train faster than Logistic Regression
++ Markov property: Current state is only dpend on last state
++ Bias depends on the model you use and not the number of training data
++ The training error of 1-NN classifier is 0
+
 
 ## 真题合集
 
@@ -162,6 +180,15 @@ False. Minimizing training error will not necessarily minimize true(future) erro
 > A single perceptron can only compute linear variations of AND, OR and XOR. Explain in 1 sentence.
 
 False. A single perceptron cannot compute an XOR.
+
+> When the data is not completely linear separable, the linear SVM without slack variables returns w=0
+
+False, there is no solution
+
+> After training a SVM, we can discard all examples which are not support vectors and can still classify new examples
+
+True. Only care about the boundary
+
 
 ### 问答题
 
