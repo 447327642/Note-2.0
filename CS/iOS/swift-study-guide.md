@@ -199,4 +199,68 @@ print(stats.sum)
 print(stats.2)
 ```
 
+函数可以带可变个数的参数，这些参数在函数内表现为数组的形式
+
+```swift
+func sumOf(numbers: Int...) -> Int {
+	var sum = 0
+	for number in numbers {
+		sum += number
+	}
+	return sum
+}
+
+sumOf()
+sumOf(42, 583, 12)
+```
+
+函数可以嵌套。被嵌套的函数可以访问外侧函数的变量，可以用来重构一个太长或者太复杂的函数
+
+```swift
+func returnFifteen() -> Int {
+	var y = 10
+	func add() {
+		y += 5
+	}
+	add()
+	return y
+}
+
+returnFiftee()
+```
+
+函数是第一等类型，也就是说，函数可以作为另一个函数的返回值
+
+```swift
+func makeIncrementer() -> (Int -> Int){
+	func addOne(number: Int) -> Int {
+		return 1 + number
+	}
+	return addOne
+}
+
+var increment = makeIncrementer()
+increment(7)
+```
+
+函数也可以当做参数传入另一个函数
+
+```swift
+func hasAnyMatches(list: [Int], condition: Int -> Bool) -> Bool {
+	for item in list {
+		if condition(item) {
+			return true
+		}
+	}
+	return false
+}
+
+func lessThenTen(number: Int) -> Bool {
+	return number < 10
+}
+
+var numbers = [20, 19, 7, 12]
+hasAnyMatches(numbers, condition: lessThanTen)
+```
+
 
