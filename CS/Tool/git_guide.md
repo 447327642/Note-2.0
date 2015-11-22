@@ -286,9 +286,11 @@ commit 后面的那串就是版本号， 一般只要选择前面几位就可以
 
     git branch dev
     git checkout dev
+
 或者合并成一条命令：
 
     git checkout -b dev
+
 创建dev分支切换后，HEAD指针就从原来的master转移指向dev分支，`git branch`可以查看有哪些分支，并且当前是在哪个分支上。
 
     E:\Users\liuzhijun\workspace\blog>git branch
