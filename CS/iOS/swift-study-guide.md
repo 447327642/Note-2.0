@@ -556,7 +556,20 @@ func anyCommonElements <T: SequenceType, U: SequenceType where T.Generator.Eleme
 	+ 删除字符或字符串 `removeAtIndex(_:)`, `removeRange(_:)`
 	+ 比较字符串：`==`, `!=`, `hasPrefix(_:) / hasSuffix(_:)`
 	+ 字符串 Unicode 表示形式
-
++ For 循环
+	+ `for initialization; condition; increment { ... }`
+	+ `for var variable in Collection { ... }`
++ While 循环
+	+ `while condition { ... }`
+	+ `repeat { ... } while condition`
++ if 和 switch 可以看概览中的代码例子
++ 控制转移语句 Control Transfer Statements
+	+ continue
+	+ break
+	+ fallthrough 在分支中加上这个关键字就会落入到下一个分支中，不会检查匹配条件，类似于 C 语言 switch case 没加 break 的效果
+	+ return
+	+ throw
+	+ 还可以利用标签来明确是 break 出哪个循环，这个在多重循环逻辑中比较有用
 
 ### 可选类型
 
@@ -687,7 +700,226 @@ shoppingList.insert("Maple Syrup", atIndex: 0)
 // 删除数据
 let mapleSyrup = shoppingList.removeAtIndex(0)
 let apples = shoppingList.removeLast()
+
+// 用 for-in 循环来遍历数组
+for item in shopppingList {
+	print(item)
+}
+
+// 用 `enumerate()` 方法来同时获取索引值和数据值
+for (index, value) in shoppingList.enumerate(){
+	print("Item \(String(index + 1)): \(Value)")
+}
 ```
+
+#### 集合 Sets
+
+每个元素只出现一次，元素顺序不重要，会被桥接到 Foundation 中的 NSSet 类。存在集合中的类型必须可哈希化。集合的语法是 `Set<Element>`，但集合没有等价的简化形式
+
+```swift
+// 创建空集合
+var letters = Set<Character>()
+
+// 如果上下文提供了类型信息，创建空集合时可以简化
+letters.insert("a")
+letters = [] // 重新设为空，类型为 Set<Character>
+
+// 用字面量声明集合
+var favoriteGenres: Set<String> = ["Rock", "Classical", "Hip hop"]
+
+// 因为用了字面量，其实类型的声明是可以省略的，上面的一句可以写为
+var favoriteGenres: Set = ["Rock", "Classical", "Hip hop"]
+
+// 用 count 获取元素数量
+print ("I have \(favoriteGenres.count) favorite music genres.")
+
+// 用 isEmpty 来看集合是否为空
+if favoriteGenres.isEmpty {
+	print("As far as music goes, I'm not picky.")
+}
+
+// insert(_:) 添加新元素
+favoriteGenres.insert("Jazz")
+
+// remove(_:) 删除元素，会返回被删除的值，如果不包含则返回 nil
+if let removedGenre = favoriteGenres.remove("Rock"){
+	print ("\(removedGenre)? I'm over it.")
+}
+
+// contains(_:) 检查是否包含一个特定的值
+if favoriteGenres.contains("Funk") {
+	print ("I get up on the good foot")
+}
+
+// 遍历集合，用 for-in，用 sort() 方法可以返回一个有序集合
+for genre in favoriteGenres.sort() {
+	print("\(genre)")
+}
+```
+
+其他的一些集合操作
+
++ `intersect(_:)` 根据两个集合中都包含的值创建一个新的集合
++ `exclusiveOr(_:)` 在一个集合中但不在另一个集合中的值创建一个新的集合
++ `union(_:)` 两个集合的并集
++ `subtract(_:)` 两个集合的差集
++ `==` 判断集合相等
++ `isSubsetOf(_:)` 判断子集
++ `isSupersetOf(_:)` 判断超集
++ `isStrictSubsetOf(_:)` 判断严格子集
++ `isDisjointWith(_:)` 判断两个集合是否不含有相同的值
+
+#### 字典 Dictionary
+
+键值对，被桥接倒 Foundation 的 NSDictionary，语法为 `Dictionary<Key, Value>`。作为 key 的必须是 Hashable 的，可以用 `[Key: Value]` 这样的快捷形式去创建一个字典
+
+```swift
+// 创建空字典
+var namesOfIntegers = [Int: String]()
+
+// 如果上下文提供了信息，可以简化
+namesOfIntegers[16] = "sixteen"
+namesOfIntegers = [:] // 设置为空字典
+
+// 用字面量创建字典
+var airports: [String: String] = ["YYZ": "Toronto Pearson", "DUB": "Dublin"]
+
+// 获取字典中元素的数量
+print("The dictionary of airports contains \(airports.count) items.")
+
+// 检查是否为空
+if airports.isEmpty {
+	print("The airports dictionary is empty.")
+}
+
+// 下标添加新数据，如果已有对应的 key，会覆盖更新
+// 用 updateValue(_:forKey:) 方法会返回更新前的值，可选类型，如果没有 key 的话会是 nil
+airports["LHR"] = "London"
+if let oldValue = airports.updateValue("Dublin Airport", forKey: "DUB"){
+	print("The Old value for DUB was \(oldValue)")
+}
+
+// 用下标给某个 key 赋值为 nil 可以删除这个元素
+// 也可以用 removeValueForKey(_:)，方法会返回更新前的值，可选类型，如果没有 key 的话会是 nil
+airports["APL"] = nil
+
+// 用 for-in 来遍历字典，会以 (key, value) 元组形式返回
+for (airportCode, airportName) in airports {
+	print("\(airportCode): \(airportName)")
+}
+
+// 也可以单独用 keys 或者 values 属性来遍历，如果需要有序，可以用 sort() 方法
+for airportCode in airports.keys {...}
+for airportName in airports.values {...}
+```
+
+### Switch 语句高级用法
+
+switch 语句会尝试把某个值与若干个 pattern 进行匹配。每个 case 之间不需要用 break
+
+比较常见的用法是
+
+```swift
+switch some value to consider {
+	case value 1:
+		respond to value 1
+	case value 2, value 3:
+		respond to value 2 or 3
+	default:
+		otherwise
+}
+```
+
+#### 区间匹配
+
+因为是匹配一个 pattern，所以也可以利用区间，如下
+
+```swift
+let approximateCount = 62
+switch approximateCount {
+	case 0:
+		print("no")
+	case 1..<5:
+		print("a few")
+	case 5..<12:
+		print("several")
+	default:
+		print("many")
+}
+```
+
+#### 元组
+
+可以使用元组来测试多个值。用下划线来匹配所有可能的值
+
+```swift
+let somePoint (1, 1)
+switch somePoint {
+	case (0, 0):
+		print("origin")
+	case (_, 0):
+		print("x-axis")
+	case (0, _):
+		print("y-zxis")
+	default:
+		print("else")
+}
+```
+
+#### 值绑定 Value Bindings
+
+允许将匹配的值帮动刀一个临时的常量或变量上，就可以在 case 分支里引用
+
+```swift
+let anotherPoint = (2, 0)
+switch anotherPoint {
+	case (let x, 0):
+		print("x-axis with value \(x)")
+	case (0, let y):
+		print("y-axis with value \(y)")
+	case let (x, y):
+		print("else x:\(x) y:\(y)")
+}
+```
+
+#### where
+
+case 分支模式可以使用 where 语句来判断额外的条件，例如
+
+```swift
+let yetAnotherPoint = (1, -1)
+switch yetAnotherPoint {
+	case let (x, y) where x == y:
+		print("(\(x), \(y)) is on the line x = y")
+	case let (x, y) where x == -y:
+		print("(\(x), \(y)) is on the line -x = y")
+}
+```
+
+### Guard 语句
+
+要求条件必须为真才执行之后的代码，而且一定要带有一个 else 分句，如果条件不为真则执行 else 分句中的代码
+
+```swift
+guard let name = person["name"] else {
+	print("no name")
+}
+```
+
+
+### 检测 API 的可用性
+
+最后一个参数 `*` 是必须的，用于处理未来的潜在平台，例如：
+
+```swift
+if #available(iOS 9, OSX 10.10, *){
+	//... new api
+} else {
+	//... old api 
+}
+```
+
+## Swift 2 进阶
 
 
 
