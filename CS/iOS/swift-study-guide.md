@@ -1,4 +1,4 @@
-# Swift 学习指南
+# Swift 2.0 学习指南
 
 主要是参考苹果官方的教程，加上自己的一点私货，作为笔记，还是重在要点和思想，具体的细节参阅官方手册。
 
@@ -6,7 +6,7 @@
 + 采用 Objective-C 的命名参数以及动态对象模型
 + 支持代码预览
 
-## Swift 概览
+## Swift 2 概览
 
 这一章主要是通过一些实际的代码让大家对 Swift 有一个初步的感觉，具体的语法以及技术细节会在之后的章节中详细介绍。
 
@@ -262,5 +262,433 @@ func lessThenTen(number: Int) -> Bool {
 var numbers = [20, 19, 7, 12]
 hasAnyMatches(numbers, condition: lessThanTen)
 ```
+
+函数实际上是一种特殊的闭包：它是一段能之后被调取的代码。比保重的代码能访问闭包所建作用域中能得到的变量和函数，即使闭包是在一个不同的作用域被执行的
+
+```swift
+numbers.map({(number: Int) -> Int in let result = 3 * number return result})
+```
+
+如果一个闭包的类型已知，，可以忽略参数的类型和返回值。单个语句闭包会把它语句的值当作结果返回
+
+```swift
+let mappedNumbers = numbers.map({number in 3 * number })
+print(mappedNumbers)
+```
+
+也可以通过参数位置而不是参数名字来引用参数。当一个闭包作为最后一个参数传给一个函数的时候，它可以直接跟在括号后面。当一个闭包是传给函数的唯一参数时，可以完全忽略括号
+
+```swift
+let sortedNumbers = numbers.sort { $0 > $1}
+print(sortedNumbers)
+```
+
+### 对象和类
+
+使用 `class` 和类名来创建一个类，其他的语法和前面说的一致。
+
++ 使用 `init` 来初始化一个构造器
++ 使用 `deinit` 来创建一个析构函数
+
+```swift
+class Shape {
+	var numberOfSides: Int = 0
+	var name: String
+	
+	init(name: String){
+		self.name = name
+	}
+	
+	func simpleDescription() -> String {
+		return "A shape with \(numberOfSides) sides."
+	}
+}
+```
+
+要创建一个类的实例，在类名后面加上括号。使用点语法来访问实例的属性和方法
+
+```swift
+var shape = Shape()
+shape.numberOfSides = 7
+var shapeDescription = shape.simpleDescription()
+```
+
+子类的定义方法实在它们的类名后面加上父类的名字，用冒号分割。如果要重写父类的方法，需要用 override 标记，否则会报错，编译器同样会检测 override 标记的方法是否确实在父类中
+
+```swift
+class Square: Shape {
+	var sideLength: Double
+	
+	init(sideLength: Double, name: String) {
+		self.sideLength = sideLength
+		super.init(name: name)
+		numberOfSides = 4
+	}
+	
+	func area() -> Double {
+		return sideLength * sideLength
+	}
+	
+	override func simpleDescription() -> String {
+		return "A square with sides of length \(sideLength)."
+	}
+	
+	let test = Square(sideLength: 5.2, name: "my test square")
+	test.area()
+	test.simpleDescription()
+}
+```
+
+除了储存简单的属性之外，属性可以有 `getter` 和 `setter`
+
+```swift
+class EquilateralTriangle: Shape {
+	var sideLength: Double = 0.0
+	
+	init(sideLength: Double, name: String){
+		self.sideLength = sideLength
+		super.init(name: name)
+		numberOfSides = 3
+	}
+	
+	var perimeter: Double {
+		get {
+			return 3.0 * sideLength
+		}
+		set {
+			sideLength = newValue / 3.0
+		}
+	}
+	
+	override func simpleDescription() -> String {
+		return "An equilateral triangle with sides of length \(sideLength)."
+	}
+}
+
+var triangle = EquilateralTriangle(sideLength: 3.1, name: "a tragnle")
+print(triangle.perimeter)
+triangle.perimeter = 9.9
+print(triangle.sideLength)
+```
+
+如果不需要计算属性，但是仍然需要在设置一个新值之前或者之后运行代码，使用 `willSet` 和 `didSet`
+
+### 枚举和结构体
+
+使用 `enum` 来创建一个枚举，枚举也可以包含方法
+
+```swift
+enum Rank: Int{
+	case Ace = 1
+	case Two, Three, FOur, Five, Six, Seven, Eight, Nine, Ten
+	case Jack, Queen, King
+	func simpleDescription() -> String {
+		switch self{
+			case .Ace:
+				return "ace"
+			case .Jack:
+				return "jack"
+			case .Queen:
+				return "queen"
+			case .King:
+				return "king"
+			default:
+				return String(self.rawValue)
+		}
+	}
+}
+
+let ace = Rank.Ace
+let aceRawValue = ace.rawValue
+```
+
+枚举的成员值是实际值，并不是原始值的另一种表达方法。实际上，以防原始值没有意义，我们不需要设置。
+
+使用 `struct` 来创建一个结构体。结构体和类最大的区别是结构体是传值，类是传引用。
+
+```swift
+struct Card {
+	var rank: Rank
+	func simpleDescription() -> String {
+		return "The \(rank.simpleDescription())"
+	}
+}
+```
+
+### 协议和扩展
+
+使用 `protocol` 来声明一个协议，类、枚举和结构体都可以实现协议，在结构体中 `mutating` 关键字用来标记一个会修改结构体的方法
+
+```swift
+protocol ExampleProtocal {
+	var simpleDescription: String { get }
+	mutating func adjust()
+}
+
+// class
+class simpleClass: ExampleProtocol {
+	var simpleDescription: String = "A very simple class."
+	var anotherProperty: Int = 15213
+	func adjust() {
+		simpleDescription += "  Now 100% adjusted"
+	}
+}
+
+// struct
+struct Simple Structure: ExampleProtocol {
+	var simpleDescription: String = "A simple strucure"
+	mutating func adjust() {
+		simpleDescription += " (adjusted)"
+	}
+}
+```
+
+使用 extension 来为现有的类型添加功能
+
+```swift
+extension Int: ExampleProtocol {
+	var simpleDescription: String {
+		return "The number \(self)"
+	}
+	mutating func adjust() {
+		self += 42
+	}
+}
+
+print (7.simpleDescription)
+```
+
+### 泛型
+
+在尖括号里写一个名字来创建一个泛型函数或者类型
+
+```swift
+func repeatItem<Item>(item: Item, numberOfTimes: Int) -> [Item]{
+	var result = [Item]()
+	for _ in 0..<numberOfTimes{
+		result.append(item)
+	}
+	return result
+}
+
+repeatItem("knock", numberOfTimes: 4)
+```
+
+在类型名后面使用 `where` 来指定对类型的需求，比如，限定类型实现某一个协议，限定两个类型是相同的，或者限定某个类必须有一个特定的父类。
+
+```swift
+func anyCommonElements <T: SequenceType, U: SequenceType where T.Generator.Element: Equatable, T.Generator.Element == U.Generator.Element> (lhs: T, _ rhs: U) -> Bool){
+	...
+}
+```
+
+## Swift 2 基础
+
+比较简单的部分会用要点的形式列出来，比较复杂和语言本身特性的，会单独提出来介绍
+
++ 常量与变量
+	+ 用 `let` 声明常量
+	+ 用 `var` 声明变量
+	+ 一行可以声明多个，用逗号隔开：`var x = 0.0, y = 0.0, z = 0.0`
++ 类型标注(冒号和空格加上类型名称)
+	+ `var welcomeMessage: String`
+	+ 一行可以声明多个：`var red, green, blue: Double`
++ 输出常量和变量
+	+ 函数原型：`print(_:separator:terminator:)`
+	+ 通常来说 `separator` 和 `terminator` 有默认值可以忽略，如果想要自定义，可以这样：`print(someValue, terminator: "")` 这样就不会默认换行了
++ 字符串插值 string interpolation
+	+ 用反斜杠加一对括号
+	+ `print("The value is \(someValue)")`
++ 注释：`//` 和 `/* */`
++ 分号不强制要求，但是为了美观还是加上，或者如果一行写两个语句，就一定要分号
++ 整数：Swift 提供了 8, 16, 32, 64 的有符号和无符号整数类型
+	+ 如: UInt8, Int32 等
+	+ 整数范围: UInt8.min, UInt8.max，其他的类型类似
+	+ 32 位平台上，Int 和 Int32 长度相同
+	+ 64 位平台上，Int 和 Int64 长度相同
+	+ 统一使用 Int 可以提高代码的可复用性，避免不同类型数字之间的转换，并且匹配数字的类型推断
++ 浮点数
+	+ Double 64 位浮点数
+	+ Float 32 位浮点数
++ Swift 是一个类型安全的语言
++ Swift 也会尽可能通过类型推断来选择合适的类型
++ 数值型字面量
+	+ 十进制数：没有前缀
+	+ 二进制数：`0b`
+	+ 八进制数：`0o`
+	+ 十六进制数：`0x`
++ 类型转换
+	+ 整数和浮点数转换必须显式指定类型
++ 类型别名
+	+ 用 `typealias` 关键字来定义，如 `typealias AudioSample = UInt16`
++ 布尔值：true 和 false
++ 元组
+	+ 圆括号包起来的变量：`http404Error = (404, "Not Found")`
+	+ 分解元素内容 `let (statusCode, Message) = http404Error`
+	+ 如果只需要用一部分，忽略的部分用下划线表示 `let (justCode, _) = http404Error`
+	+ 还可以通过下标来访问元组的中单个元素，下标从零开始：`http404Error.0`
+	+ 可以在定义元组的时候给元素命名，这样就可以通过名字来获取对应的值：`let http200Status = (statusCode: 200, description: "OK")`
+	+ 元组在临时组织值的时候很有用，但是并不适合创建复杂的数据结构
++ 运算符
+	+ 基本的就不提了，和其他语言差不多，这里就记录一些要点
+	+ `++` 前置的时候，先自增再返回
+	+ `++` 后置的时候，先返回再自增
+	+ `===` 恒等，`!==` 不恒等
+	+ 三目运算符 `(condition ? statement1 : statement2)`
+		+ 应该避免在一个组合语句中使用多个三目运算符
+	+ 空合运算 (Nil Coalescing Operator)
+		+ `(a ?? b)` 将对可选类型 a 进行空判断，如果 a 包含一个值就进行解封，否则就返回一个默认值 b。
+		+ 相当于下列代码的简短表示: `a != nil ? a! : b`
+	+ 区间运算符
+		+ 闭区间运算符 ( a...b )，包括 a 也包括 b
+		+ 半开区间运算符 ( a...<b )，包括 a 不包括 b
+	+ 逻辑运算
+		+ `!a`, `a&&b`, `a||b` 
++ 字符串是值类型 Strings are value types，也就是说操作的时候会创建一个新的副本
+	+ 连接字符串和字符可以用 `+` 号，创建一个新的字符串
+	+ 字符串插值(String Interpolation)，如 `let message = "\(multiplier) times 2.5 is \(Double(multiplier) * 2.5)"`
+	+ Swift 的字符串完全兼容 Unicode
+	+ 计算字符数量，用字符串 characters 属性的 count 属性
+	+ `let string = "Hello World" ; print(string.characters.count)`
+	+ 通过字符串索引 `startIndex`, `endIndex`, `startIndex.predecessor()`, `startIndex.succeessor()` 来访问，或者也可以通过下标访问
+	+ 调用 `insert(_:atIndex:)` 方法可以在一个字符串的指定索引插入一个字符。
+		+ `var welcome = "hello"; welcome.insert("!", atIndex:welcome.endIndex)`
+	+ 删除字符或字符串 `removeAtIndex(_:)`, `removeRange(_:)`
+	+ 比较字符串：`==`, `!=`, `hasPrefix(_:) / hasSuffix(_:)`
+	+ 字符串 Unicode 表示形式
+
+
+### 可选类型
+
+使用可选类型(optionals)来处理值可能缺失的情况，可选类型的值有两种可能：1.有值，等于 x。2.没有值，等于nil。举个例子
+
+```swift
+let possibleNumber = "123"
+let convertedNumber = Int(possibleNumber)
+```
+
+`convertedNumber` 被推测为 `Int?` 类型，表示可能包含 Int 值，也可能不包含值。
+
+可以给可选变量赋值位 `nil` 来表示没有值，但 `nil` 不能用于非可选的常量和变量。如果声明一个可选常量或者变量但是没有赋值，会被自动设置为 `nil`。
+
+可以使用 if 语句和 nil 比较来判断一个可选值是否包含值。使用 `==` 或 `!=` 来执行比较。当确定可选类型确实包含值之后，可以在名字后面加一个感叹号来获取值，称为可选值的强制解析(forced unwrapping)。要注意的是使用 `!` 来获取一个不存在的可选值会导致运行时错误。
+
+```swift
+if convertedNumber != nil {
+	print("convertedNumber has an integer value of \(convertedNumber!).")
+}
+```
+
+### 可选绑定 optional binding
+
+判断可选类型是否包含值，如果包含就把值赋给一个临时常量或者变量。可选绑定可以用在 if 和 while 语句中，这样就可以同时完成赋值和判断两个任务，如
+
+```swift
+if let constantName = someOptional {
+	statements
+}
+```
+
+也可以在 if 语句中包含多个可选绑定，然后用 where 子句做布尔值判断，如
+
+```swift
+if let firstNumber = Int("4"), secondeNumber = Int("42") where firstNumber < secondNumber {
+	print("\(firstNumber) < \(secondNumber)")
+}
+// print "4 < 42"
+```
+
+### 错误处理 error handling
+
+一个函数可以通过在声明中添加 `throws` 关键词来抛出错误消息。当你的函数能抛出错误消息时，应该在表达式中前置 `try` 关键词
+
+```swift
+func makeASandwich() throws {
+	// ...
+}
+
+do {
+	try makeASandwich()
+	eatASandwich()
+} catch Error.OutOfCleanDishes {
+	washDishes()
+} catch Error.MissingIngredients(let ingredients){
+	byGroceries(ingredients)
+}
+```
+
+### 断言
+
+在运行时判断一个逻辑条件是否为 `true`。全局 `assert(_:_file:line:)` 函数来写一个断言。
+
+```swift
+let age = -3
+assert(age >= 0, "A person's age cannot be less than zero")
+// 因为 age < 0，所以断言会触发
+```
+
+适用情景
+
++ 整数类型的下标索引被传入一个自定义下标脚本实现，但是下标索引值可能太小或者太大
++ 需要给函数传入一个值，但是非法的值可能导致函数不能正常运行
++ 一个可选值现在是 nil，但是后面的代码运行需要一个非 nil 值。
+
+### 集合类型 (Collection Types)
+
+Swift 语言提供 Arrays, Sets 和 Dictionaries 三种基本集合类型，存储的数据必须明确，不能把不正确的数据类型插入其中。
+
+在我们不需要改变集合大小的时候创建不可变集合是很好的习惯。这样 Swift 编译器可以优化我们创建的集合
+
+#### 数组 Arrays
+
+会被桥接到 Foundation 中的 NSArray 类。应该遵循像 `Array<Element>` 这样的形式，其中 `Element` 是这个数组唯一允许存在的数据类型。也可以用 `[Element]` 这样的简单语法。
+
+```swift
+// 创建一个空数组
+var someInts = [Int]()
+
+// 如果代码上下文中已经提供了类型信息，可以使用一对空方括号来创建
+someInts.append(3)
+someInts = []
+
+// 带有默认值的数组
+var threeDoubles = [Double](count: 3, repeatedValue: 0.0)
+
+// 两个数组相加创建一个数组
+var anotherThreeDoubles = Array(count: 3, repeatedValue: 2.5)
+var sixDoubles = threeDoubles + anotherThreeDoubles
+
+// 用字面量构造数组
+var shoppingList: [String] = ["Eggs", "Milk"]
+
+// 可以使用数组中的只读属性 count 来获取数组中的数据项数量
+print("The shopping list contains \(shoppingList.count) items.")
+
+// 使用布尔值属性 isEmpty 作为检察 count 属性的值是否为 0 的捷径
+if shoppingList.isEmpty {
+	print("The shoppinglist is empty.")
+}
+
+// 使用 append(_:) 方法在数组后面添加数据项
+shoppingList.append("Flour")
+
+// 也可以直接用 += 来进行添加
+shoppingList += ["Baking Powder"]
+
+// 用下标来改变数据
+shoppingList[0] = "Six eggs"
+
+// 或者范围批量替换
+shoppingList[4...6] = ["Bananas", "Apples"]
+
+// 插入数据
+shoppingList.insert("Maple Syrup", atIndex: 0)
+
+// 删除数据
+let mapleSyrup = shoppingList.removeAtIndex(0)
+let apples = shoppingList.removeLast()
+```
+
+
 
 
