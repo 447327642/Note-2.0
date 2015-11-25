@@ -1109,6 +1109,409 @@ while currentValue != 0 {
 
 ### 闭包 Closure
 
-自包含的函数代码块，可以在代码中被传递和使用。
+自包含的函数代码块，可以在代码中被传递和使用。闭包采取如下三种形式之一：
 
++ 全局函数是一个有名字但不会捕获任何值的闭包
++ 嵌套函数是一个有名字并可以捕获其封闭函数域内值的闭包
++ 闭包表达式是一个利用轻量级语法所写的可以捕获其上下文中变量或常量值的匿名闭包
+
+Swift 闭包表达式拥有简洁的风格，并鼓励在常见场景中进行语法优化，主要优化如下：
+
++ 利用上下文推断参数和返回值类型
++ 隐式返回单表达式闭包，即单表达式闭包可以省略 return 关键字
++ 参数名称所写
++ 尾随(Trailing)闭包语法
+
+#### 闭包表达式 Closure Expressions
+
+利用简洁语法构建內联闭包的方式。下面通过不同的方式展示了 `sort(_:)` 方法定义和语法优化的方式。
+
+首先是最原始的方式
+
+```swift
+let names = ["Chris", "Alex&", "Ewa", "Barry", "Daniella"]
+
+func backward(s1: String, s2: String) -> Bool {
+	return s1 > s2
+}
+var reversed = names.sort(backwards)
+```
+
+闭包表达式语法 `{ (parameters) -> returnType in statements }`，例如，上面的 sort 可以写为：
+
+```swift
+reversed = names.sort({ (s1: String, s2: String) -> Bool in return s1 > s2 })
+```
+
+注意函数和返回值类型都写在大括号内，而不是大括号外。闭包的函数体部分由关键字 in 引入，该关键字表示闭包的参数和返回值类型定义已经完成，闭包函数体即将开始。而 Swift 可以根据调用方法的对象来推断
+
+```swift
+reversed = names.sort( { s1, s2 in return s1 > s2})
+```
+
+实际上任何情况下，通过內联闭包表达式构造的闭包作为参数传递给函数或方法时，都可以推断出闭包的参数和返回值类型，所以几乎不需要利用完整格式构造內联闭包。
+
+**单表达式闭包隐式返回 Implicit Return From Single-Expression Closures**
+
+其实就是省略 return 来隐式返回单行表达式的结果，如
+
+```swift
+reversed = names.sort( { s1, s2 in s1 > s2 })
+```
+
+**参数名称缩写**
+
+可以直接通过 `$0`, `$1` 这样来顺序调用闭包的参数。如果用了缩写，就可以在闭包参数列表中省略对其的定义
+
+```swift
+reversed = names.sort( { $0 > $1 })
+```
+
+**运算符函数**
+
+```swift
+reversed = names.sort(>)
+```
+
+**尾随闭包(Trailing Closures)**
+
+如果需要将一个很长的闭包表达式作为最后一个参数传递给函数，可以使用尾随闭包来增强函数的可读性
+
+```swift
+func someFunctionThatTakesAClosure(closure: () -> Void) {
+	// 函数体部分
+}
+
+// sort 方法可以写成
+reversed = names.sort() { $0 > $1 }
+
+// 或者连圆括号都可以省略
+reversed = names.sort { $0 > $1 }
+```
+
+#### 捕获值 Capturing Values
+
+闭包可以在其被定义的上下文中捕获常量或变量。即使定义这些常量和变量的原作用域已经不存在，闭包仍然可能在闭包函数体内引用和修改这些值
+
++ 闭包是引用类型 Closures Are Reference Types
+
+#### 非逃逸闭包 Nonescaping Closures
+
+当一个闭包作为参数传到一个函数中，但是这个闭包在函数返回之后才被执行，我们称该闭包从函数中逃逸。可以在参数名之前标注 `@noescape` 能使编译器知道这个闭包的生命周期，从而进行比较激进的优化
+
+```swift
+func someFunctionWithNoescapeClosure (@noescape closure: () -> Void) {
+	closure()
+}
+```
+
+一种能使闭包『逃逸』处函数的方法是，将这个闭包保存在一个函数外部定义的变量中。例如，很多启动异步操作的函数接受一个闭包参数作为 completion handler。这类函数会在异步操作开始之后立刻返回，但是闭包直到异步操作结束后才会被调用，如
+
+```swift
+// 定义一个空数组，这个空数组的元素是一个闭包
+var completionHandlers: [() -> Void] = []
+func someFunctionWishEscapingClosure(completionHandler: () -> Void) {
+	completionHandlers.append(completionHandler)
+}
+```
+
+将闭包标注为 `@noescape` 使你能在闭包中隐式地引用 self
+
+#### 自动闭包 Autoclosures
+
+自动创建，用于包装传递给函数作为参数的表达式。这种闭包不接受任何参数，当它被调用的时候，会返回被包装在其中的表达式的值。这种便利语法让你能够用一个普通的表达式来代替显式的闭包，从而省略闭包的花括号。
+
+自动闭包让你能够延迟求值，直到执行这个闭包时代码才会执行
+
+```swift
+var customersInLine = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+print (customersInLine.count) // output: 5
+
+let customerProvider = {customersInLine.removeAtIndex(0)}
+print (customersInLine.count) // output: 5
+
+print ("Now serving \(customerProvider())!") // output: Chris
+print (customersInLine.count) // output: 4
+```
+
+但是过度使用会使得代码非常难懂，要慎重
+
+### 枚举 Enumerations
+
+放到大括号里 
+
+```swift
+enum SomeEnumeration {
+	// 枚举定义
+}
+
+// 例如
+enum CompassPoint {
+	case North
+	case South
+	case East
+	case West
+}
+
+// 多个成员值可以放在同一行
+enum Planet {
+	case Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+}
+
+// 赋值
+var directionToHead = CompassPoint.West
+// 因为类型已知，接下来的调用可以省略前面部分
+directionToHead = .East
+
+// 配合 switch
+switch directionToHead{
+	case .North:
+		print("north")
+	case .South:
+		print("south")
+	case .East:
+		print("east")	
+	case .West:
+		print("west")	
+}
+
+// 给定原始值
+enum Planet: Int {
+	case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+}
+
+let possible Planet = Planet(rawValue: 7)
+
+// 枚举递归
+用 indirect 关键字，暂略
+```
+
+### 类和结构体
+
+相同：
+
++ 定义属性用于存储值
++ 定义方法用于提供功能
++ 定义附属脚本用于访问值
++ 定义构造器用于生成初始化值
++ 通过扩展以增加默认实现的功能
++ 通过协议以提供某种标准功能
+
+与结构体相比，类还有如下的附加功能：
+
++ 继承允许一个类继承另一个类的特征
++ 类型转换允许在运行时检查和解释一个类实例的类型
++ 解构器允许一个类实例释放任何其所被分配的资源
++ 引用计数允许对一个类的多次引用
+
+结构体总是通过被复制的方式在代码中传递，不使用引用计数
+
+```swift
+// 结构体定义
+struct Resolution {
+	var width = 0
+	var height = 0
+}
+
+// 类定义
+class VideoMode {
+	var resolution = Resolution()
+	var interlaced = false
+	var frameRate = 0.0
+	var name: String?
+}
+
+let someResolution = Resolution()
+let someVideoMode = VideoMode()
+
+// 属性访问
+print ("The wide of someResolution is \(someResolution.width)")
+
+// 所有结构体都有一个自动生成的成员逐一构造器
+let vga = Resolution(width: 640, height: 480)
+```
+
+**结构体和枚举是值类型，并不是传引用**
+
+**类是引用类型**，所以可能有多个变量和常量引用同一个类实例，这种时候比较是否是引用同一个实例，可以用 `===` 和 `!==`
+
+#### 类和结构体的选择
+
+符合一条或者多条以下条件，请考虑结构体：
+
++ 封装少量相关的简单数据值
++ 预计的使用方式是传值而不是引用
++ 存储的值类型也应该被拷贝
++ 不需要继承
+
+在 Swift 中，许多基本类型，如 String, Array 和 Dictionary 类型均以结构体的形式实现。这意味着被赋值给新的常量或变量，或者被传入函数或方法中，它们的值会被拷贝。
+
+在 Objective-C 中 NSString, NSArray 和 NSDictionary 类型均以类的形式实现，而并非结构体。它们在被赋值或者被传入函数或方法时，不会发生值拷贝，而是传递现有实例的引用
+
+### 属性
+
+延迟存储属性是指当第一次被调用的时候才会计算其初始值的属性。在属性声明前使用 `lazy` 来表示一个延迟存储属性。必须将延迟存储属性声明成变量，反正就是只有用到的时候才初始化，这样效率更高
+
+```swift
+class DataImporter {
+	var fileName = "data.txt"
+}
+
+class DataManager {
+	lazy var importer = DataImporter()
+	var data = [String]()
+}
+
+let manager = DataManager()
+manager.data.append("Some data")
+manager.data.append("Some more data")
+```
+
+#### 便捷 setter 声明
+
+如果计算属性的 setter 没有定义表示新值的参数名，则可以使用默认名称 `newValue`
+
+```swift
+struct AlternativeRect {
+	var origin = Point()
+	var size = Size()
+	var center: Point {
+		get {
+			let centerX = origin.x + (size.width / 2)
+			let centerY = origin.y + (size.height / 2)
+			return Point(x: centerX, y: centerY)
+		}
+		set {
+			origin.x = newValue.x - (size.width / 2)
+			origin.y = newValue - (size.height / 2 )
+		}
+	}
+}
+```
+
+#### 属性观察器
+
+每次属性被设置值的时候会调用属性观察器
+
++ `willSet` 新值被设置前调用（默认参数 newValue）
++ `didSet` 新值被设置后调用（默认参数 oldValue）
+
+```swift
+class StepCounter {
+	var totalSteps: Int = 0 {
+		willSet(newTotalSteps) {
+			print ("About to set totalSteps to \(newTotalSteps)")
+		}
+		didSet {
+			if totalSteps > oldValue {
+				print ("Added \(totalSteps - oldValue) steps")
+			}
+		}
+	}
+}
+
+// 注意观察输出
+let stepCounter = StepCounter()
+stepCounter.totalSteps = 200
+stepCounter.totalSteps = 360
+```
+
+#### 类型属性
+
+就是属于类型本身，而不是属于类型的实例的，相当于静态变量
+
+```swift
+struct SomeStructure {
+	static var storedTypeProperty = "Some value."
+	static var computedTypeProperty: Int {
+		return 1
+	}
+}
+
+enum SomeEnumeration {
+	static var storedTypeProperty = "Some value."
+	static var computedTypeProperty: Int {
+		return 6
+	}
+}
+
+class SomeClass {
+	static var storedTypeProperty = "Some value."
+	static var computedTypeProperty: Int {
+		return 27
+	}
+}
+
+```
+
+#### 方法 Methods
+
+分为实例方法与类型方法，就是普通方法与 static 方法的区别，这里不赘述
+
+### 下标脚本 Subscript
+
+用在类、枚举、结构体等目标中，可以认为是访问集合 collection，列表 list 或序列 sequence 的快捷方式，等于是重写一个方法这样就可以用下标来访问数组的元素
+
+```swift
+struct TimesTable {
+	let multiplier: Int
+	subscript(index: Int) -> Int {
+		return multiplier * index
+	}
+}
+
+let threeTimesTable = TimesTable(multiplier: 3)
+print("3 的 6 倍是 \(threeTimesTable[6])")
+```
+
+### 继承 Inheritance
+
+基本就是面向对象的那一套，具体看代码演示
+
+```swift
+// 基类
+class Vehicle {
+	var currentSpeed = 0.0
+	var description: String {
+		return "travelling at  \(currentSpeed) miles per hour"
+	}
+	func makeNoise() {
+		// do nothing
+	}
+}
+
+let someVehicle = Vehicle()
+print ("Vehicle: \(someVehicle.description)")
+
+// 子类
+class Bicycle: Vehicle {
+	var hasBasket = false
+}
+
+let bycycle = Bycycle()
+bycycle.hasBascket = true
+bycycle.currentSpeed = 15.0
+print ("Bycycle: \(bicycle.description)")
+
+// 继续继承
+class Tandem: Bicycle {
+	var currentNumberOfPassengers = 0
+}
+let tandem = Tandem()
+tandem.hasBasket = true
+tandem.currentNumberOfPassengers = 2
+tandem.currentSpeed = 22.0
+print("Tandem: \(tandem.description)")
+
+// 重写需要添加 override
+class Train: Vehicle {
+	override func makeNoise() {
+		print("Choo Choo")
+	}
+}
+let train = Train()
+train.makeNoise()
+
+// 同样也可以重写属性
+```
 
