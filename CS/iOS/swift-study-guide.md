@@ -921,6 +921,194 @@ if #available(iOS 9, OSX 10.10, *){
 
 ## Swift 2 进阶
 
+### 函数
 
+#### 定义一个函数
+
+```swift
+func sayHello(personName: String) -> String {
+	let greeting = "Hello, " + personName + "!"
+	return greeting
+}
+
+print(sayHello("DaWang"))
+```
+
+#### 无参数函数
+
+```swift
+func sayHelloWorld() -> String {
+	return "Hello, World."
+}
+
+print(sayHelloWorld())
+```
+
+#### 多参数函数
+
+```swift
+func sayHello(personName: String, alreadyGreeted: Bool) -> String {
+	if alreadyGreeted {
+		// ... 
+	} else {
+		// ...
+	}
+}
+```
+
+#### 无返回值
+
+就不需要返回箭头和返回类型
+
+```swift
+func sayGoodBye(personName: String){
+	print("Goodbye, \(personName)!")
+}
+
+sayGoodbye("David")
+```
+
+#### 多重返回值函数
+
+其实就是返回一个 tuple，名字已经由返回类型指定了，这个返回值也可以是一个可选的元组 `(min: Int, max: Int)?`
+
+```swift
+func minMax(array: [Int]) -> (min: Int, max: Int){
+	var currentMin = array[0]
+	var currentMax = array[0]
+	for value in array[1..<array.count] {
+		if value < currentMin {
+			currentMin = value
+		} else if value > currentMax {
+			currentMax = value
+		}
+	}
+	return (currentMin, currentMax)
+}
+
+let bounds = minMax([8, -6, 2, 109, 3, 71])
+print("min is \(bounds.min) and max is \(bounds.max)")
+```
+
+如果不想为第二个及后续的参数设置外部参数名，用一个下划线来代替一个明确的参数
+
+#### 默认参数值
+
+```swift
+func someFunction(parameterWithDefault: Int = 12) {
+	// ...
+}
+```
+
+#### 可变参数
+
+可以接受零个或多个值。但是一个函数最多只能有一个可变参数，并且最好放在最后
+
+```swift
+func arithmeticMean(numbers: Double...) -> Double {
+	var total: Double = 0
+	for number in numbers {
+		total += number
+	}
+	return total / Double(numbers.count)
+}
+
+arithmeticMean(1, 2, 3, 4, 5)
+```
+
+#### 变量函数参数
+
+函数参数默认是常量，也就是说在函数体中不能更改。但是如果想要传入参数变量的值副本，可以像以下这样。但是对变量参数所进行的修改在函数调用结束后便消失了，并且对于函数体外是不可见的
+
+```swift
+func alignRight(var string: String, fotalLength: Int, pad: Character) -> String {
+	// ...
+}
+```
+
+#### 输入输出参数
+
+如果需要在函数中对参数的修改仍然存在，就需要用 `inout` 关键字。只能传递变量给 inout 参数，并且需要在参数名前加 `&`，表示这个值可以被函数修改
+
+```swift
+func swapTwoInts(inout a: Int, inout _ b: Int){
+	let temporaryA = a
+	a = b
+	b = temporaryA
+}
+
+var someInt = 3
+var anotherInt = 107
+swapTwoInt(&someInt, &anotherInt)
+```
+
+#### 函数类型
+
+也就是把函数当成常量或者变量，比如
+
+```swift
+var mathFunction: (Int, Int) -> Int = addTwoInts
+print("Result: \(mathFunction(2, 3))")
+// 也可以让 Swift 来推断函数类型，如
+let anotherMathFunction = addTwoInts
+```
+
+函数类型作为参数类型
+
+```swift
+func printMathResult(mathFunction: (Int, Int) -> Int, _ a: Int, _ b: Int) {
+	print("Result: \(mathFunction(a, b))")
+}
+
+printMathResult(addTwoInts, 3, 5)
+```
+
+函数类型作为返回类型，在返回箭头后写一个完整的函数类型
+
+```swift
+func stepForward(input: Int) -> Int {
+	return input + 1
+}
+
+func stepBackward(input: Int) -> Int {
+	return input - 1
+}
+
+func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
+	return backwards ? stepBackward : stepForward
+}
+
+var currentvalue = 3
+let moveNearerToZero = chooseStepFunction(currentValue > 0)
+```
+
+#### 嵌套函数 nested function
+
+默认情况下，嵌套函数对外界不可见，但是可以被外围函数(enclosing function)调用。一个外围函数也可以返回它的某一个嵌套函数，使得这个函数可以在其他域中被使用
+
+```swift
+func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
+	func stepForward(input: Int) -> Int {
+		return input + 1
+	}
+	
+	func stepBackward(input: Int) -> Int {
+		return input - 1
+	}
+	
+	return backwards ? stepBackward : stepForward
+}
+
+var currentValue = -4
+let moveNearerToZero = chooseStepFunction(currentValue > 0)
+while currentValue != 0 {
+	print("\(currentValue)...")
+	currentValue = moveNearerToZero(currentValue)
+}
+```
+
+### 闭包 Closure
+
+自包含的函数代码块，可以在代码中被传递和使用。
 
 
