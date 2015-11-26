@@ -28,6 +28,8 @@
 + Project1 Lessons Learnt 50/50
 + Assignment1 9/10
 + Assignment2 8.5/10
++ Assignment3 19/20
++ Assignment4 9/10
 + Project2 Unit1 10/10
 + Project2 Unit2 9/10
 + Project2 Unit3 24/30

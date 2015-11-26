@@ -1513,5 +1513,324 @@ let train = Train()
 train.makeNoise()
 
 // 同样也可以重写属性
+class Car: Vehicle {
+	var gear = 1
+	override var description: String {
+		return super.description + " in gear \(gear)"
+	}
+}
+
+let car = Car()
+car.currentSpeed  = 25.0
+car.gear = 3
+print("Car: \(car.description)")
+
+// 重写属性观察器
+class AutomaticCar: Car {
+	override var currentSpeed: Double {
+		didSet {
+			gear = Int(currentSpeed / 10.0) + 1
+		}
+	}
+}
 ```
+
+防止重写的话，在前面加上 `final` 关键字即可
+
+### 构造过程 Initialization
+
+在构造器中设置属性时是直接设置的，不会触发任何属性观察者(property observers)
+
+```swift
+struct Fahrenheit {
+	var temperature: Double
+	init() {
+		temperature = 32.0
+	}
+}
+
+// 默认属性值
+struct Fahrenheit {
+	var temperature = 32.0
+}
+
+// 自定义构造过程
+struct Celsius {
+	var temperatureInCelsius: Double
+	init (fromFahrenheit fahrenheit: Double) {
+		temperatureInCelsius = (fahrenheit - 32.0) / 1.8
+	}
+	init (fromKelvin kelvin: Double) {
+		temperatureInCelsius = kelvin - 273.15
+	}
+}
+
+let boilingPointOfWater = Celsius(fromFahrenheit: 212.0)
+```
+
+#### 便利构造器
+
+调用同一个类中的指定构造器
+
+```swift
+init(parameters){
+	statements
+}
+
+covenience init(parameters){
+	statements
+}
+```
+
++ 指定构造器必须调用其直接父类的指定构造器
++ 便利构造器必须调用同一类中定义的其他构造器
++ 便利构造器必须最终以吊用一个指定构造器结束
+
+或
+
++ 指定构造器必须总是向上代理
++ 便利够再起必须总是横向代理
+
+#### 两段式构造过程
+
+阶段一中，每个存储型属性通过引入它们的类的构造器来设置初始值。当每一个存储型属性值被确定后，第二阶段开始，它给每个类一次机会在新实例准备使用之前进一步定制它们的存储型属性。
+
+两段式构造过程的使用让构造过程更安全，同时在整个类层级结构中给予每个类完全的灵活性。两段式构造过程可以防止属性值在初始化之前被访问；也可以防止属性被另外一个构造器意外地赋予不同的值。
+
+#### 其他一些内容
+
+这部分等具体用到的时候再补充，这里就是有个印象
+
++ 可失败构造器 `init?`
++ 必要构造器 `required init()`
++ 通过闭包和函数来设置属性的默认值
+
+### 析构过程 Deinitialization
+
+用关键字 `deinit` 定义，每个类最多只能有一个析构器，而且不带任何参数。在实例释放发生前被自动调用。析构器是不允许被主动调用。
+
+```swift
+deinit {
+	// 执行析构过程
+}
+```
+
+## Swift 2 高级
+
+这里是偏内部机制和 Swift 本身特性的部分，需要认真理解掌握。
+
+### 自动引用计数 Automatic Reference Counting
+
+引用计数仅仅应用于类的实例。结构体和枚举类型是值类型，不是引用类型，也不是通过引用的方式存储和传递的。
+
+#### 工作机制
+
+每次创建一个类的新的实例是，ARC 会分配一大块内存用来存储实例信息。内存中会包含实例的类型信息，以及这个实例所有相关属性的值。为了确保使用中的实例不会被销毁，ARC 会跟踪和计算每一个实例正在被多少属性、常量和变量所引用。哪怕实例的引用数为一，ARC 都不会销毁这个实例。
+
+无论将实例赋值给属性、常量或变量，它们都会创建此实例的强引用。只要强引用还在，实例是不允许被销毁的。
+
+#### 自动引用计数实践
+
+通过一个例子来学习
+
+```swift
+class Person {
+	let name: String
+	init(name: String) {
+		self.name = name
+		print("\(name) is being initialized")
+	}
+	deinit {
+		print("\(name) is being deinitialized")
+	}
+}
+
+// 初始值自动初始化为 nil
+var reference1: Person?
+var reference2: Person?
+var reference3: Person?
+
+// 接下来创建一个新实例
+reference1 = Person(name: "Da Wang")
+// 这时从 reference1 到这个新实例间建立了一个强引用
+reference2 = reference1
+reference3 = reference1
+// 现在这个 Person 实例已经有三个强引用了
+
+reference2 = nil
+reference3 = nil
+// 这时因为还有一个强引用，所以不会被销毁
+
+reference1 = nil
+// 这时因为没有引用了，所以这个实例就被销毁了
+```
+
+但是如果有两个类，这两个类中各有一个属性是另外一个类的实例，那么就会导致循环强引用。为了解决这个问题，有两种办法：弱引用(weak reference)和无主引用(unowned reference)
+
+弱引用和无主引用允许循环引用中的一个实例引用另外一个实例而不保持强引用。这样就避免了循环引用。对于生命周期中会变为 nil 的实例使用弱引用。相反地，对于初始化赋值后再也不会被赋值为 nil 的实例，使用无主引用。
+
+#### 弱引用
+
+弱引用必须被声明为变量，表明其值能在运行时被修改。因为弱引用可以没有值，必须将每一个弱引用声明为可选类型
+
+```swift
+class Person {
+	let name: String
+	init(name: String) {
+		self.name = name
+	}
+	var apartment: Apartment?
+	deinit {
+		print("\(name) is being deinitialized")
+	}
+}
+
+class Apartment {
+	let unit: String
+	init (unit: String){
+		self.unit = unit
+	}
+	weak var tenant: Person?
+	deinit {
+		print ("Apartment \(unit) is being deinitialized")
+	}
+}
+```
+
+在使用垃圾回收的系统里，弱指针有时用来实现简单的缓冲机制，因为没有强引用的对象只会在内存压力触发垃圾收集时才被销毁。但是在 ARC 中，一旦值的最后一个强引用被删除，就会被立刻销毁。
+
+#### 无主引用
+
+无主引用是永远有值的，所以一定要被定义成非可选类型。用关键字 `unowned`。无主引用总是可以被直接访问的。不过 ARC 无法在实例被销毁后将无主引用设为 nil。
+
+下面的例子中，因为信用卡总是关联着一个客户，因此将 customer 属性定义为无主引用，用以避免循环强引用
+
+```swift
+class Customer [
+	let name: String
+	var card: CreditCard?
+	init (name: String){
+		self.name = name
+	}
+	deinit {
+		print("\(name) is being deinitialized")
+	}
+}
+
+class CreditCard {
+	let number: UInt64
+	unowned let customer: Custoer
+	init(number: UInt64, customer: Customer){
+		self.number = number
+		self.customer = customer
+	}
+	deinit {
+		print("Card \(number) is being deinitialized")
+	}
+}
+```
+
+以上就是两种常用的需要打破循环强引用的场景
+
+Person 和 Apartment 的例子展示了两个属性的值都允许为 nil，并且会潜在的产生循环强引用。适合用弱引用解决。
+
+Customer 和 CreditCard 的例子展示了一个属性的值允许为 nil，而另一个属性的值不允许为 nil，这种情况适合用无主引用来解决。
+
+还有第三种场景，这里两个属性都必须有值，并且初始化完成后永远不会为 nil。在这种场景中，需要一个类使用无主属性，而另外一个类使用隐式解析可选属性。
+
+```swift
+class Country {
+	let name: String
+	// 这里用感叹号来表示隐式解析可选属性
+	var capitalCity: City!
+	init(name: String, capitalName: String) {
+		self.name = name
+		sel.capitalCity = City(name: capitalName, country: self)
+	}
+}
+
+class City {
+	let name: String
+	unowned let country: Country
+	init(name: String, country: Country) {
+		self.name = name
+		self.country = country
+	}
+}
+```
+
+#### 闭包引起的循环强引用
+
+可以用一个称为闭包捕获列表 closure capture list 的计数来解决这个问题。问题的产生
+
+```swift
+class HTMLElement {
+	let name: String
+	let text: String?
+	
+	lazy var asHTML: Void -> String = {
+		if let text = self.text {
+			return "<\(self.name)>\(text)</\(self.name)>"
+		} else {
+			return "<\(self.name) />"
+		}
+	}
+	
+	init(name: String, text:String? = nil){
+		self.name = name
+		self.text = text
+	}
+	
+	deinit {
+		print ("\(name) is being deinitialized")
+	}
+}
+
+let heading = HTMLElement(name: "h1")
+let defaultText = "some default text"
+heading.asHTML = {
+	// ...
+}
+```
+
+这里实例的 `asHTML` 属性持有闭包的强引用，但是闭包在闭包体里使用了 `self`，因此闭包又持有了 HTMLElement 实例的强引用，这样就循环了。
+
+**定义捕获列表**
+
+每一项都由一对元素组成，一个元素是 `weak` 或 `unowned` 关键字，另一个元素是类实例的引用(如 `self`) 或初始化过的变量。如果闭包又参数列表和返回类型，把捕获列表放在它们前面
+
+```swift
+lazy var someClosure: (Int, String) -> String = {
+	[unowned self, weak delegate = self.delegate!]
+	(index: Int, stringToProcess: String) -> String in
+		// closure body
+}
+```
+
+**弱引用和无主引用**
+
+在闭包和捕获的实例总是互相引用时并且总是同时销毁时，将闭包内捕获定义为无主引用。
+
+相反地，在被捕获的引用可能会变为 nil 时，将闭包内的捕获定义为弱引用，所以之前的类可以改为
+
+```swift
+class HTMLElement {
+	let name: String
+	let text: String?
+	
+	lazy var asHTML: Void -> String = {
+		[unowned self] in
+		if let text = self.text {
+			return "<\(self.name)>\(text)</\(self.name)>"
+		} else {
+			return "<\(self.name) />"
+		}
+	}
+}
+```
+
+### 可空链式调用 Optional Chaining
+
+
+
 
