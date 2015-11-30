@@ -1831,6 +1831,406 @@ class HTMLElement {
 
 ### 可空链式调用 Optional Chaining
 
+是一种可以请求和调用属性、方法及下标的过程，所谓可空指的是调用的目标当前可能为空。如果可空的目标有值，那么就会调用成功，如果为空，这种调用会返回 nil。多个连续的调用可以被链接在一起形成一个调用链，任何一个为空，整个调用链就会失败。
 
+可空链式调用(用?)与强制展开(用!) 的不同
+
+```swift
+class Person {
+	var residence: Residence?
+}
+
+class Residence {
+	var numberOfRooms = 1
+}
+
+let john = Person()
+
+// 以下强制调用会出现运行时错误
+let roomCount = john.residence!.numberOfRooms
+
+// 可空链式调用可以避免出错，而是返回一个空值
+if let roomCount = john.residence?.numberOfRooms {
+	print("John's Residence has \(roomCount) rooms.")
+} else {
+	print("Unable to get the numebr of rooms")
+}
+```
+
++ 可以通过可空链式调用访问属性的可空值，并且判断访问是否成功
++ 可以通过可空链式调用来调用方法，并判断是否调用成功，即使这个方法没有返回值
++ 可以通过可空链式调用来访问下标：`john.residence?[0]`
++ 如果下标返回可空类型值，比如 Dictionary 中的 key 下标，那么同样可以是用可空链式调用
++ 其实就是在每个可空类型之后加个问号，可以有效解决值或者引用为空带来的问题
+
+```swift
+var testScores = ["Dave": [86, 82, 84], "Bev": [79, 94, 81]]
+
+testScores["Dave"]?[0] = 91
+testScores["Bev"]?[0]++
+testScores["Wdx"]?[0] = 72 // failure
+```
+
+### 错误处理 Error Handling
+
+错误遵从 `ErrorType` 协议类型，使用 `throw` 关键词来抛出错误，如
+
+```swift
+enum VendingMachineError: ErrorType {
+	case InvalidSelection
+	case InsufficientFunds(coinsNeeded: Int)
+	case OutOfStock
+}
+
+// 抛出错误
+throw VendingMachineError.InsufficientFunds(coinsNeeded: 5)
+```
+
+四种错误处理的方式
+
+1. 把函数抛出的错误传递给调用此函数的代码
+2. 用 `do-catch` 语句处理错误
+3. 将错误作为可选类型
+4. 断言错误根本不会发生
+
+#### 用 throwing 传递错误
+
+一个 throwing 函数从其内部抛出错误，并传递到该函数被调用时所在的区域中。注意，只有 throwing 函数可以传递错误。任何在某非 throwing 函数内部抛出的错误只能在此函数内部处理
+
+```swift
+func canThrowErrors() throws -> String
+func cannotThrowErrors() -> String
+```
+
+下面是一个具体的例子
+
+```swift
+struct Item {
+	var price: Int
+	var count: Int
+}
+
+class VendingMachine {
+	var inventory = [
+		"Candy Bar": Item(price:12, count: 7),
+		"Chips": Item(price:10, count:4),
+		"Pretzels": Item(price:7, count: 11)
+	]
+	var coinsDeposited = 0
+	
+	func dispenseSnack(snack: String){
+		print("Dispensing \(snack)")
+	}
+	
+	func vend(itemNamed name: String) throws {
+		guard var item = inventory[name] else {
+			throw VendingMachineError.InvalidSelection
+		}
+		
+		guard item.count > 0 else {
+			throw VendingMachineError.OutOfStock
+		}
+		
+		guard item.price <= coinsDeposited else {
+			throw VendingMachineError.InsufficientFunds(coinsNeeded: item.price - coinsDeposited)
+		}
+		
+		coisDeposited -= time.price
+		item.count--
+		inventory[name] = item
+		dispenseSnack(name)
+	}
+}
+```
+
+也可以使用 `try?` 通过将其转换成一个可选值来处理错误。如果在评估 `try?` 表达式时一个错误被抛出，那么这个表达式的值就是 nil。例如下面代码中 x 和 y 有相同的值和特性
+
+```swift
+func someThrowingFunction() throws -> Int {
+	// ...
+}
+
+let x = try? 
+someThrowingFunction()
+
+let y = Int? 
+do {
+	y = try someThrowingFunction()
+} catch {
+	y = nil
+}
+```
+
+也可以在表达式前面写 `try!` 来使错误传递失效
+
+```swift
+let photo = try! loadImage("./Resources/JohnAppleseed.jpg")
+```
+
+#### 指定清理操作
+
+可以使用 `defer` 语句在代码之前到要离开当前的代码段之前去执行一套语句，不管是以何种方式离开当前的代码段的。`defer` 关键字加上要被延时执行的语句。延时执行的语句不会包含任何会将控制权移交到外面的代码，操作是按照被指定的顺序的相反顺序执行，即第一条语句会在第二条语句执行之后执行。即使没有错误处理代码，也可以使用 `defer` 语句
+
+```swift
+func processFile(filename: String) throws {
+	if exists(filename) {
+		let file = open(filename)
+		defer {
+			close(file)
+		}
+		while let line = try file.readline() {
+			// 处理文件
+		}
+		close(file)
+	}
+}
+```
+
+### 类型转换 Type Casting
+
+使用 `is` 和 `as` 操作符实现。
+
++ 类型检查 `is`
++ 类型转换 `as`
++ 向下转型，从父类转换到子类 `as?` 或 `as!`
+
+不确定类型也有两种别名，当然，只有在非用不可的时候才用这种不明确的类型，毕竟类型明确更清晰
+
++ `AnyObject` 可以代表任何 class 类型的实例
+	+ 工作中使用 Cocoa APIs 一般会接收一个 [AnyObject] 类型的数组
++ `Any` 可以表示任何类型，包括方法类型
+	+ 可以使用 `Any` 类型来混合不同的类型一起工作
+
+### 嵌套类型 Nested Types
+
+在外部对嵌套类型的引用，以被嵌套类型的名字为前缀，加上所要引用的属性名
+
+```swift
+let heartsSymbol = BlackjackCard.Suit.Hearts.rawValue
+```
+
+### 扩展 Extensions
+
+向一个已有的类、结构体、枚举类型或者协议添加新功能，和 Objective-C 中的 categories 类型（但 Swift 的扩展没有名字）。注意，扩展可以添加新功能，但是不能重写已有的功能。使用关键字 `extension`
+
+Swift 中的扩展可以：
+
++ 添加计算型属性和计算型静态属性
++ 定义实例方法和类型方法
++ 提供新的构造器
++ 定义下标
++ 定义和使用新的嵌套类型
++ 使一个已有类型符合某个协议
+
+```swift
+extension SomeType {
+	// 在这里写添加的新功能
+}
+
+// 扩展类型以适配协议
+extension SomeType: SomeProtocol, AnotherProtocol {
+	// 协议实现
+}
+```
+
+基本上所有的东西都可以利用扩展来添加到已有的类中
+
+### 协议 Protocols
+
+使用关键字 `protocol`，如果类在遵循协议的同时拥有父类，应该将父类名放在协议名之前，以逗号分隔
+
+```swift
+protocol SomeProtocol {
+	// 协议内容
+}
+```
+
+#### 对属性的规定
+
+协议可以提供特定类型的实例属性或类属性(也就是确定是不是静态成员)，而不用指定是存储型属性还是计算型属性。当然还必须指明是只读的还是可读可写的
+
+```swift
+protocol SomeProtocol {
+	var mustBeSettable: Int {get set}
+	var doesNotNeedToBeSettable: Int {get}
+	// 类属性
+	static var someTypeProperty: Int {get set}
+}
+```
+
+#### 对 Mutating 方法的规定
+
+对普通方法的规定就是正常的方法定义以及是不是要 static。
+
+有时需要在方法中改变它的实例，使用 mutating 关键字，表示可以在该方法中修改它所属的实例以及实例属性的值。
+
++ 用类实现协议中的 mutating 方法时，不用写 mutating 关键字
++ 用枚举实现协议中的 mutating 方法时，必须写 mutating 关键字
+
+#### 对构造器的规定
+
+不需要写花括号和构造器的实体
+
+```swift
+protocol SomeProtocol {
+	init(someParameter: Int)
+}
+```
+
+#### 委托(代理)模式
+
+协议同样可以当作类型来使用，基于这种设计，可以有以下这种称为委托的设计模式。
+
+它允许**类**或**结构体**将一些需要它们负责的功能**委托**给其他类型的实例。委托模式的实现很简单：定义协议来封装那些需要被委托的函数和方法。委托模式可以用来响应特定的动作或接收外部数据源提供的数据，而无须知道外部数据源的类型。
+
+这个具体可以参考官方给出的代码，实际上是保持面向对象的一种快捷方式
+
+#### 协议继承和扩展
+
+协议的继承和扩展与类的继承与扩展基本一致，这里不赘述
+
+#### 类专属协议
+
+指的是结构体和枚举不能使用的协议，添加 `class` 关键字，而且必须第一个出现在协议的继承列表里
+
+```swift
+protocol SomeClassOnlyProtocol: class, SomeInheritedProtocol {
+	// 协议定义
+}
+```
+
+#### 协议合成
+
+通过 `protocol<SomeProtocol, AnotherProtocol>` 的格式来进行合成，用逗号分隔。协议合成并不会生成一个新协议类型，而是将多个协议合成为一个临时的协议，超出范围后立即失效
+
++ `is`: 检查实例是否遵循了某个协议
++ `as?`: 返回一个可选值，当实例遵循某协议时，返回该协议类型，否则返回 nil
++ `as`: 向下强制转型，转型失败会引起运行时错误
+
+### 泛型 Generics
+
+比如说，交换两个值
+
+```swift
+func swapTwoValues<T>(inout a: T, inout _ b: T) {
+	let t = a
+	a = b
+	b = t
+}
+```
+
+使用泛型的类型有很多，比如说，栈
+
+```swift
+var stackOfString = Stack<String>()
+stackOfString.push("uno")
+stackOfString.push("docs")
+```
+
+当然，对于泛型，可以对类进行一定的约束，比如说 Dictionary 中的 key 就要求是 hashable 的
+
+```swift
+func someFunction<T: SomeClass, U: SomeProtocol>(SomeT: T, someU: U){
+	// 函数主体
+}
+```
+
+使用 where 语句来定义参数约束
+
+```swift
+func allItemsMatch<C1: Container, C2: Container where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>(comeContainer: C1, anotherContainer: C2) -> Bool {
+	// 函数主体
+}
+```
+
+### 访问控制 Access Control
+
+如果只是开发一个单目标的应用程序，完全可以不用申明代码的显式访问级别。
+
+Swift 中的访问控制模型基于模块和源文件这两个概念。
+
+模块指的是以独立单元构建和发布的 Framework 或 Application。在 Swift 中的一个模块可以使用 import 关键字引入另外一个模块。
+
+有三种不同的访问级别
+
++ public: 没限制，一般设计大家用的 API 用这个
++ internal: 别人不能访问该模块中源文件里的实体，用作内部结构
++ private: 只能在当前文件中使用，隐藏实现细节
+
+**使用原则：访问级别的统一性**：也就是说只能越来越松，而不能越来越紧
+
+默认访问级别是 internal
+
+```swift
+public class SomePublicClass {}
+internal class SomeInternalClass {}
+private class SomePrivateClass {}
+```
+
++ 类访问级别会影响到类成员的默认访问级别
+	+ 一个 public 类的所有成员的访问级别默认为 internal 级别
++ 元组的访问级别与元组中访问级别最低的类型一致
++ 枚举中成员的访问级别继承自该枚举，不能自定义不同的访问级别
++ 子类的访问级别不得高于父类的访问级别
++ 泛型类型或泛型函数的访问级别取决于泛型类型、函数本身、泛型类型参数三者中的最低访问级别
+
+### 高级运算符
+
+Swift 中的算数运算符默认是不会溢出的，所有的溢出都会被捕获并报告为错误。另一套支持溢出的运算符以 `&` 开头，如：`&+, &-`
+
+#### 位运算
+
+支持 C 语言所有的位运算
+
++ 取反 `~`
++ 与 `&`
++ 或 `|`
++ 异或 `^`
++ 左移右移 `<<`, `>>`
+
+#### 运算符重载
+
+和 Cpp 类似，具体看代码，需要注意的是不能对默认的赋值运算符 `=` 进行重载
+
+```swift
+struct Vector2D {
+	var x = 0.0, y = 0.0
+}
+
+// 中缀运算符
+func + (left: Vector2D, right: Vector2D) -> Vector2D {
+	return Vector2D(x: left.x + right.x, y: left.y + right.y)
+}
+
+// 前缀(prefix)/后缀(postfix)运算符，加不同关键字即可
+prefix func - (vector: Vector2D) -> Vector2D{
+	return Vector2D(x: -vector.x, y: -vector.y)
+}
+
+// 赋值运算符，需要加上 inout
+func += (inout left: Vector2D, right: Vecter2D) {
+	left = left + right
+}
+
+// 等价操作符
+func == (left: Vector2D, right: Vector2D) -> Bool {
+	return (left.x == right.x) && (left.y == right.y)
+}
+func != (left: Vector2D, right: Vector2D) -> Bool {
+	return !(left == right)
+}
+
+// 自定义运算符
+prefix func +++ (inout vector: Vector2D) -> Vector2D {
+	vector += vector
+	return vector
+}
+```
+
+当然也可以自定义优先级和结合性
+
++ 结合性可取的值有 left, right, none
++ 结合性默认值是 none
++ 优先级如果没有指定，则默认为 100
 
 
