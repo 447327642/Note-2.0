@@ -978,23 +978,6 @@ TreeNode leftMostChild(TreeNode n){
 }
 ```
 
-如果是 bst，则可以利用大小来进行判断，思路与之前一致
-
-```java
-public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-    if (p.right != null) {
-        p = p.right;
-        while (p.left != null)
-            p = p.left;
-        return p;
-    }
-    TreeNode candidate = null;
-    while (root != p)
-        root = (p.val > root.val) ? root.right : (candidate = root).left;
-    return candidate;
-}
-```
-
 如果是 binary search tree，那么就是 leetcode 267 题
 
 If p has a right subtree, then get its successor from there. Otherwise do a regular search from root to p but remember the node of the last left-turn and return that. Same solution as everyone, I guess, just written a bit shorter. Runtime O(h), where h is the height of the tree.
