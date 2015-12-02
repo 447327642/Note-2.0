@@ -34,6 +34,14 @@
 + Project2 Unit2 9/10
 + Project2 Unit3 24/30
 
+---
+
++ You can explore different implementation for your main activity. For example, all of your main activity buttons could live in a NavigationMenu on the left for the user to select.
++ You will want to include duplicate layout xml files for a second resolution level (i.e. tablet)
++ Your DB Schema should also be able to demonstrate the relationships amongst tables (An EER diagram from MySQL Workbench will highlight this for you)
++ Remote services and local services should be described and included for the final presentation.
++ You will also want to include an exception package to handle exception you handle such as null input parameters, null fields, etc.
+
 ## TA 信息
 
 sjdhruv@andrew.cmu.edu
