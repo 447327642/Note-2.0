@@ -25,7 +25,7 @@ Node.js 的作者说，他创造 Node.js 的目的是为了实现高性能 Web �
 
 ## 任务介绍
 
-既然是实例教程，我们需要有一个例子，这里我们要做的事情有三个
+既然是实例教程，我们需要有一个例子，这里我们要做的事情有四个
 
 1. 读入一个[文本文件](http://www.gutenberg.org/cache/epub/45/pg45.txt)
 2. 根据读入的内容进行一些数据计算
@@ -35,8 +35,9 @@ Node.js 的作者说，他创造 Node.js 的目的是为了实现高性能 Web �
 	+ 出现次数最多的十个 trigram
 	+ 出现次数最多的 trigram 与之后的十个出现次数最多的 trigram 的编辑距离，列出比较的对象以及编辑距离的值 
 3. 把得到的结果写成 HTML 文件保存在本地
+4. 支持自定义参数调用，例如可以在命令行中输入文件名
 
-## 又一个 Hello World
+## Hello World
 
 配置好了环境，就可以开始这次的任务了，但是开始之前，万变不离其宗，先要来一发 hello world。步骤如下
 
@@ -51,7 +52,7 @@ console.log('Hello World, this is wdx');
 
 用命令行进入刚才新建的文件夹，然后 `node hello.js`，可以看到输出了 `Hello World, this is wdx`，于是第一步就完成了。
 
-## 一 读取文件
+## 一：读取文件
 
 知道了基本的执行操作，我们可以开始读入指定的 txt 文件，下载好[文件](http://www.gutenberg.org/cache/epub/45/pg45.txt) 并放在同一个文件夹里，就可以利用 node.js 自带的库来进行操作了。
 
@@ -79,7 +80,7 @@ fs.readFile(filename, function (err, buffer) {
 
 载入之后我们就可以对内容进行操作了
 
-## 二 数据统计
+## 二：数据统计
 
 ### 行数/词数/词频
 
@@ -236,15 +237,83 @@ function levenshtein(a, b) {
 然后只要在代码中调用这个函数即可
 
 ```javascript
+// Calculate edit distance and sort by distance value
 // create an array to save the result
 var resultstr = [];
-console.log('Edit distance:');
 for (var j = 1; j < 11; j++){
    var dis = levenshtein(trigramtop11[0][0], trigramtop11[j][0]);
-   var str = trigramtop11[0][0] + " vs " + trigramtop11[j][0] + ": " + dis;
-   resultstr.push(str);
-   console.log(str);
+   var str = "[" + trigramtop11[0][0] + "] vs [" + trigramtop11[j][0] + "]: ";
+   resultstr.push([str, dis]);
+}
+resultstr.sort(function(x, y){
+   return y[1] - x[1];
+});
+```
+
+这样一来，第二步也就完成了
+
+## 三：输出 HTML
+
+写入文件我们同样使用 fs 模块，思路是我们先把要展示的内容存到一个 string 中，然后一次写入到 html 文件里，就算完成。具体代码比较简单，这也是之前为什么我要把所有的计算结果都换存起来的原因，方便写入。注意 HTML 输出的格式即可，代码如下：
+
+```javascript
+console.log('Creating HTML content');
+
+var htmlcontent = '<html><head><title>' + filename + ' Analysis Result</title><head>';
+htmlcontent += '<body><h1>' + filename + ' Analysis Result</h1>';
+htmlcontent += '<h2>Line Count: ' + linecount + '</h2>';
+htmlcontent += '<h2>Word Count: ' + wordcount + '</h2>';
+htmlcontent += '<h2>Trigram Frequency (Top 10)</h2><ol>';
+for (var j = 0; j < 10; j++){
+   htmlcontent += '<li>' + trigramtop11[j] + '</li>';
+}
+htmlcontent += '</ol><h2>Trigram Edit Distance</h2><ol>';
+for (var j = 0; j < 10; j++){
+   htmlcontent += '<li>' + resultstr[j] + '</li>';
+}
+htmlcontent += '</ol><h2>Word Frequency</h2><ul>';
+for (var j = 0; j < indexarr.length; j++){
+   htmlcontent += '<li>' + indexarr[j] + '</li>';
+}
+htmlcontent += '</ul></body></html>';
+
+
+console.log('')
+console.log('Generating HTML file');
+var filenamearr = filename.split('.');
+
+fs.writeFile(filenamearr[0] + '-result.html', htmlcontent, function(err){
+   if (err){
+       return console.error(err);
+   }
+   console.log('Generation Success');
+   console.log('Filename: ' + filenamearr[0] + '-result.hmtl');
+   console.log('---------------------');
+   console.log('All Job Done');
+});
+```
+
+## 四：传入参数
+
+现在我们读入的内容是写死在代码里的，如果我们需要更灵活，从命令行传入参数的话，还需要对代码做一些改动。现在我们调用 `parser.js` 的方式是使用 `node parser.js`，现在需要实现用 `node parser.js pg45.txt` 这样的方式，可以把代码改为：
+
+```javascript
+var filename = process.argv[2];
+
+if (filename == undefined){
+    console.log('No input argument, use default file');
+    filename = 'pg45.txt';
 }
 ```
 
+这里也做了一些错误处理以防用户没有输入第二个参数，如果命令是 `node parser.js pg45.txt`，那么参数实际是 `['node', '/path/to/parser', 'pg45.txt']`
+
+## 总结
+
+至此，所有的任务就已经完成了，具体的代码可以在[这里](https://github.com/wdxtub/11601-summary-stat-nodejs)找到，这个教程不涉及网络，也只使用了 fs 一个模块，但是对于熟悉 javascript 和 nodejs，是一个很好的练习。
+
+## 参考资料
+
++ [Node.js 命令行程序开发教程](http://www.ruanyifeng.com/blog/2015/05/command-line-with-node.html)
++ [用Node.js创建命令行工具](http://www.html-js.com/article/A-day-to-learn-JavaScript-create-commandline-tools-with-Nodejs)
 
