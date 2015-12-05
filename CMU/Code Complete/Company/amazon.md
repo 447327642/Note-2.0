@@ -21,7 +21,7 @@ graph从一个source,然后输出指定的距离的node,无向图。我写的bfs
 
 ### 单词权数
 
-给你一个字典一个,map<Character, Integer>存每个字母的 权,输入是一个List<Character>(可能有重复)让你求这些字母求可以组成最大权数的 word list(List<String>). 
+给你一个字典一个,map<Character, Integer>存每个字母的权,输入是一个List<Character>(可能有重复)让你求这些字母求可以组成最大权数的 word list(List<String>). 
 
 ### leetcode: Largest K element
 
