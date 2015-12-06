@@ -880,6 +880,27 @@ return: 5
 
 解答
 
+dp 方法
+
+```java
+int helper(int[][] matrix){
+	int[] result = new int[matrix[0].length];
+	result[0] = matrix[0][0];
+	for(int i=1; i<matrix[0].length; i++){
+		result[i] = Math.min(result[i-1], matrix[0][i]);
+	}
+	for(int i=1; i<matrix.length; i++){
+		result[0] = Math.min(matrix[i][0], result[0]);
+		for(int j=1; j<matrix[0].length; j++){
+			result[j] = (result[j]<matrix[i][j] && result[j-1]<matrix[i][j])?Math.max(result[j-1], result[j]):matrix[i][j];
+			}
+		}
+		return result[result.length-1];
+}
+```
+
+dfs
+
 ```java
  public class MaximumMinimumPath {
  	private int min, max, row, col;
@@ -962,7 +983,50 @@ public class Main {
 另外，1. 若是用Java，用到queue, list啥的记得前面手动import java.util.*   2.所有函数都是static的，所以自己写其他helper函数的时候记得加上static
 
 
+## Search in 2D matrix
+
+```java
+boolean isInMatrix(int[][] matrix, int target){
+	int row = matrix.length;
+	int column = matrix[0].length;
+	int r = 0;
+	int c = column - 1;
+	while (r < row && c >= 0){
+		if (matrix[r][c] == target){
+			return true;
+		}
+		if (matrix[r][c] > target){
+			c--;
+		} else {
+			r++;
+		}
+	}
+	return false;
+}
+```
+
+### Close Two Sum
+
+findOptimalWeights,但大致是這樣:
+
+/* 一個已經預設好的class */
+
+```
+class Container {
+    public double first;
+    public double second;
+}
+```
 
 
+現在給某個容量(double capacity), 還有一個array(double[] weights), 和int numOfContainers
 
+主要是要在array中選出兩個weights總和小於等於capacity但最接近capacity 然後指定到一個Container object並且return
+
+first和second的順序並不影響，numOfContainer在java裡好像也是沒有用的,因為double[]本身就自帶length資訊
+
+public Container findOptimalWeights(double capacity, double[] weights, int numOfContainers) 
+
+最後用了最簡單的方法兩個 for loop找總和最接近capacity的pair
+總共8個test cases直接就過了
 
