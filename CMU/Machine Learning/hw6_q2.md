@@ -18,7 +18,7 @@ The size of hypothesis space for $H_1$: $|H_1|=2^{2^{20}}$
 
 ## 2.3
 
-$$m\ge \frac{1}{\epsilon}(ln|H_1|+ln(1/\delta))=100(20ln4+ln20)=3072$$
+$$m\ge \frac{1}{\epsilon}(ln|H_1|+ln(1/\delta))=100(2^{20}ln2+ln20)=72682050$$
 
 ## 2.4
 
@@ -26,13 +26,13 @@ No. The hypothesis space may not cover all the concept
 
 ## 2.5
 
-$$H_2=3^n=9$$
+$$|H_2|=2^{20\times19\times2\times2}$$
 
 ## 2.6
 
-$$m\ge \frac{1}{\epsilon}(ln|H_2|+ln(1/\delta))=100(2ln3+ln20)=519$$
+$$m\ge \frac{1}{\epsilon}(ln|H_2|+ln(1/\delta))=100(ln|H_2|+ln20)=105658$$
 
 ## 2.7
 
-H2
+H2. Because it is simpler
 

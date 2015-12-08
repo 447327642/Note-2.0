@@ -986,14 +986,19 @@ public class Main {
 ## Search in 2D matrix
 
 ```java
-boolean isInMatrix(int[][] matrix, int target){
+class Point {
+	int x;
+	int y;
+}
+
+Point isInMatrix(int[][] matrix, int target){
 	int row = matrix.length;
 	int column = matrix[0].length;
 	int r = 0;
 	int c = column - 1;
 	while (r < row && c >= 0){
 		if (matrix[r][c] == target){
-			return true;
+			return new Point(r,c);
 		}
 		if (matrix[r][c] > target){
 			c--;
@@ -1001,7 +1006,7 @@ boolean isInMatrix(int[][] matrix, int target){
 			r++;
 		}
 	}
-	return false;
+	return new Point(-1,-1);
 }
 ```
 
@@ -1029,4 +1034,34 @@ public Container findOptimalWeights(double capacity, double[] weights, int numOf
 
 最後用了最簡單的方法兩個 for loop找總和最接近capacity的pair
 總共8個test cases直接就過了
+
+```java
+ public static void findOptimalWeights(double capacity, double[] weights, int numOfContainers){
+        double min = 0.0;
+        int minPos = 0;
+        int maxPos = weights.length - 1;
+        int i =0 , j =weights.length-1;
+
+        Arrays.sort(weights);
+
+        while(i < j){
+            double sum = weights[i] + weights[j];
+
+            if(sum > min && sum <= capacity){
+                min = sum;
+                minPos = i;
+                maxPos = j;
+            }
+
+            if(sum > capacity){
+                j--;
+            }else {
+                i++;
+            }
+        }
+
+        System.out.println("The two numbers for which sum is closest to target are "
+                + weights[minPos] + " and " + weights[maxPos]);
+    }
+```
 
