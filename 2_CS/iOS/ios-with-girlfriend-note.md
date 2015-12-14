@@ -127,3 +127,45 @@ Sketch 的使用教程
 + 插入图片需要对宽度和高度进行约束
 + 图片资源添加到 Assets 里
 
+## 7 AutoLayout
+
++ 代码布局比较灵活
++ AutoLayout 可能是未来的趋势
++ 添加图片之后，如果没有限定高度和宽度，虚拟的黄线是实际显示的大小
++ 有冲突的时候可以选择不同的解决办法
+	+ update frames 是通过修改控件来解决冲突
+	+ update constrains 是通过修改约束来解决冲突
+	+ reset to suggested constrain 是让 Xcode 自己搞定
+	+ 一般我们选第一个
++ 在有了第一个元素之后，添加之后的元素，可以利用类似安卓中 relative layout 的机制来进行绑定
+	+ 点击要绑定(还没有任何约束)的控件，按住 ctrl 用鼠标拖一个箭头到被绑定的控件(已有设定好的约束)上
+	+ 如果出现红线，表示绑定的条件还不充分，Xcode 无法决定其具体位置
++ command + 方向键可以旋转屏幕，来测试不同方向下的效果
++ 合理利用不同类型的约束来完成界面相互依存逻辑的配置，注意这里也可以用一些设计模式来保证不会随便就出冲突，重点在于确定页面上最重要的元素，或者直接可以用隐藏的占位控件来做约束的 base
+
+## 8 UITableView
+
++ 一个 `UITableView` 控件是由一个 `TableViewWrapperView` 和 许多 `TableViewCell` 组成的
++ 不会把所有的行都显示出来，而是通过一个重用机制，假设有 N 行，那么会在上下各多生成一行，共 N+2 行
++ 另一个概念是 Sections，方便组织不同类别的数据
++ `UITableView` 将由 Controller 提供数据和指定交互动作，具体是通过两个 protocol 指定的(`UITableViewDataSource` - data, `UITableViewDelegate` - interaction)
++ `UITableViewDataSource`
+	+ `numberOfSectionsInTableView`
+	+ `numberOfRowsInSection`
+	+ `cellForRowAtIndexPath`
+	+ ...
++ `UITableViewDelegate`
+	+ `heightForRowAtIndexPath`
+	+ `didSelectRowAtIndexPath`
+	+ `willDisplayCell`
+	+ ...
++ 如果想在代码中操作对应的控件，需要先按住 ctrl 拖一个 outlet 关系到代码中
++ 至于是 update frame 还是 update constrain 需要灵活一点根据需要来，没有一刀切的东西
++ `TableView` 通过 `TableViewCell` 的 identifier 来找到对应的 cell
++ `indexPath.row` 确定是第几行
++ 选择 TableView 所在的 View Controller 然后拖一条线到新建的另一个 View Controller 上，连接类型选择 Show，然后给对应的 Segue 命名
++ 用 `performSegueWithIdentifier`，然后传入刚才给 segue 命名的 identifier
++ 重写 `prepareForSegue` 方法来准备传入的数据
++ 强制转换中使用 `as!` 进行检查
++ 记得要把 `delegate` 和 `datasource` 都进行绑定，不然并不会执行对应的操作
+
