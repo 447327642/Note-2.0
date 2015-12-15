@@ -162,3 +162,102 @@ Three Types: Classes, Structures, Enumerations
 
 语言的细节还有很多，需要在实践中不断熟悉，这里不需要过度在意细节，动手最重要
 
+## 5 Objective C Compatibility, Property List, Views
+
++ 主要介绍了 Swift 与 Objc 的桥接，这里官方的指南都有介绍，具体不赘述
++ Property List is really just the definition of a term
+	+ pass around data "blindly"
+	+ "generic data structure", be passed to API
+	+ example: `NSUserDefaults`, small database
+	+ 持久化的方式
++ Views
+	+ `UIView` subclass
+	+ Defines a coordinate space, for drawing, and for handling touch events
+	+ Hierarchical (only one superview, but many/zero subviews)
+	+ The hierarchy is most often constructed in Xcode graphically
+		+ But it can be done in code as well
+	+ Where does the view hierarchy start?
+		+ THe top of the (usable) view hierarchy is the Controller's `var view: UIView`
+		+ This view is the one whose bounds will change on rotation
+		+ This view is likely the ones you will programmatically add `subview` to
+		+ All of your MVC's View's `UIView` will have this view as an ancestro
+		+ It's wutomatically hooked up for you when you create an MVC in Xcode
+	+ 在代码中初始化 `UIView` 需要实现两个必要 `init` 函数，因为有两种方式可以创建
+	+ 或者也可以用 `awakeFromNib` 针对 storyboard
++ View Coordinate System
+	+ Origin is upper left
+	+ Units are points, not pixels
+		+ Pixels are the minimum-sized unit of drawing your device is capable of
+		+ Points are the units in the coordinate system
+		+ Most of the time there are 2 pixels per point, but it could be only 1 or something else
+		+ How many pixels per point are there? `UIView`'s `var contentScaleFactor: CGFloat`
+	+ The boundaries of where drawing happends
+		+ `var bounds: CGRect` // a view's internal drawing space's origin and size
+		+ This is the rectangle containing the drawing space **in its own coordinate system**
+		+ It is up to your views' implementation to interpret what `bounds.origin` means (often nothing)   
+	+ Where is the `UIView`? 注意都是在 superview 里的，不是自己的
+		+ `var center: CGPoint` // the center of a `UIView` **in its superview's coordinate system**
+		+ `var frame: CGRect` // the rect containing a `UIView` **in its superview's coordinate system**
++ bounds vs frame
+	+ Use `frame` and/or `center` to **position** a `UIView`
+	+ `frame.size` 不总是等于 `bounds.size` -> 因为旋转的时候 frame 要大得多！
++ Creating Views
+	+ Most often your views are created via your storyboard
+	+ To draw, just create a `UIView` subclass and override `drawRect`
+	+ NEVER call drawRect!! EVER! Or else!
++ 绘制的方法也有很多，主要是 Bezier 已经一些 UIKit 的设定
++ `UIColor`: RGB, HSB or even a pattern (using UIImage)
+	+ have alpha (transparency) 0(fully transparent) 1.0(fully opaque)
+	+ 如果需要透明需要把 `UIView` 的 `var opaque = false`
++ Drawing Text
+	+ Usually we use a `UILabel` to put text on screen
+	+ To draw in `drawRect`, use `NSAtrributedString`
+	+ Mutability is done with `NSMutableAttributedString`
+	+ `NSattributedString` is not a String, nor an NSString
++ Fonts
+	+ The absolutely best way to get a font in code
+		+ `class func preferredFontForTextStyle(UIFontTextStyle) -> UIFont
+		+ `UIFontTextStyle.Headline`
+		+ `UIFontTextStyle.Body`
+		+ `UIFontTextStyle.Footnote`
+	+ There are also "system fonts"
+		+ Don't use for user's **content**. Use preferred fonts for that 
++ 在 storyboard 中按着 `ctrl + shift` 再点击控件会出现一个界面让你选择你想要选择的控件，很有用
++ 如果需要在更新某个值的时候同时更新绘制，利用 `didSet` 方式声明变量
++ 如果需要一个 view 在旋转之后更新，在其 attribute inspector 中把 Mode 改为 Redraw
+
+## 6 Protocols and Delegation, Gestures
+
++ 在一个 UIView 的代码前加上 `@IBDesignable` 可以直接在 storyboard 中绘制图案
++ 在一个 UIView 中的变量前加上 `@IBInspectable` 就可以直接在 storyboard 中更改
++ Extension 只能添加，不能修改原来的方法或者属性
+	+ 是一个很容易滥用的机制！注意场景
++ Protocol - A way to express an API minimally
+	+ is a TYPE just like any other type, except 
+		+ It has no storage or implementation associated with it
+		+ 没有对应的实现，只是一个羊头，没有狗肉
++ Delegation
+	+ A very important use of `protocols`
+	+ How it plays out
+		+ Create a delegation `protocol` (defines what the View wants the Controller to take care of)
+		+ Create `delegate` property in the View whose type is that delegation `protocol`
+		+ Use the `delegate` property in the View to get/do things it can't own or control
+		+ Controller declares that it implements the `protocol`
+		+ Controller sets `self` as the delegate of the View by setting the property in #2 above
+		+ Implement the `protocol` in the Controller
+	+ Now the View is hooked up to the Controlle
+	+ weak 用来避免循环引用
+	+ `let smiliness = dataSource?.smilinessForFaceView(self) ?? -0.0`
+		+ `??` 符号表示，如果左边的表达式是 nil，那么用右边的值
+	+ comman + shift + o 可以快速检索并打开文件
++ Gestures
+	+ we can get notified of the raw touch events
+	+ Gestrues are recognized by instances of `UIGestureRecognizer`
+	+ Two sides to using a gesture recognizer
+		1. Adding a gesture recognizer to a `UIView`
+		2. Providing a method to "handle" that gesture
+	+ Usually the first is done by a Controller
+	+ The second is provided either by the `UIView` or a controller
++ UISplitViewController (Two MVCs side by side)
+	+ 左边 Master，右边 Detail
+
