@@ -49,7 +49,7 @@
     - 42.计算机网络
     - 43.全球化下的社会变迁与非政府组织(NGO)
     - 44.安藤忠雄连战连败
-    - 45.Kirklin/Barratt-Boyes心脏外科学两卷套（第3版） Kirklin/Barratt-Boyes Cardiac Surgery
+    - 45.Kirklin/Barratt-Boyes心脏外科学两卷套（第3版）
     - 46.综合评价理论、方法及应用
     - 47.机械设计手册.单行本.机械振动机架设计
     - 48.普通地质学简明教程
@@ -473,7 +473,9 @@
 
 评语: goodluck（建筑学）推荐
 
-## 45.Kirklin/Barratt-Boyes心脏外科学两卷套（第3版） Kirklin/Barratt-Boyes Cardiac Surgery
+## 45.Kirklin/Barratt-Boyes心脏外科学两卷套（第3版）
+
+Kirklin/Barratt-Boyes Cardiac Surgery
 
 作者: Nicholas Kouchoukos 著
 

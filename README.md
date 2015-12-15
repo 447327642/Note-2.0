@@ -14,8 +14,8 @@ Here is how I arrange my personal notebook
 + Inbox
 + Life
 + List
-+ Archive
 + CS
 + Explore
++ Archive
 
 
