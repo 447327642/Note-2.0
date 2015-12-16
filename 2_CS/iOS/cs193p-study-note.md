@@ -261,3 +261,31 @@ Three Types: Classes, Structures, Enumerations
 + UISplitViewController (Two MVCs side by side)
 	+ 左边 Master，右边 Detail
 
+## 7 Multiple MVCs
+
++ UINaviationController
+	+ Pushes and pops MVCs off of a stack
+	+ 只有顶上的 title bar 是 `UINavigationController` 绘制的
+	+ `rootViewController` 用来切换显示不同的 MVC
++ You can get the sub-MVCs via the `viewControllers` property
+	+ `var viewControllers: [UIViewController] { get set }
++ Every `UIViewController` knows the Split View, Tab Bar or Navigation Controller it is currently in 
++ Wirting up MVCs
+	+ ctrl + drag in storyboard
+	+ 当然也可以在代码中实现，不过这个课程里只用 storyboard，我个人也觉得交给 storyboard 就好
+	+ Editor -> Embed in -> Navigation Controller
++ Segue
+	+ Four Basic Segues
+	+ Show Segue, Show Detail Segue, Modal Segue(better not), Popover Segue
+	+ always create a new instance of an MVC，不会用已有的
+	+ 要保证 identifier 和代码里用的一致
+	+ More important use of the identifier: **preparing** for a segue
++ Preparing for a Segue
+	+ It is crucial to understand that this preparation is happening BEFORE outlets get set!
+	+ It is a very common bug to prepare an MVC thinking its outlets are set
++ Preventing Segues
+	+ You can prevent a segue from happening too
+	+ `shouldPerformSegueWithIdentifier` 返回 false 即可
++ Label 的 Autoshrink 属性可以避免出现文字过长
+
+
