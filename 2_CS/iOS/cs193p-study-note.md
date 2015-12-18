@@ -525,3 +525,66 @@ Three Types: Classes, Structures, Enumerations
 + Overlays, MKOverlayView
 + callout 只能代码配合 storyboard 实现，因为 storyboard 压根不会显示这个 callout
 
+## 15 Modal Segues
+
++ Modal View Controller
+	+ A way of segueing that takes over the screen (should be used with care)
+	+ Example (Contacts application)
+	+ No back button (only Cancel)
++ Hearing back from a Modally segue-to View Controller
+	+ To communicate results, generally you would Unwind (though delegation possible too)
+	+ `func dismissViewControllerAnimated(Bool, completion: () -> Void)`
+	+ Remember that unwind automatically dismisses
++ How is the modal view controller animated
+	+ `var modalTransitionStyle: UIModalTransitionStyle`
+	+ `.CoverVertical`, `.FlipHorizontal`, `.CrossDissolve`, `.PartialCurl`
+
+## 16 Camera, Persistence and Embed Segues
+
++ UIImagePickerController
+	+ Modal view to get media from camera or photo library
+	+ Usage
+		1. Create it & set its delegate
+		2. Configure it (source, kind of media, user edibility)
+		3. Present it
+		4. Respond to delegate method when user is done/cancels picking the media
+	+ Sources: `.PhotoLibrary`, `.Camera`, `.SavedPhotosAlbum`
+	+ `kUTTypeImage`, `kUTTypeMovie` from `import MobileCoreServices`
++ 相机这部分等移植图像处理库的时候再细细研究
++ Persistence
+	+ Archiving, SQLite, File System, Core Data
++ Archiving
+	+ A mechanism for making ANY object graph persistent
+	+ Requires all object in the graph to implement `USCoding` protocol
++ SQLite
+	+ SQL in a single file
+	+ Fast, low memory, reliable
+	+ Open SOurce, comes bundled in iOS
+	+ Not good for everything
+	+ Not a server-based technology
+	+ In used by Core Data
++ File System
+	+ Acess files in the Unix filesystem
+		1. Get the root of a path into an NSURL
+		2. Append path componnets to the URL
+		3. Write to/read from the files
+		4. Manage the filesystem with `NSFileManager` 
+	+ You can only write inside your application's sandbox
+		+ Security, Privacy, Cleanup
++ Core Data
+	+ Object-oriented database
+	+ Very, very powerful framework in iOS
+	+ How does it work?
+		+ Create a visual mapping (using Xcode tool) between database and objects
+		+ Create and query for objects using object-oriented API
+		+ Access the "columns in the database table" using `@NSManaged var`s on those objects
++ Embed Segues
+	+ Putting a VC's self.view in another VC's view hierarchy
+	+ This can be a very powerful encapsulation technique 
+	+ Drag out a `Container View from the object palette into the scene you want to embed it in
+	+ Automatically sets up an "Embed Segue" from container VC to the contained VC
+	+ The embedded VC's outlets are not set at the time `prepareForSegue(sender:)` is called
+
+## 17 Internationalization and Settings
+
+
