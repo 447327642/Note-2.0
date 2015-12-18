@@ -287,5 +287,241 @@ Three Types: Classes, Structures, Enumerations
 	+ You can prevent a segue from happening too
 	+ `shouldPerformSegueWithIdentifier` 返回 false 即可
 + Label 的 Autoshrink 属性可以避免出现文字过长
++ Popovers
+	+ Popovers pop an entire MVC over the rest of the screen
+	+ is not a `UIViewController`
+	+ Things to note when **preparing** for a popover segue
+	+ `popOverPresentationController` 针对 iphone 和 ipad 有不同的表现形式，但是也是可以自由定制的，有对应的方法
++ override 基类的 property 的 didSet 方法不会覆盖原来的，而是在原来的基础上添加
 
+## 8 View Controller Lifecycle, Autolayout
+
++ After instantiation and outlet-setting, `viewDidLoad` is called
+	+ This is an exceptionally good place to put a lot of setup code
+	+ It's better than an `init` because your outlets are all set up by the thime this is called
+	+ update your UI from your model
+	+ but **geometry** of your view (`bounds`) is not set yet!
++ Just before your `view` appears on screen, you get notified
+	+ `func viewWillAppear(animated: Bool)`
+	+ don't pu something in this method that really wants to be in `viewDidLoad`
+	+ Do something here if things your display is changing while your MVC is off-screen
+	+ Your view's geometry is set here, but there are other plaes to react to geometry
++ You get notified when you will disappear off screen too
+	+ This is where you put "remember what's going on" and cleanup code
++ Geometry changed?
+	+ Most of the time this will be automatically handled with Autolayout
+	+ But you can get involved in geometry changes directly with
+		+ `func viewWillLayoutSubviews()`
+		+ Autolayout happens between these two method
+		+ `func viewDidLayoutSubviews()` 
++ Autorotation
+	+ You can control which orientations your app supports in the Settings of your project
+	+ Almost always, your UI just responds naturally to rotation with autolayout
++ In low-memory situations, `didReceiveMemoryWarning` get called
++ `awakeFromNib`
+	+ This method is sent to all objects that come out of a storyboard (including your Controller)
+	+ Happens before outlets are set!
+	+ **Put code somewhere else** if at all possible
++ Size Classes
+	+ Compact, Regular, Any
+	+ 可以在 storyboard 中进行不同组合的配置，下面也会有说明
+	+ 可以在 Inspector 里设置不同控件和 constrain 的范围（最下面的部分）
+
+## 9 ScrollView and Multithreading
+
++ 先设置 scrollView 的 contentSize，然后就可以正常添加不同的 frame
++ 注意不同坐标系的转换
++ UIScrollView
+	+ add your "too big" `UIView` in code using `addSubview`
+	+ Now don't forget to set the `contentSize`
++ Scolling programmatically
+	+ `func scrollRectToVisible(CGRect, animated: Bool)`
++ Zooming (affine transform)，可以设置最大最小的放大
+	+ Will not work without **delegate** method to specify view to zoom
+	+ 也可以编程 zoom  
++ Closure
+	+ capture variables in the surrounding context
+	+ can lead to very elegant code
+	+ 使用时需要小心，因为可能会出现循环引用 `[unowned self] in ...`
++ Queues
+	+ Multithreading is mostly about "queues" in iOS.
+	+ Functions (usually closures) are lined up in a queue.
+	+ Then thos functions are pulled off the queue and executed on an associated thread
++ Main Queue
+	+ All UI activity MUST occur on this queue and this queue only.
+	+ non-UI activity that is at all time consuming must NOT occur on that queue.
+	+ We want our UI to be responsive!
+	+ Functions are pulled off and worked on in the main queue only when it is "quiet"
+	+ `dispatch)async(queue)` 执行完成后再 dispatch main queue 以更新 UI
++ Other Queue 不同的优先级
+	+ QOS_CLASS_USER_INTERACTIVE // quick and high priority
+	+ QOS_CLASS_USER_INITIATED // high priority, might take time
+	+ QOS_CLASS_UTILITY // long running
+	+ QOS_CLASS_BACKGROUND // user not concerned with this 
++ 还可以执行一些延迟排队的任务
+
+## 10 Table View
+
++ UITextField
+	+ Like UILabel, but editable
+	+ Keyboard appear when `UITextField` becomes "first responder"
+	+ `becomeFirstResponder` and `resignFirstResponder`
+	+ Delegate can get involved with Return key, etc
++ UITableView
+	+ displayer data in a table
+	+ one-dimensional table
+	+ subclass of `UIScrollView`
+	+ Displaying multi-dimensional tables
+		+ uaually done via a UINavigationController with multiple MVC's where View is `UITableView`
+	+ Group style and plain style
+	+ Table Header, Table Footer, Section, Section header
+	+ Subtitle, Basic, Right Detail, Left Detail
++ UITableViewCell 用来自定义
++ 两个重要部分 delegate 和 dataSource，如果需要动态的列表
++ `dequeueReusableCellWithIndentifier` 来重用 cell  
++ `UITableViewDataSource`
+	+ Number of sections is 1 by default
+	+ No default for `numberOfRowsInSection`
+	+ do not implement these `dataSource` method for a static table
++ Loading your table view with data
+	1. set the table view's `dataSource` to your Controller (automatic with `UITableViewController`)
+	2. implement `numberOfSectionsInTableView` and `numberOfRowsInSection`
+	3. implement `cellForRowAtIndexPath` to return loaded-up `UITableViewCells`
++ UITableView Target/Action
+	+ `UITableViewDelegate` method sent when row is selected
+	+ `func reloadData()`
++ 这一部分很重要，要重点掌握
+
+## 11 Unwind Segues, Alerts, Timers, View Animation
+
++ Unwind Segue
+	+ The only segue that does NOT create a new MVC
+	+ Jumping up the stack of cards in a navigation controller
+	+ Dismissing a Modally segued-to MVC while reporting information back to the presenter
+	+ ctrl+drag to the exit icon
++ Alerts and Action Sheets
+	+ pop up and ask the user something mechanism
++ Alerts
+	+ Pop up in the middle of the screen
+	+ Usually ask questions with only two(or one) answers
+	+ Can be disruptive to your user-iterface, so use carefully
+	+ Often used for "asynchronous" problems
+	+ Can have a text field to get a quikc answer
++ Action Sheets
+	+ Usually slide in from the bottom of the screen on iPhone, and in a popover on iPad
+	+ Can be displayed from bar button item or from any rectangular area in a view
+	+ Generally asks questions that have more than two answers
++ Timer `NSTimer`
+	+ Setting up a timer to call a method periodically
+	+ more for larger-grained activities 
+	+ It might help system performance to set a tolerance for "late firing"
+	+ the firing time is relative to the start of the timer
++ Kinds of Animation
+	+ Animating `UIView` properties
+	+ Animation of View Controller transition
+	+ Core Animation 
++ UIView Animation
+	+ Change to certain `UIView` properties can be animated over time
+		+ frame, transform(translation, rotation and scale), alpha(opacity)
+	+ Done with `UIView` class method(s) using closure
+	+ `animateWithDuration`
+	+ `UIViewAnimationOptions`: BeginFromCurrentState, AllowUserInteraction, LayoutSubview, Repeat, Autoreverse, OverrideInheritedDuration, OverrideInheritedCurve, AllowAnimatedContent, CurveEaseInEaseOut, CurveEaseIn, CurveLinear
+	+ Sometimes you want to make an entire view modification at once
+	+ Use closures again with this `UIView` class method
+
+## 12 Dynamic Animation
+
++ Set up physics relating animatable objects and let them run until they resulve to stasis
++ Steps
+	+ Create a `UIDynamicAnimator`
+	+ Add `UIDynamicBehaviro`s to it (gravity, collisions, etc)
+	+ Add `UIDynamicItem`s (usualy `UIView`s) to the `UIDynamicBehavior`s
++ UIGravityBehavior
+	+ angle, magnitude
++ Stasis
+	+ `UIDynamicAnimator`'s delegate tells you when animation pauses
+	+ `dynamicAnimatorDidPause(UIDynamicAnimator)`
+
+## 13 Application Lifecycle and Core Motion
+
++ Notification
+	+ For Model (or global) to Controller communication
+	+ `NSnotificationCenter`，类似一个观察者模式，注册并获取变动时的通知
++ Application Lifecycle
+	+ Not running, Inactive, Active, Background, Suspended
+	+ `application(UIApplication, didFinishLauchingWithOptions: [NSObject: AnyObject])`
+	+ 用来知道自己的 app 是在什么情况下被打开的（不只是用户点击这一种）
++ UIApplication
+	+ Shared instance
+		+ manages all global behavior
+		+ never need to subclass it
+		+ It delegates everything you need to be involved in to its `UIApplicationDelegate` 
++ Info.plist
+	+ Many of your application's settings are in Info.plist
++ Capabilities
+	+ Some features require enabling (iCloud, Game Center, etc)
+	+ Switch on in Capabilities tab (Inside your Project Settings)
++ Airdrop 需要先注册，参考 Trak 的 info.plist
++ Core Motion
+	+ API to access motion sensing hardware on your device
+	+ Primary inputs: Accelerometer, Gyro, Magnetometer
+	+ Class used to get this input is `CMMotionManager`
+	+ Usage
+		+ Check to see what hardware is available
+		+ Start the sampling going and poll the motion manager for the latest sample it have
+		+ ...or...
+		+ check to see what hardware is available
+		+ Set the rate at which you want data to be reported from the hardware
+		+ Register a closure (and a queue to run it on) to call each time a sample is taken
+	+ Checking availability of hardware sensor
+		+ `var {accelerometer, gyro, magnetometer, deviceMotion}Available: Bool`
+	+ Starting the hardware sensors collecting data
+		+ you only need to do this if you are going to poll for data
+		+ `func start{Accelerometer, Gyro, Magnetometer, DeviceMotion}Updates()`
+	+ Is the hardware currently collection data?
+		+ `var {accelerometer,gyro,magnetometer,deviceMotion}Active: Bool`
+	+ Stop the hardware collecting data
+		+ `func stop{Accelerometer,Gyro,Magnetometer,DeviceMotion}Updates()`
++ CMDeviceMotion
+	+ 各种传感器的组合 
+
+## 14 Core Location and MapKit
+
++ Core Location
+	+ Framework for managing location and heading
+		+ No user-interface
+	+ Basic object is `CLLocation`
+		+ Properties: `coordinate`, `altitude`, `horizontal/verticallAccuracy`, `timestamp`, `speed`, `course`
++ The more accuracy you request, the more battery will be used
++ `CLLocationManager`
+	+ Check if the hardware you are on/user supports the kind of location updating you want
+	+ Create a `CLLocationManager` instance and set the `delegate` to receive updates
+	+ Configure the manager according to what kind of location updating you want
+	+ Start the manager monitoring for location changes
++ Kinds of location monitoring
+	+ Accuracy-based continual updates
+	+ Updates only when "significant" changes in location occur
+	+ Region-based updates
+	+ Heading monitoring 
++ Asking `CLLocationManager` what your hardware can do
+	+ `class func authorizationStatus() -> CLAuthorizationStatus` // Authorized, Denied or Restricted
+	+ `class func locationServicesEnabled() -> Bool` // user enabled (or not) locations for your app
++ You must add an Info.plist entry 
+	+ `NSLocationWhenInUseUsageDescription`
+	+ `NSLocationAlwaysUsageDescription`
++ Error reporting to the `delegate`
+	+ `func locationManager(CLLocationManager, didFailWithError: NSError)`
+	+ Not always a fatal thing, so pay attention to this `delegate` method
++ 也可以进行后台更新
++ Map Kit
+	+ UI, can have annotations on it
+	+ Each annotation is a `coordinate`, a `title` and a `subtitle`
+	+ Annotation can have a `callout`. It appears when the annotation view is clicked
+	+ `import MapKit`
+	+ 地图部分也是玩法很多的，需要仔细研究研究 
++ MKLocalSearch
+	+ Can search by natural language strings asynchronously
++ MKDirections, MKRoute, MKPolyline
++ Overlays, MKOverlayView
++ callout 只能代码配合 storyboard 实现，因为 storyboard 压根不会显示这个 callout
 
