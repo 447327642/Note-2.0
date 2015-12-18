@@ -587,4 +587,36 @@ Three Types: Classes, Structures, Enumerations
 
 ## 17 Internationalization and Settings
 
++ Two steps to making international versions of your application
+	+ Internationalization (i18n)
+	+ Localization (l10n)
++ Internationalization
+	+ This is a process of making string externally editable (from storyboard or code)
+	+ It also involves using certain "formatting" classes for things like dates, number, etc
++ Localization
+	+ A process of translating those externalized strings for a given language
++ Storyboards are localized by changing the strings inside only
+	+ And we rely on Autolayout to make it all look nice
++ First step: Registering Localizable Languages
+	+ Go to the Project pane in Xcode then Info tab to add Localizations
+	+ 注意是 project 不是 target 
++ Formatters
+	+ locale, region of the world
+	+ It is separate from language
+	+ In different regions some things might display differently: numbers, dates, currency, etc
+	+ 有各种 Formatter，可以仔细看看
+	+ Date 是一个比较难处理的，需要注意
++ UIImage
+	+ There are a number of ways to approach this.
+	+ The image files themselves (if not in Images.xcassets) can be made localizable (File Inspector)
+	+ Or you can keep them in Images.scassets and use NSLocalizedString for the image name
++ Editor -> Export For Localization
+	+ `.xliff` cantain all of your resources
++ 可以创建不同的 scheme 来以不同的语言来运行 app
++ Settings
+	+ A little bit of UI for your application
+	+ 在类似 Info.plist 里进行创建 -> Settings Bundle
+	+ 创建时会有一个例子，是很好的参考学习方式
+	+ 每个 item 有 identifier
+
 
