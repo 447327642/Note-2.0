@@ -1,5 +1,6 @@
 # Computer Systems : A Programmer's Perspective
 # 深入理解计算机系统
+
 _Notes from Da Wang, Feb.2 2015_
 
 <!-- MarkdownTOC -->
@@ -2667,3 +2668,4 @@ __线程(thread)__就是运行在进程上下文中的逻辑流，由内核自�
 [image-145]:	./_resources/csapp12.39.jpg
 [image-146]:	./_resources/csapp12.42.jpg
 [image-147]:	./_resources/csapp12.43.jpg
+
