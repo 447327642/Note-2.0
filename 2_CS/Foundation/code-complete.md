@@ -1,6 +1,79 @@
 # 代码大全(第二版) Code Complete
 
-在这里不会按照书本的分类每一章都进行总结，而是挑选那些在我现在的水平看来比较有意义，还不算过时的内容。并且关于概念等大道理的部分会比较简略，重点会着眼与编码的一些经验和技巧
+在这里不会按照书本的分类每一章都进行总结，而是挑选那些在我现在的水平看来比较有意义，还不算过时的内容。并且关于概念等大道理的部分会比较简略，重点会着眼与编码的一些经验和技巧。
+
+毕竟是有些年头的书了，很多具体的开发实践已经不算特别适用了，但是背后体现的分析问题和解决问题的思路是绝不会过时的，另外整本书的组织非常有逻辑，不过有个问题，没有写过很多代码，做过大项目的人可能不是很能理解
+
+<!-- MarkdownTOC -->
+
+- 第 1 章 欢迎进入软件构建的世界 Welcome to Software Construction
+- 第 2 章 用隐喻来更充分地理解软件开发 Metaphors for a Richer Understanding of Software Development
+- 第 3 章 三思而后行：前期准备 Measure Twice, Cut Once: Upstream Prerequisites
+    - 架构的典型组成部分 Typical Architectual Components
+    - 要点
+- 第 4 章 关键的『构建』决策 Key Construction Decisions
+- 第 5 章 软件构建中的设计 Design in Construction
+    - 理想的设计特征 Desirable Characteristics of a Design
+    - 设计的层次 Levels of Design
+    - 设计构造块：启发式方法 Design Building Blocks: Heuristics
+    - 要点
+- 第 6 章 可以工作的类 Working Classes
+    - 类的基础：抽象数据类型(ADTs) Class Foundations: Abstract Data Types
+    - 良好的类接口 Good Class Interfaces
+    - 良好的封装 Good Encapsulation
+    - 有关设计和实现的问题 Design and Implementation Issues
+    - 创建类的原因 Reasons to Create a Class
+    - 与具体编程语言相关的问题 Language-Specific Issues
+    - 要点
+- 第 7 章 高质量的子程序 High-Quality Routines
+    - 创建子程序的理由 Summary of Reasons to Create a Routine
+    - 在子程序层上设计 Design at the Routine Level
+    - 要点
+- 第 8 章 防御式编程 Defensive Programming
+    - 要点
+- 第 9 章 伪代码编程过程 The Pseudocode Programming Process
+- 第 10 章 使用变量的一般事项 General Issues in Using Variables
+- 第 11 章 变量名的力量 The Powerof Variable Names
+- 第 12 章 基本数据类型 Fundamental Data Types
+    - 要点
+- 第 13 章 不常见的数据类型 Unusual Data Types
+- 第 14 章 组织直线型代码  Organizing Straight-Line Code
+- 第 15 章 使用条件语句 Using Conditionals
+- 第 16 章 控制循环 Controlling Loops
+- 第 17 章 不常见的控制结构 Unusual Control Structures
+- 第 18 章 表驱动法 Table-Driven Methods
+- 第 19 章 一般控制问题 General Control Issues
+- 第 20 章 软件质量概述 The Software Quality Landscape
+- 第 21 章 协同构建 Collaborative Construction
+- 第 22 章 开发者测试 Developer Testing
+    - 要点
+- 第 23 章 调试 Debugging
+    - 要点 Refactoring
+- 第 24 章 重构
+    - 重构总结 Summary of Refactorings
+    - 要点
+- 第 25 章 代码调整策略 Code-Tuning Strategies
+- 第 26 章 代码调整技术 Code-Tuning Techniques
+    - 逻辑 Logic
+    - 循环 Loops
+    - 数据变换 Data Transformations
+    - 表达式 Expression
+    - 子程序 Routines
+    - 要点
+- 第 27 章 程序规模对构建的影响 How Program Size Affects Construction
+- 第 28 章 管理构建 Managing Constructions
+    - 要点
+- 第 29 章 集成 Integration
+- 第 30 章 编程工具 Programming Tools
+- 第 31 章 布局与风格 Layout and Style
+- 第 32 章 自说明代码 Self-Documenting Code
+- 第 33 章 个人性格 Personal Character
+    - 要点
+- 第 34 章 软件工艺的话题 Themes in Software Craftsmanship
+    - 要点
+
+<!-- /MarkdownTOC -->
+
 
 ## 第 1 章 欢迎进入软件构建的世界 Welcome to Software Construction
 
@@ -211,7 +284,7 @@ currentFont.setBoldOn()
 
 封装是一个比抽象更强的概念。抽象通过提供一个让你忽略实现细节的模型来管理复杂度，而封装则强制阻止你看到细节，下面是一些指导建议：
 
-+ **尽可能地限制类和成员的可访问性** 
++ **尽可能地限制类和成员的可访问性**
 + **不要公开暴露成员数据**
 + **避免把私用的实现细节放入类的接口中**
 + **不要对类的使用者做出任何假设**
@@ -247,7 +320,7 @@ currentFont.setBoldOn()
 + **构造函数 Constructors**
 	+ 如果可能，应该在所有的构造函数中初始化所有的数据成员
 	+ 用私有(private) 构造函数来实现 singleton 属性
-	+ 优先采用 deep copies，除非论证可行，才采用 shallow copy 
+	+ 优先采用 deep copies，除非论证可行，才采用 shallow copy
 
 ### 创建类的原因 Reasons to Create a Class
 
@@ -359,7 +432,7 @@ currentFont.setBoldOn()
 	+ 检查所有来源于外部的数据的值
 	+ 检查子程序所有输入参数的值
 	+ 决定如何处理错误的输入数据
-+ **使用断言的指导建议 Guidelines for Using Assertions** 
++ **使用断言的指导建议 Guidelines for Using Assertions**
 	+ 用错误处理代码来处理预期会发生的状况，用断言来处理绝不应该发生的状况
 	+ 避免把需要执行的代码放到断言中
 	+ 用断言来注解并验证前条件和后条件
@@ -454,7 +527,7 @@ currentFont.setBoldOn()
 	+ 使类型转换变得明显
 	+ 避免混合类型的比较
 	+ 注意编译器的警告
-+ **整数 Integers** 
++ **整数 Integers**
 	+ 检查整数除法
 	+ 检查整数溢出
 	+ 检查中间结果溢出
@@ -671,7 +744,7 @@ currentFont.setBoldOn()
 	+ 改变成员函数或数据的位置
 	+ 将特定代码提出生成派生类
 	+ 将相似的代码合并起来放到基类中
-+ **类接口的重构**	
++ **类接口的重构**
 	+ 将某成员子程序放到另一类中
 	+ 将一个类转化为两个
 	+ 删除某个类
@@ -747,5 +820,144 @@ currentFont.setBoldOn()
 
 ### 表达式 Expression
 
++ **利用代数恒等式 Exploit Algebraic Identities**
++ **削弱运算强度 Use Strength Reduction**
+	+ 用加法代替乘法
+	+ 用乘法代替幂乘
+	+ 利用三角恒等式代换等价的三角函数
+	+ 用 long 或 int 来答题 long long 整数
+	+ 用定点数或者整形数代替浮点数
+	+ 用单精度数代替双精度数
+	+ 用移位操作代替整数乘 2 或除 2
++ **编译期初始化 Initialize at Compile Time**
+	+ 例如如果有一个经常要被用到的常量 log(2)，直接给出 0.69314718 要比每次都计算要好
++ **小心系统函数 Be Wary of System Routines**
+	+ 系统函数运行起来很慢，提供的精度常常也是根本不需要的
++ **使用正确的常量类型 Use the Correct Type of Constants**
++ **预先算出结果 Precompute Results**
++ **删除公共子表达式 Eliminate Common Subexpressions**
+	+ 把计算好的值赋给一个变量，以后需要时直接引用这个变量
 
+### 子程序 Routines
+
++ **将子程序重写为内联 Rewrite Routines Inline**
++ **用低级语言重写代码 Recoding in a Low-Level Language**
+
+### 要点
+
++ 优化结果在不同的语言、编译器和环境下有很大差异。如果没有对每一次的优化进行测量，你将无法判断优化到底是帮助还是损害了这个程序
++ 第一次优化通常不会是最好的。即使找到了效果很不错的，也不要停下扩大战果的步伐
++ 代码调整这一话题有点类似于核能，富有争议
+
+---
+
+## 第 27 章 程序规模对构建的影响 How Program Size Affects Construction
+
++ 随着项目规模的扩大，交流需要加以支持。大多数方法论的关键点都在于减少交流中的问题，而一项方法论的存亡关键也应取决于它能否促进交流
++ 在其他条件都相等的时候，大项目的生产率会低于小项目
++ 在其他条件都相等的时候，大项目的每千行代码错误率会高于小项目
++ 在小项目里的一些看起来『理所当然』的活动在大项目中必须仔细地计划。随着项目规模扩大，构建活动的主导地位逐渐降低
++ 放大轻量级的方法论要好于缩小重量级的方法论。最有效的办法是使用『适量级』方法论
+
+## 第 28 章 管理构建 Managing Constructions
+
++ **设定标准的考虑事项 Considerations in Setting Standards**
++ **鼓励良好的编码实践的技术 Techniques for Encouraging Good Coding**
+
+### 要点
+
++ 好的编码实践可以通过『贯彻标准』或者『使用更为灵活的方法』来达到
++ 配置管理，如果应用得当，会使程序员的工作变得更加轻松，特别包括变更控制
++ 好的软件评估是一项重大挑战。成功的关键包括采用多种方法、随着项目的开展而修缮评估结果，以及很好地利用数据来创建评估等
++ 度量是构建管理成功的关键
++ 程序员和管理人员都是人，在把他们当人看的时候工作得最好
+
+## 第 29 章 集成 Integration
+
++ 构建的先后次序和集成的步骤会影响设计、编码、测试各类的顺序
++ 一个经过充分思考的集成顺序能减少测试的工作量，并使调试变得容易
++ 增量集成有若干变型，而且——除非项目是微不足道的——任何一种形式的增量集成都比阶段式集成好
++ 针对每个特定的项目，最佳的集成步骤通常是自顶向下、自底向上、风险导向以及其他集成方法的某种组合。T-型集成和竖直分块集成通常都能工作得很好
++ daily build 能减少集成的问题，提升开发人员的士气，并提供非常有用的项目管理信息
+
+## 第 30 章 编程工具 Programming Tools
+
++ 程序员有时会在长达数年的时间里忽视某些最强大的工具，之后发现并使用之
++ 好的工具能让你的日子过得安逸得多
++ 下面这些工具已经可用了：编辑、分析代码质量、重构、版本控制、除错、测试、代码调整
++ 你能打造许多自己用的专用工具
++ 好的工具能减少软件开发中最单调乏味的工作的量，但它不能消除对『编程』的需要
+
+---
+
+## 第 31 章 布局与风格 Layout and Style
+
++ 可视化布局的首要任务是指明代码的逻辑组织。评估该任务是否实现的指标包括准确性、一致性、易读性和易维护性
++ 外表悦目比起其他指标是最不重要的。然而，如果其他指标都达到了，代码质量又好，那么布局效果看上去也会不错
++ 结构化代码有其自身目的。始终如一地沿用某个习惯而少来创新。不能持久的布局规范只会损害可读性
++ 布局的很多方面涉及信仰问题，应试者将客观需要和主观偏好区分开来。定出明确的指标，在此基础上再讨论风格参数的选择
+
+## 第 32 章 自说明代码 Self-Documenting Code
+
++ 该不该注释是一个需要认真对待的问题，好的注释才有价值
++ 源代码应当含有程序大部分的关键信息
++ 好代码本身就是最好的说明
++ 注释应说出代码无法说出的东西——例如概述用意等信息
++ 有的注释风格需要许多重复性劳动，应舍弃之，改用易于维护的注释风格
+
+## 第 33 章 个人性格 Personal Character
+
++ **聪明和谦虚 Intelligence and Humility**
++ **求知欲 Curiosity**
+	+ 在开发过程中建立自我意识
+	+ 试验
+	+ 阅读解决问题的有关方法
+	+ 在行动之前做分析和计划
+	+ 学习成功项目的开发经验
+	+ 阅读文档
+	+ 阅读其他书本期刊
+	+ 同专业人士交往
+	+ 像专业开发看齐
+		+ 入门级 -> 中级 -> 熟练级 -> 技术带头人级
+		+ 最后一个很难突破
++ **诚实 Intellectural Honesty**
++ **交流与合作 Communication and Coorperation**
++ **创造力和纪律 Creativity and Discipline**
+
+### 要点
+
++ 人的个性对其编程能力有直接影响
++ 最有关系的性格为：谦虚、求知欲、诚实、创造性和纪律，以及高明的偷懒
++ 程序员高手的性格与天分无关，而任何事都与个人发展相关
++ 小聪明、经验、坚持和疯狂既有助也有害
++ 很多程序员不愿主动吸收新只是和技术，只依靠工作时偶尔接触新的信息。如果能抽出少量时间阅读和学习编程只是，要不了多久就能鹤立鸡群
++ 好性格与培养正确的习惯关系甚大，要成为解除的程序员，先要养成良好习惯，其他自然水到渠成
+
+## 第 34 章 软件工艺的话题 Themes in Software Craftsmanship
+
++ **征服复杂性 Conquer Complexity**
++ **精选开发过程 Pick Your Process**
++ **首先为人写程序，其次才是为机器 Write Programs for People First, Computers Second**
++ **深入一门语言去编程，不浮于表面 Program into Your Language, Not in It**
++ **借助规范集中注意力 Focus Your Attention with the Help of Conventions**
++ **基于问题域编程 Program in Terms of the Problem Domain**
+	+ **将程序划分为不同层次的抽象 Separating a Program into Levels of Abstraction**
+		+ 第 0 层：操作系统的操作和机器指令 Operating-System Operations and Machine Instructions
+		+ 第 1 层：编程语言结构和工具 Programming-Language Structures and Tools
+		+ 第 2 层：低层实现结构 Low-Level Implementation Structures
+		+ 第 3 层：低层问题域 Low-Level Problem-Domain Terms
+		+ 第 4 层：高层问题域 High-Level Problem-Domain Terms
++ **当心落石 Watch for Falling Rocks**
++ **迭代，反反复复，一次又一次 Iterate, Repeatedly, Again and Again**
+
+### 要点
+
++ 编程的主要目的之一是管理复杂性
++ 编程过程对最终产品有深远影响
++ 合作开发要求团队成员之间进行广泛沟通，甚于同计算机的交互；而单人开发则是自我交流，其次才是与计算机
++ 编程规范一旦滥用，只会雪上加霜；使用得当则能为开发环境带来良好机制，有助于管理复杂性和相互沟通
++ 编程应基于问题域而非解决方案，这样便于复杂性管理
++ 注意警告信息，将其作为编程的疑点，因为编程几乎是纯粹的智力活动
++ 开发时迭代次数越多，产品的质量越好
++ 墨守成规的方法有悖于高质量的软件开发。请将编程工具箱中填满各种编程工具，不断提高自己挑选合适工具的能力
 
