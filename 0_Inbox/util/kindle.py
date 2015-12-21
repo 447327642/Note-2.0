@@ -44,7 +44,7 @@ def process_file():
 
         ebook = ebook.replace('/', '')
         ebook = ebook.replace('\\', '')
-        fh = codecs.open('./Export/kindle/' + ebook + '.md', 'w', 'utf-8')
+        fh = codecs.open('../' + ebook + '.md', 'w', 'utf-8')
         fh.write("#" + ebook + "\n\n")
         for content in ebooks[ebook]:
             fh.write(content + '\n\n')
