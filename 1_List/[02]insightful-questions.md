@@ -32,5 +32,6 @@
 + What rights do we have? 我们有什么权利？
 + In the far future - how will territorial boundaries be handled after significant movement of earth's plates? 在遥远的未来，因为大陆版快漂移造成的剧变会怎样影响既有的国家领土划分
 + If you could sacrifice your most joyous memory in order to take away your worse. Would you? 如果牺牲你最快乐的那段记忆来消除最痛苦的那段，你愿意吗？
++ How can one recognize one's true personality? 一个人怎样发现自己真正的本性？
 
 
