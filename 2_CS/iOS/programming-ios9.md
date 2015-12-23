@@ -569,8 +569,353 @@ myLayer.backgroundColor = UIColor.redColor().CGColor // animate to red
 
 了解到动画和真实的 view 不是同一回事儿是配置好动画的关键。动画会在名为 `presentation layer` 上进行展示，可以通过访问 `presentationLayer` 方法来操作
 
-动画是多线程执行的，所以不用特别操心
+动画是多线程执行的，所以不用特别操心。但是在动画执行的之后屏幕实际上是可以响应触摸的，这样可能会导致出问题，所以一般的做法是在屏幕动画开始的时候关闭屏幕响应，然后在动画结束的时候再开启。
+
+设定动画的时候要注意不要冲突，尤其是在动画正在进行的时候修改了动画对象的值，可能会导致结果和预期的不一致。
+
+还有一些操作会打断动画，比如用户可能会点击 Home 按键，或者来了个电话什么的，这时候系统就会直接取消动画，并且在恢复的时候直接停留在最终的状态。如果想要在恢复的时候动画从之前的状态继续，就需要一些额外的代码了
+
+## Image View and Image Animation
+
+`UIImageView` 提供简易的动画，不过大多数时候是够用的。给 `UIImageView` 的 `animationImages` 或者 `highlightedAnimationImages` 属性一系列 `UIImage`，当调用 `startAnimating` 时，就会根据 `animationDuration` 属性来决定显示的时间，重复的次数由 `animationRepeatCount` 属性（默认是 0，就是一直重复），或者可以由 `stopAnimating` 方法来停止，例如：
+
+![pios33](_resources/pios33.jpg)
+
+还可以把 `UIImageView` 的动画和其他类型的动画结合起来使用。
+
+`UIImage` 也有类似的动画方法：
+
++ `animatedImageWithImages:duration:`
++ `animatedImageNamed:duration:`
++ `animatedResizableImageNamed:capInsets:resizingMode:duration:`
+
+![pios34](_resources/pios34.jpg)
+
+## View Animation
+
+所有的动画，归根到底都是 layer 动画。但是在少数情况下，你可以直接让 `UIView` 动起来，比如：`alpha`, `bounds`, `center`, `frame`, `transform` 或者(如果有实现的话) `drawRect:`, `backgroundColor`。具体的实现方式是通过一个 block 来定制动画，像下面这样：
+
+![pios35](_resources/pios35.jpg)
+
+所有在 block 之内的都会依次进行动画，所以可以直接设定俩：
+
+![pios36](_resources/pios36.jpg)
+
+不仅可以让自己动，也可以让其他 view 动：
+
+![pios37](_resources/pios37.jpg)
+
+![pios38](_resources/pios38.jpg)
+
+![pios39](_resources/pios39.jpg)
+
+## View Animation Options
+
+完整的动画函数是：
+
+`animateWithDuration:delay:options:animations:completion:`
+
+这里提一下 `options` 中可能的选项(`UIViewAnimationOptions`)
+
++ Animation curve: 控制动画速率的曲线
+	+ `.CurveEaseInOut` 默认
+	+ `.CurveEaseIn`
+	+ `.CurveEaseOut`
+	+ `.CurveLinear` 恒定的速度
++ `.Repeat` 控制重复
++ `.Autoreverse` 动画会反过来再播一次，注意一般来说也需要对 view 做对应的修改保证动画效果一致性
+
+![pios40](_resources/pios40.jpg)
+
+## Canceling a View Animation
+
+假设我们有这样一个动画
+
+![pios41](_resources/pios41.jpg)
+
+如果我们有一个按钮是取消这个动画的，可以用这个代码：
+
+```swift
+self.v.layer.removeAllAnimations()
+```
+
+但是这样会比较突兀，比较好的方式是在用户想要取消动画时，快速完成动画，像这样：
+
+![pios42](_resources/pios42.jpg)
+
+但假设我们想要取消像下面这个不断重复的动画呢：
+
+![pios43](_resources/pios43.jpg)
+
+可以使用 `.BeginFromCurrentState` 来保证动画的连贯性
+
+![pios44](_resources/pios44.jpg)
+
+## Custom Animatable View Properties
+
+也可以自定自己的属性来交给系统做动画，只要按照如下方法即可：
+
+![pios45](_resources/pios45.jpg)
+
+调用的时候是这样
+
+![pios46](_resources/pios46.jpg)
+
+## Springing View Animation
+
+Springing view animation 有一个非常快的 ease-in 和一个非常慢的 ease-out
+
+![pios47](_resources/pios47.jpg)
+
+## Keyframe View Animation
+
+可以在动画中加入关键帧，控制动画的整体效果。具体的插值计算是由 `CaculationMode`(`UIKeyframeAnimationOptions`) 来决定的
+
+## Transitions
+
+Transition 是用来强调 view 的内容的变化的动画，用下面两个方法之一来调用：
+
++ `transitionWithView:duration:options:animations:completion:`
++ `transitionFromView:toView:duratoin:options:completion:`
+
+动画类型在 `options` 里设定，有下面这些 bitmask
+
++ `.TransitionFlipFromLeft`, `.TransitionFlipFromRight`
++ `.TransitoinCurlUp`, `.TransitionCurlDown`
++ `.TransitionFlipFromBottom`, `.TransitionFlipFromTop`
++ `.TransitionCrossDissolve`
+
+具体可以这样用：
+
+![pios48](_resources/pios48.jpg)
+
+也可以让自定义的类有 transition 效果
+
+![pios49](_resources/pios49.jpg)
+
+## Implicit Layer Animation
+
+layer 的动画是默认开启的，但是不会在 view 的 underlying layer 生效，并且只对已经在界面上的内容生效
+
+## Animation Transactions
+
+一系列动画会被组成一个 transaction 然后交由 animation server 处理。在这里可以关闭 implicit animation
+
+![pios50](_resources/pios50.jpg)
+
+## Media Timing Functions
+
+`CAMediaTimingFunction`，用来控制动画曲线
+
++ `kCAMediaTimingFunctionLinear`
++ `kCAMediaTimingFunctionEaseIn`
++ `kCAMediaTimingFunctionEaseOut`
++ `kCAMediaTimingFunctionEaseInEaseOut`
++ `kCAMediaTimingFunctionDefault`
+
+不同定制的效果类似下图
+
+![pios51](_resources/pios51.jpg)
+
+代码就是
+
+![pios52](_resources/pios52.jpg)
+
+## Core Animation
+
+是 iOS 动画技术的基础。
+
++ Core Animation 可以在 view 的 underlying layer 上工作，所以是 the only way to apply full-on layer property animation to a view
++ Permits fine control over the intermediate values and timing of an animation
++ Allows animations to be grouped into complex combinations
+
+
+![pios53](_resources/pios53.jpg)
+
+这一部分也有很多细致的内容，会专门来写
+
+## UIKit Dynamics
+
+可以给 UI 添加真实的物理效果，比如重力，碰撞，反弹等等。不应该把 UIKit 当做一个游戏引擎。依赖于 `CADisplayLink`，所有的计算和 frame 都在主线程进行，并且动画是实时的。
+
+要实现一个 UIKit dynamics 需要配置下面三个东西：
+
++ 一个 dynamic animator：`UIDynamicAnimator` 的实例，是一个物理规则 
++ 一个 behavior：`UIDynamicBehavor` 是描述 view 如何行动的规则，一般来说可以直接用内置的如 `UIGravityBehavior` 或者 `UICollisionBehavior`。配置好 behavior 就可以添加到 animator 上，例如使用 `addBehavior:`, `behaviors`, `removeBehavior:`, `removeAllBehaviors:`。可以随时进行修改，即使动画还在进行也没问题
++ 一个 item：是任何实现了 `UIDynamicItem` protocol 的对象。iOS 9 中还可以利用 `UIDynamicItemGroup` 来组合多个 item。
+
+具体可以这样用：
+
+![pios54](_resources/pios54.jpg)
+
+当一个对象移出屏幕时，我们还需要负责销毁，不然会有很大的浪费。我们可以在 action 中检测自己是否还在屏幕中，可以用如下代码进行：
+
+![pios55](_resources/pios55.jpg)
+
+注意这里的 `delay(0)` 保证了确实销毁了不需要的对象。除了重力还可以添加碰撞，这里就用下面代码做示范：
+
+![pios56](_resources/pios56.jpg)
+
+## Custom Behavior
+
+也可以根据自己的需要自定义 behavior，比方说可以组合一个自己的有 gravity, collision 和 bounce 的 behavoir
+
+## Animator and Behaviors
+
+`UIDynamicAnimator` 还有如下的方法和属性
+
++ `delegate`
++ `running`
++ `elapsedTime`
++ `updateTimeUsingCurrentState`
+
+![pios57](_resources/pios57.jpg)
+
+其他具体的属性参与苹果文档，这里只列出提纲
+
++ `UIDynamicItemBehavior`
++ `UIGravityBehavior`
++ `UIFieldBehavior`
++ `UIPushBehavior`
++ `UICollisionBehavior`
++ `UISnapBehavior`
++ `UIAttachmentBehavior`
+
+## Motion Effects
+
+可以利用这个来处理用户倾斜手机等姿势，这里略
+
 
 # 第五章 触摸 Touches
+
+Touch 会用一个 `UITouch` 实例对象来表示，这个对象会被封装在 `UIEvent` 中。不过通常来说我们并不需要直接去操心这些，很多东西系统都已经封装好了，我们只需要重写对应的方法即可。
+
+但是了解 touch 本身还是很有用的，尤其是需要自定义一个 view 的时候。
+
+## Touch Events and Views
+
+从没有手指触碰开始，到手指离开，这之间的所有触摸和手指的移动组成了一个单独的 multitouch sequence。
+
+在这个过程中，系统会告知你的 app 不同的状态，也就是 `UIEvent`。事实上，每个给你的 app 的 report 一定都是同一个 multitouch sequence 的同一个 `UIEvent` 实例。
+
+每个 `UIEvent` 包含一个或多个 `UITouch` 对象。每个 `UITouch` 对象对应一个手指。一旦一个 `UITouch` 实例被创建后，在整个 multitouch sequence 中都用得是同一个实例。
+
+系统只在如下四种情况发送 `UIEvent`:
+
++ `.Began`
++ `.Moved`
++ `.Stationanry`
++ `.Ended`
+
+这四种状态可以描述所有的情况，顾名也可以思义这里就不解释。当然还有另外一种 `.Cancelled` 状态，发生在 multitouch sequence 被打断的情况，例如用户按了 home 键，来了个通知等等。
+
+当一个 `UITouch` 发生时(`.Began`)，会把当前有效的 `UIView` 绑定到这个 touch 的 `view` 属性上，并且在整个 multitouch sequence 都不会改变
+
+同一个 `UIEvent` 可以发送给多个 view，会把消息发送给其所有的 `UITouch` 所关联的 view。
+
+![pios58](_resources/pios58.jpg)
+
+## Receiving Touches
+
+一个 `UIResponder`，也就是一个 `UIView` 有四个方法，对应触摸的四个阶段：
+
++ `touchesBegan:withEvent:`
++ `touchesMoved:withEvent:`
++ `touchesEnded:withEvent:`
++ `touchesCancelled:withEvent:`
+
+一个 `UITouch` 有一些非常有用的方法和属性：
+
++ `locationInView:`, `previousLocationInView:`
+	+ 在这个 touch 关联的 view 中当前和之前的触摸坐标，通常来说这个 view 是 self 或 self.superview。之前的位置基本上只在状态为 `.Moved` 时有用
++ `timestamp`: 用这个来了解触摸事件的持续时间
++ `tapCount`: 在同一个地方点击的次数
++ `view`: touch 所关联的 view
++ `majorRadius`, `majorRadiusTolerance`: 点击的范围和可以容忍的范围
+
+`UIEvent` 有一些额外的属性
+
++ `type`: 这个会一直是 `UIEventType.Touches`
++ `timestamp`: 当事件发生时
+
+所以我们说一个 view 接收了一个 touch，实际上指的是它不停收到包含 `UITouch` 的 `UIEvent`
+
+## Restricting Touches
+
+可以在 `UIApplication` 的 `beginIgnoringInteractionEvents` 中完全关闭触摸事件。通常来说我们在动画中就会这么做，当然要恢复需要 `endIgnoringInteractionEvents`。
+
+一些 `UIView` 的属性对传输 touch 也有影响，比如
+
++ `userInteractionEnabled` 为 false 则不会接收 touch 事件，会直接落到下面的 view
++ `alpha` 为 0.0 的时候则不会接收 touch 事件，会直接落到下面的 view
++ `hidden` 为 true 的时候则不会接收 touch 事件，会直接落到下面的 view
++ `multipleTouchEnabled` 为 false 的时候则不会接收多于一个 touch，如果收到多个那么在处理完第一个之前都不会管其他的
++ `exclusiveTouch` 这个不能在 nib 编辑器中设置，指的是这个 view 只有在同一个 window 中的其他 view 都没有 touch 才能接收 touch，并且接收了之后其他 view 不能接收 touch
+
+## Interpreting Touches
+
+通常来说不用自己折腾 touch，用 gesture recognizer 可以完成大部分工作。为了处理 touch 基本上要用状态机的模式来编程，这会让整个架构变得非常 tricky
+
+通过如下代码可以使得一个 view 跟着手指的移动来移动
+
+![pios59](_resources/pios59.jpg)
+
+通过如下代码可以加上一些限制，使得 view 只能水平或者竖直移动
+
+![pios60](_resources/pios60.jpg)
+
+就需要在不同的方法中维护不同的属性了，即使只是加了这么一个限制代码已经很长，可读性也很差了，如果还想要区分长按和短按，单击和双击甚至是三击，肯定是一团乱
+
+![pios61](_resources/pios61.jpg)
+
+## Gesture Recognizer
+
+`UIGestureRecognizer` 可以检查一个 multitouch sequence 是否为某个手势，但是并不是 `UIResponder`。每个 gesture recognizer 维护本身的状态，和其他的无关。当一个 gesture
+recognizer 检测到了一个 gesture 时，就会发送一个(例如点击, discrete)或多个(例如移动, continuous)消息。
+
+`UIGestureRecognizer` 本身是 abstract 的，但是内置了一些实现好的子类：
+
++ `UITapGestureRecognizer` discrete
+	+ 可配置 `numberOfTapsRequired`, `numberOfTouchesRequired`
++ `UIPinchGestureRecognizer` continuous
+	+ 可配置 `scale`, `velocity`
++ `UIRotationGestureRecognizer` continuous
+	+ 可配置 `rotation`, `velocity`
++ `UISwipeGestureRecognizer` discrete
+	+ 可配置 `direction`, `numberOfTouchesRequired` 
+	+ `UIScreenEdgePanGestureRecognizer` 一个子类，检测从边缘开始的动作
++ `UILongPressGestureRecognizer` continuous
+	+ 可配置 `numberOfTapsRequired`, `numberOfTouchesRequired`, `minimumPressDuration`, `allowableMovement`
+
+通常来说直接在界面编辑器中拖进去，然后连接到代码是比较方便的做法
+
+## Touch Delivery
+
+下面是一个 touch 如何被转递给 view 和 gesture recognizer 的标准流程：
+
++ 进行 hit-test 判断那个 view 被触摸。然后这个 view 就会一直被关联到这个 touch 上，在这一层实现了触摸的定制，比方说 `userInteractionEnabled`, `hidden`, `alpha` 等等
++ 当 touch 的状况改变时，应用调用自己的 `sendEvent:`，进而调用 window 的 `sendEvent:`，window 通过调用下面的方法来调用合适的 touch 方法：
+	+ 当 touch 第一次出现时，会考虑 `multipleTouchEnabled` 和 `exclusiveTouch`，如果满足条件，则：
+		+ 该 touch 被传递给对应的 view 的 gesture recognizer
+		+ 该 touch 被传递给对应的 view
+	+ 如果一个 gesture 被检测出来，对于和这个 gesture recognizer 有关的 touch
+		+ `touchesCancelled:forEvent:` 会被调用，touch 不再传递给对应的 view
+		+ 如果这个 touch 还跟其他 gesture recognizer 有管理，其他的都直接设置为 fail
+	+ 如果一个 gesture recognizer 失败了，那么 touch 不会再传递给它，但是它们还回呗传递给对应的 view
+	+ 如果一个 touch 将要被传递给一个 view，但是这个 view 没有合适的处理 touch 的方法，responder 会顺着 responder chain 找到一个合适的并传递到那里
+
+在这个标准流程中的每个部分几乎都可以进行一定程度的自定义。具体的不再介绍，可以看苹果的文档。
+
+---
+
+# 第六章 视图控制器 View Controllers
+
+一个 view controller 管理一个单独的 view，称为 main view。
+
+main view 没有指向 view controller 的指针，但是 view controller 是一个 `UIResponder`，在 responder chain 上是 view 的上一级，也就是 view 的 `nextResponder`
+
+## View Controller Responsibilities
+
+
 
 
