@@ -1,720 +1,260 @@
 # BrightEdge
 
-小公司，题目重复率也比较高，基本都是印度人面。我的体验是第一轮  behavioral电面，然后就发一个48小时coding assignment，每个人的具体内容略不相同，大体上是用 java实现一个网络爬虫。
-
-面试官：Hongbo Ma, Senior Software Engineer, 
-
-questions about computer science fundamentals like data structures, algorithms and OOP.
-
-二面是另外一个人：Divya Shah
-
-下面是具体的面试题准备
-
-## 两个 List 相加
-
-两个linkedlist
-
-    1 => 3 => 5 => 7 => 9
-    2 => 4 => 6 => 8 => 10
-
-output：
-
-	3 => 8=> 2 => 6 => 9
-
-```java
-Node reverseList(Node head){
-	if (head == null) return null;
-	Node prev = null;
-	Node next = null;
-	while (head.next != null){
-		Node next = head.next;
-		head.next = prev;
-		prev = head;
-		head = next;
-	}
-	
-	return head;
-}
-
-Node addList(Node head1, Node head2){
-	Node revhead1 = reverseList(head1);
-	Node revhead2 = reverseList(head2);
-	int addon = 0;
-	Node dummy = new Node(-1);
-	Node backup = dummy;
-	
-	while(revhead1 != null || revhead2 != null || addon == 1){
-		if (revhead1 != null){
-			addon += revhead1.value;
-			revhead1 = revhead1.next;
-		}
-		
-		if (revhead2 != null){
-			addon += revhead2.value;
-			revhead2 = revhead2.next;
-		}
-		dummy.next = new Node(addon % 10);
-		addon /= 10;
-		dummy = dummy.next;
-	}
-	
-	return reverseList(backup.next);
-}
-
-
-```
-
-或者也可以直接转换成数字，加完之后再把数字组合回链表
-
-
-## Merge all interval
-
-[4,8] [19,24][7,12][28,35][10,14] ==> [4,14][19,24][28,35]
-
-```java
-class Interval{
-	int low;
-	int high;
-	
-	public Interval(int low, int high){
-		this.low = low;
-		this.high = high;
-	}
-}
-	
-ArrayList<Interval>	mergeInterval(ArrayList<Inteval> intervals){
-	if (intervals == null || intervals.size() <= 1)
-			return intervals;
-	// sort intervals by using self-defined Comparator
-	Collections.sort(intervals, new IntervalComparator());
-	
-	ArrayList<Interval> result = new ArrayList<Interval>();
-	Interval prev = intervals.get(0);
-	for (int i = 1; i < intervals.size(); i++) {
-		Interval curr = intervals.get(i);
- 
-		if (prev.end >= curr.start) {
-			// merged case
-			Interval merged = new Interval(prev.start, Math.max(prev.end, curr.end));
-			prev = merged;
-		} else {
-			result.add(prev);
-			prev = curr;
-		}
-	}
- 
-	result.add(prev);
- 
-	return result;
-	
-}
-
-class IntervalComparator implements Comparator<Interval> {
-	public int compare(Interval i1, Interval i2) {
-		return i1.low - i2.low;
-	}
-}
-
-```
-
-
-## 买卖股票
-
-### 只能买卖一次
-
-一次的话就是找当前值与当前之前的最小值之间差最大的那个
-
-```java
-int maxProfit(int[] stocks){
-	if (stocks == null || stocks.length < 1) return 0;
-	int len = stocks.length;
-	int curMin = stocks[0];
-	int maxProfit = 0;
-	for (int i = 1; i < len; i++){
-		maxProfit = Math.max(maxProfit, stocks[i] - curMin);
-		curMin = Math.min(curMin, stocks[i]);
-	}
-	return maxProfit;
-}
-
-```
-
-
-### 只能买卖两次
-
-
-两次的话就是从左往右 dp 一次，算出以当前节点为终点可能得到的最大利润，然后从右往左 dp 一次，算出以当前节点为起点可能得到的最大利润
-
-```java
-int maxProfit(int[] stocks){
-	if (stocks == null || stocks.length < 1) return 0;
-	int len = stocks.length;
-	int curMin = stocks[0];
-	int curMax = stocks[len-1];
-	int max = 0;
-	int[] dp = new int[len];
-	dp[0] = 0;
-	for (int i = 1; i < len; i++){
-		dp[i] = Math.max(dp[i-1],prices[i] - minPrice);
-		if (curMin > stocks[i]){
-			curMin = stocks[i];
-		}
-		
-	}
-	max = dp[len-1];
-	for (int i = len -2; i >=0; i--){
-		if (curMax < stocks[i]){
-			curMax = stocks[i];
-		}
-		max = Math.max(max, dp[i] + curMax - stocks[i]);
-	}
-	return max;
-}
-```
-
-## Fibonacci 数列
-
-### 递归版本
-
-```
-int fibonacciRecursive(int n){
-    if (n < 2)
-        return n;
-    
-    return f(n-1) + f(n-2);
-}
-```
-时间复杂度 O(2^n) 空间复杂度 O(n)
-
-### 迭代版本
-
-```
-int fibonacci(int n){
-    if (n < 2)
-        return n;
-    
-    int a = 0;
-    int b = 1;
-    int c = -1;
-    for (int i = 2; i < n; i++){
-        c = a + b;
-        a = b;
-        b = c;
-    }
-    return c;
-}
-
-```
-
-时间复杂度 O(n) 空间复杂度 O(1)
-
-
-## 如何判断一个BST是否valid
-
-也就是判断一个Binary Tree是不是Binary Search Tree
-
-1. Add lower & upper bound. O(n)
-2. Inorder traversal with one additional parameter (value of predecessor). O(n)
-
-用中序遍历的方法遍历BST，BST的性质是遍历后数组是有序的。根据这一点我们只需要中序遍历这棵树，然后保存前驱结点，每次检测是否满足递增关系即可。注意以下代码我么用一个一个变量的数组去保存前驱结点，原因是java没有传引用的概念，如果传入一个变量，它是按值传递的，所以是一个备份的变量，改变它的值并不能影响它在函数外部的值，算是java中的一个小细节。
-
-```java
-public class Solution {
-    boolean isValidBSTRe(TreeNode root, long left, long right)
-    {
-        if(root == null) return true;
-        return left < root.val && root.val < right &&
-                isValidBSTRe(root.left,left,root.val) 
-                && isValidBSTRe(root.right, root.val, right);
-    }
-    public boolean isValidBST_1(TreeNode root) {
-        if (root == null) return true;
-        return isValidBSTRe(root, (long)Integer.MIN_VALUE - 1, (long)Integer.MAX_VALUE + 1);
-    }
-    
-    boolean isValidBST(TreeNode root) {
-        long[] val = new long[1];
-        val[0] = (long)Integer.MIN_VALUE - 1;
-        return inorder(root, val);
-    }
-    
-    boolean inorder(TreeNode root, long[] val) {
-        if (root == null) return true;
-        if (inorder(root.left, val) == false) 
-            return false;
-        if (root.val <= val[0]) return false;
-        val[0] = root.val;
-        return inorder(root.right, val);
-    }
-}
-
-```
-
-
-## String permutation
-
-lintcode: 带重复元素的排列
-
-cc: Permutations with / without Dups
-
-### 无重复元素的情况
-
-P(a1) = a1
-
-P(a1a2) = a1a2, a2a1
-
-P(a1a2a3) = a1a2a3, a1a3a2, a2a1a3, a2a3a1, a3a1a2, a3a2a1
-
-从第二步到第三步，恩可以看作是，对第二步中的两个结果，分别把 a3 插入到的每个结果中可能的各个位置，于是我们可以根据这个规律写出代码
-
-```java
-public static ArrayList<String> getPermutations(String str){
-    if (str == null){
-        return null;
-    }
-
-    ArrayList<String> permutations = new ArrayList<String>();
-    if (str.length() == 0){
-        permutations.add("");
-        return permutations;
-    }
-
-    char first = str.charAt(0);
-    String rest = str.substring(1);
-    ArrayList<String> words = getPermutations(rest);
-    for (String word : words){
-        for (int j = 0; j <= word.length(); j++){
-            permutations.add(word.substring(0,j) + first + word.substring(j));
-        }
-    }
-    return permutations;
-}
-```
-
-### 有重复元素的情况
-
-We would like to only create the unique permuatations, rather than creating every permutation and then ruling out the duplicates
-
-We can start with computing the count of each letter(hash table) for a string such as aabbbbc, we have a(2) b(4) c(1).
-
-The first choice we make is whether to use an a, b or c as the first character. After that, we have a subp;roblem to solve: find all permutations of the remaining characters, and append those to the already picked "prefix"
-
-P(a2|b4|c1) = {a + P(a1|b4|c1)} + {b + P(a2|b3|c1)} + {c + P(a2|b4|c0)} 依次递推
-
-```java
-
-ArrayList<String> get Perms(String s){
-    ArrayList<String> result = new ArrayList<String>();
-    HashMap<Character, Integer> map = buildFreqTable(s);
-    getPerms(map, "", s.length(), result);
-    return result;
-}
-
-HashMap<Character, Integer> buildFreqTable(String s){
-    ArrayList<String> map = new HashMap<Character, Integer>();
-    for (char c : s.toCharArray()) {
-        if (!map.containsKey(c))
-            map.put(c, 0);
-            
-        map.put(c, map.get(c) + 1;
-    }
-    return map;
-}
-
-void getPerms(HashMap<Character, Integer> map, String prefix, int remaining, ArrayList<String> result) {
-    if (remaining == 0){
-        result.add(prefix);
-        return;
-    }
-    
-    for (Character c : map.keySet()) {
-        int count = map.get(c);
-        if (count > 0) {
-            map.put(c, count - 1);
-            getPerms(map, prefix + c, remaining - 1, result);
-            map.put(c, count);
-        }
-    }
-}
-
-```
-
-## reverse linkedlist
-
-```java
-public class Solution {
-
-    // recursive
-    public ListNode reverseList(ListNode head) {
-        if(head == null) return null;
-        if(head.next == null) return head;
-
-        ListNode tail = head.next;
-        ListNode reversed = reverseList(head.next);
-
-        tail.next = head;
-
-        head.next = null;
-
-        return reversed;
-    }
-
-    // iterative
-    public ListNode reverseList_2(ListNode head) {
-        if(head==null || head.next == null) 
-            return head;
-
-        ListNode p1 = head;
-        ListNode p2 = head.next;
-
-        head.next = null;
-        while(p1!= null && p2!= null){
-            ListNode t = p2.next;
-            p2.next = p1;
-            p1 = p2;
-            if (t!=null){
-                p2 = t;
-            }else{
-                break;
-            }
-        }
-
-        return p2;
-    }
-}
-```
-
-## all characters combinations 
-
-Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
-
-For example,
-
-If n = 4 and k = 2, a solution is:
-
-```
-[
-  [2,4],
-  [3,4],
-  [2,3],
-  [1,2],
-  [1,3],
-  [1,4],
-]
-```
-
-DFS + 回溯
-
-```java
-
-public class Solution {
-     public List<List<Integer>> combine(int n, int k) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        ArrayList<Integer> path = new ArrayList<Integer>();
-        combineRe(n, k, 1, path, res);
-        return res;
-    }
-
-    void combineRe(int n, int k, int start, ArrayList<Integer> path, List<List<Integer>> res){
-        int m = path.size();
-        if (m == k) {
-            ArrayList<Integer> p = new ArrayList<Integer>(path);
-            res.add(p);
-            return;
-        }
-        for (int i = start; i <= n-(k-m)+1; ++i) {
-            path.add(i);
-            combineRe(n,k,i+1, path, res);
-            path.remove(path.size() - 1);
-        }
-    }
-}
-
-```
-
-
-## Lowest Common Ancestor
-
-要求O(1) 空间
-
-```java
-TreeNode commonAncestor(TreeNode p, TreeNode q){
-    if (p == q) return null;
-
-    TreeNode ancestor = p;
-    while (ancestor != null){
-        if (isOnPath(ancestor, q)){
-            return ancestor;
-        }
-        ancestor = ancestor.parent;
-    }
-    return null;
-}
-
-boolean isOnPath(TreeNode ancestor, TreeNode node){
-    while (node != ancestor && node != null){
-        node = node.parent;
-    }
-    return node == ancestor;
-}
-```
-
-isOnPath method will take O(dq) time, where dq is the depth of d. Runtime O(dp * dq)
-
-On a balanced tree, dp and dq are O(log N), worst case O(N^2)
-
-### Without link to parent
-
-```java
-TreeNode commonAncestor(TreeNode root, TreeNode p, TreeNode q){
-    if (!covers(root, p) || !covcers(root, q)){
-        return null;
-    }
-    return ancestorHelper(root, p, q);
-}
-
-TreeNode ancestorHelper(TreeNode root, TreeNode p, TreeNode q){
-    if (root == null){
-        return null;
-    }
-    else if (root == p){
-        return p;
-    }
-    else if (root == q){
-        return q;
-    }
-
-    boolean pIsOnLeft = covers(root.left, p);
-    boolean qIsOnLeft = covers(root.left, q);
-    if (pIsOnLeft != qIsOnleft){
-        return root;
-    }
-    TreeNode childSide = pIsOnLeft ? root.left : root.right;
-    return ancestorHelper(childSide, p, q);
-}
-
-boolean covers(TreeNode root, TreeNode p){
-    if (root == null) return false;
-    if (root == p) return true;
-    return covers(root.left, p) || covers(root.right, p);
-}
-```
-
-## Mirror a binary tree
-
-```java
-public class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if(root!=null){
-            helper(root);
-        }
-
-        return root;    
-    }
-
-    public void helper(TreeNode p){
-
-        TreeNode temp = p.left;
-        p.left = p.right;
-        p.right = temp;
-
-        if(p.left!=null)
-            helper(p.left);
-
-        if(p.right!=null)
-            helper(p.right);
-    }
-
-    public TreeNode invertTree_2(TreeNode root) {
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
-
-        if(root!=null){
-            queue.add(root);
-        }
-
-        while(!queue.isEmpty()){
-            TreeNode p = queue.poll();
-            if(p.left!=null)
-                queue.add(p.left);
-            if(p.right!=null)
-                queue.add(p.right);
-
-            TreeNode temp = p.left;
-            p.left = p.right;
-            p.right = temp;
-        }
-
-        return root;    
-    }
-}
-```
-
-## Pow(double a, int b)
-
-recursive and think about the edge condition
-
-```java
-public class Solution {
-    public double myPow(double x, int n) {
-        if (x < 0) return (n % 2 == 0) ? myPow(-x, n) : -myPow(-x, n);
-        if (x == 0 || x == 1) return x;
-        if (n < 0) return 1.0 / myPow(x,-n);
-        if (n == 0) return 1.0;
-        if (n == 1) return x;
-        double half = myPow(x,n/2);
-        if (n % 2 == 0) return half * half;
-        else return x * half * half;
-    }
-}
-```
-
-## Partition array
+<!-- MarkdownTOC -->
+
+- Online Assignment
+    - Word Density Analysis
+    - FAQ
+- Behavior Interview
+- 电面
+- 一些题目
+
+<!-- /MarkdownTOC -->
+
+
+## Online Assignment
+
++ Grading of the assignment will be based on the following:
+    + Satisfaction of the requirements specified on the following page
+    + Detail orientation
+    + Complete documentation presenting the approach and results
++ You are required to submit the assignment within 1 week(s) from the time the assignment email was sent to you.
++ Once you have started the assignment (by clicking the "Begin Assignment" button below), the upload option will be available only for 48 hours (2 days). To be fair to all applicants, we cannot accept late assignments.
++ It is more important to be complete and thorough rather than to turn in the assignment quickly (unless you are close to missing the deadline).
++ Be sure to upload all the deliverables specified in the next page.
+
+### Word Density Analysis
+
+Our Objective:
+
++ Evaluate core functionality and exception handling (completeness of code)
++ Design on how best to determine relevance, and how best to avoid all the clutter on a busy page
++ OOP
++ Ability to articulate how you built your solution
+
+Expected Deliverables:
+
++ Executable Jar file or Python files
++ Source Code
++ Documentation - please include examples of sample output from running your program
+
+---
+
+Given any page (URL), be able to classify the page, and return a list of relevant topics.
+
+We'd like to have you build it generically, but for testing purposes, please consider the following URLs.
+
++ [http://www.amazon.com/Cuisinart-CPT-122-Compact-2-Slice-Toaster/dp/B009GQ034C/ref=sr_1_1?s=kitchen&ie=UTF8&qid=1431620315&sr=1-1&keywords=toaster](http://www.amazon.com/Cuisinart-CPT-122-Compact-2-Slice-Toaster/dp/B009GQ034C/ref=sr_1_1?s=kitchen&ie=UTF8&qid=1431620315&sr=1-1&keywords=toaster)
++ [http://blog.rei.com/camp/how-to-introduce-your-indoorsy-friend-to-the-outdoors/](http://blog.rei.com/camp/how-to-introduce-your-indoorsy-friend-to-the-outdoors/)
++ [http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/](http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/)
+
+
+Input:
+
+Any URL (for testing purposes, please consider the URLs above)
+
+Output:
+
++ List of common topics that best describe the contents of that page
++ e.g. 2-Slice Toaster, Cuisinart CPT-122, Compact toaster
+
+How to run/execute the program:
+
++ Encapsulate your assignment inside an executable jar if you've implemented in Java (e.g. java -jar Assignment.jar ...)
++ Ability to handle the following execution:
+    + java -jar Assignment.jar (e.g. java -jar Assignment.jar "http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/")
+
+### FAQ
+
+> Q: Can I use external libraries for HTML parsing?
+
+A: Yes, you can.
+
+> Q: Can I use external libraries for density collection or analysis?
+
+A: No, this is not allowed.
+
+> Q: I am unable to submit my assignment through this webpage. What do I do?
+
+A: Email your submission to your recruiter.
+
+> Q: How should I label my submission?
+
+A: Please include your first and last name in the file name.
+
+> Q: Can I use an API to complete the assignment?
+
+A: No, please don't use any APIs to get the results. The assignment requires you to build a web crawler
+
+> Q: What kind of documentation should I provide?
+
+A: Think about how best you can present the assignment to the grader so that he/she is best able to understand your approach. We would recommend a README file, and clear comments in your code to explain your approach to the problem.
+
+## Behavior Interview
+
+1. 说一说你对 BrightEdge 这个公司的了解。
+2. 谈一个你最喜欢的project。
+3. 在这个project里你遇到什么困难了吗？你是如何解决它的？
+3. 你如何面对工作或者做project时的压力，例如heavy workload， long working time。
+4. 假如一个team里有人不太合作你该咋办？
+5. 你如何做一个不太popular的决定？（别人都不太支持这个决定）
+6. 假如由于你的失误造成了你和你的team members的extra work，你如何解决这个问题？如何跟他们交流？
+
+基本就是这些问题，跟网上大多数的behavior questions差不多，跟托福口语有点像，准备个模板各种套就行。
+
+> 说一说你对 BrightEdge 这个公司的了解
+
+## 电面
+
+最开始是在CMU的校招上投的简历，一天就收到on campus的邮件。on campus轻松水过，一个可爱的中国妹子问了4个题:
+
+1.Remove duplicates in a sorted integer array：
+
+	public int removeDuplicates(int[] nums)
+
+返回删好后的length。就扫一遍就完了
+
+2.m*n的矩阵走格子，只能向下或者向右。返回总路线数量
+
+public int pathSum(int m, int n)
+
+3.判断二叉树是不是BST
+
+4.生成n-bit的gray code (不知道的童鞋请自行google)
+
+一个无难度题 ＋ 仨leetcode原题。四个题加讲一共花了30分钟，然后妹子说她就准备了四个题...问我有什么问题。她后来说这个公司还处在start up阶段，所以非常累要有心理准备。
+
+
+结果过了两天又让我面下一轮online coding。这点比较奇怪，因为和我一起的其他童鞋都直接面behavior了，难道是我的assignment做的比较差？我更倾向于认为他们根本忘了我参加过on campus
+
+下轮是个阿三哥哥。问project和background特别详细，简直查户口，用了20分钟。然后两个题：
+
+1.deepest common ancestors (大家怎么都喜欢问这个？)
+
+node有parent指针的。用hashmap记下来的方法他觉得就可以了。
+
+2.design a parking lot. Each lot has several floors, and each floor has many slots. Slots can be in two status: abled or disabled.
+
+Your design should support the following method with high efficiency:
+
+	public int getNumberOfCars(int floor)
+	public int getTotalNumberOfSlots(int floor)
+	public int geNumberOfDisableSlots(int floor)
+
+这个题真是给我坑坏了。parking lot我也看了挺多，上来就给了一个Class floor, 里面有ArrayList<Slot>和HashMap\<Slot, Car\>。三哥说我根本不在乎car你为什么要一个map？我心里想你不在乎car你设计什么parking lot...后来知道他只想要那几个方程返回的total number，所以就把他们都存起来就完了...晕。然后他又问我什么时候更改这些维护的值，我说加一个函数park(int floor)就完了。
+
+说实话我真不懂这题他究竟想干什么，难道就是要我存那几个整数？总之这轮居然也过了...我发现三哥是不会好好问算法题的，总是会带一些design和基础知识(比如设计一个blocking queue或者singleton class)。被搞多了我也学会了
+
+## 一些题目
+
+1. Binary tree lowest common ancestor with parent pointer. 需要O（1）space
+2. Design a parking lot. 需要实现（1）知道第二层停了多少车 （2）知道第二层有多少available残趴
+
+一. 面试官自我介绍，询问我resume的一个项目（10min）
+
+二. 两道算法题
+
+Partition array
 
 1. input: [1, 2, 3, 6, 0, 0, 3, 1, 9, 0]
 2. output: [1, 2, 3, 6, 3, 1, 9, 0, 0, 0]
 
+Fibonacci number.
 
-就是保持顺序的同时把 0 都移到最后面去
+Fibonacci number: 1, 1, 2, 3, 5, 8
+n = 0 -> 1
+n = 1 -> 1
+n = 2 -> 2
+F(n+2) = F(n+1) + F(n)
 
-维护两个值，一个是零出现的位置，一个是零之后第一个不为 0 的位置，然后交换。交换之后各加 1，然后再检查，直到找不到不是0的为止。 这个是 O(n^2)
+三. 一道OO设计题
 
-有更好的解法...然而我做出来就没时间了
-
-leetcode 265 代码如下
-
-```
-public class Solution {
-    public void moveZeroes(int[] nums) {
-        int i = -1, j = 0;
-        while (j < nums.length) {
-            if (nums[j] != 0) {
-                swap(++i, j, nums);
-            }
-            j++;
-        }
-    }
-
-    public void swap(int i, int j, int[] nums) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-}
-```
-
-下面是面试代码，坑了坑了坑了
-
-```
-// test 0 1 2 3 4
-// test 1 0 3 0 7  iz = 1 inz = 2  i = 2
-// test 1 3 0 0 7  iz = 2 inz = 4 i = 4
-// test 1 3 7 0 0 i = 3 inz = -1
-// worst case  0000011111
-// 1000001111
-
-
-int[] move0totail2(int[] input){
-	if (input.length == 0){
-	    return null;
-    }
-
-    int inonzero = 0;
-    int zerocount = 0;
-    for (int i = 0; i < input.length; i++){
-	    if (input[i] == 0){
-	        zerocount++;
-        } else {
-	        input[inonzero] = input[i];
-	        inonzero++;
-        }
-    }
-    for (int i = 1; i <= zerocount; i++){
-	    input[input.length - i] = 0;
-    }
-    return input;
-}
-
-// input: int[]
-// output: int[]
-int[] move0totail(int[] input){
-	if (input.length == 0){
-	    return null;
-    }
-    // two pointer: izero, inonzero
-    int izero = -1;
-    int inonzero = -1;
-    for (int i = 0; i < input.length; i++){
-	    if (input[i] == 0){
-		    if (izero != -1)
-                izero = i;  // find first zero
-        } else {
-	        if (izero != -1){
-	            inonzero = i; // find first nonzero if have zero
-            }
-        }
-
-        if (izero != -1 && inonzero != -1){
-    	    // swap the element izero and inonzero
-    	    swap(input, izero, inonzero);
-    	    izero = -1;
-    	    inonzero = -1;
-    	    i = izero + 1;
-        }
-    }
-    return input[];
-}
-
-void swap(int[] arr, int i, int j){
-	int temp = arr[i];
-	arr[i] = arr[j];
-	arr[j] = temp;
-}
-```
-
-
-
-## 设计一个parking lot
-
-这是一个非常常见的设计题目，stackoverflow有一个帖子对这个题目描述的非常好，可以参考一下。
+Parking Garage
 
 + multiple floors
 + each floor has multiple parking spots
 + parking spots has two types. handicapped or regular parking.
-+ Question: how many regular parking are available at 2nd floor?
 
-Brief Design
+Question: how many regular parking are available at 2nd floor?
 
-+ enum VehicleSize {Moto, Compact, Large}
-+ abstract class Vehicle
-    + protected ParkingSpot parkingSpot
-    + protected VehicleSize size
-    + public parkInSpot(ParkingSpot s) {parkingSpot = s; }
-    + public clearSpot() {...}
-+ class Bus extends Vehicle
-+ class Car extends Vehicle
-+ class Moto extends Vehicle
-+ class ParkingLot
-    + private Level[] levels
-    + private final int NUM_LEVELS = 5;
-    + public boolean parkVehicle(Vehicle vehicle) {...}
-+ class Level
-    + private int floor;
-    + private ParkingSpot[] spots;
-    + private int available Spots = 0;
-    + public boolean parkVehicle(Vehicle vehicle) {...}
-    + public void spotFreed() { availableSpots++; }
-+ class ParkingSpot
-    + private Vehicle vehicle;
-    + private VehicleSize spotSize;
-    + private int number;
-    + private Level level;
-    + public boolean isAvailable() { return vehicel == null; }
-    + public boolean park(Vehicle v) {...}
-    + public remove Vehicle() {...}
+1. You are given the root of the Binary Search Tree and two children nodes, please return the first common ancestor of these two nodes.
+2. Mirror a binary tree.
+3. implement pow(double a, int b)
+4. Find the number of ways to top point in a triangle  
+5. Some complex crawler used for the restaurant menu.
+6. find the most points on a straight line in a 2D graph  
+
+Applied through the career center website in the university. The first response is within a week. 1) 48-hour coding assignment: use Java to write a web scraper for a certain URL. 2) Technical phone interview: routine algorithm questions. 3) Behavioral phone interview: very common interview questions like why do you choose this company, how to handle conflict in a team. 4) Onsite interview: 2 technical interviews + a 5.5-hour coding… 
+
+First, ask you to describe your most recent project, then talk something about your self... All general behavioral questions. Finally a project, design an app to extract certain keywords to describe a random webpage. For example, an amazon page selling a microwave, the result should be like: microwave GT200(model) 100 dollar.  
+
+作业完成后进入电面的环节。
+
+面试的是一个烙印，英语爆烂，烂到完全听不懂他对公司的介绍。大约听完几分钟的天书后，我们正式进入了技术问题的部分。
+
+第一题：
+
+String permutation，依照之前在cracking coding interview的方法迅速写了一个递归的方法。
+
+不过后来指出这个对于有duplicate不太好。于是我告诉他用hashset存放最后的结果可以免除重复。但是后来他又说有没有其他方法。
+
+于是我依稀记得leetcode上的permutation 2就是讲duplicate怎么处理的，于是用dfs+backtracking的方法重新写了一个可以去除duplicate的版本。同时针对这个算法还争论了一番，最后烙印表示应该是正确的。
+
+第二题：
+
+leetcode和cracking coding interview都有的原题，如何判断一个Binary Tree是不是Binary Search Tree。由于训练有素，很快就完成了。
+
+第三题：
+
+尼玛居然还有第三题，而且还是个design的题目，设计一个parking lot。这是一个非常常见的设计题目，stackoverflow有一个帖子对这个题目描述的非常好，可以参考一下。
+
+BrightEdge：
+
+Round 2：tech电面。一名小印。
+第1题：Fibonacci数列。当时还问recursive的复杂度，我想了半天答了O(n)，不过应
+该是O(2^n)才对。
+第2题：Leetcode原题：如何判断一个BST是否valid。
+Round 3：behavioral电面。
+
+LinkedIn：
+
+Round 0：HR打电话瞎聊一通。
+Round 1：tech电面1。一名老印和一名小印。
+第1题：Leetcode原题：由一个binary tree的inorder及preorder traversal结果，重
+构原binary tree。
+第2题：Leetcode原题：一个已排序的数组中查找某给定element重复的个数。
+
+Round 2：tech电面2。国人大哥。
+第1题：level sum，算是deep iterator的变种。一个多重nested array，例如{a,{b,c
+},{{d},e}}，返回level sum = a + 2 * (b + c) + 3 * d + 2 * e。
+第2题：First Common Ancestor with parent pointer。What if the parent pointer
+is not available?
+
+简单说来三道题目：
+1. reverse linkedlist                        CC原题不能更多
+2. all characters combinations          leetcode原题，不能更多，就是
+combinations的变形
+3. design parking lot
 
 
-## 测试题
-
-+ 给你一个ATM Function to withdraw money,问如何测试
-+ 给你一个website，问你如何测试。
-
+第一题我说，俩方法，你要哪个？然后，因为面试官是烙印，真心没有听太清，意思大
+概就是，你开始就行了。然后我就开始了。直接用了最简单的iteration的方法做了。
+给Node，有next指向。输入是head，reverse即可。
+第二题我说，（我真的记得，前两天还专门练了一下下，但是，还是忘了），应该这样
+这样，就是不断减少一个字符，排序剩下的，但是，我总以为是DFS，这段时间做DFS做
+的有点凶，什么都爱往DFS上套。（PS：求问各位一个问题，你们面试的时候说方法的
+时候，就说DFS还是说全名？Depth first searching？） 我反正都有说。然后，然后
+，关键的来了，在答案的帮助下，我终于找到了，终于找到了。不过输入是char array
+，他说随意，我说，好吧，那就array吧，然后我array，存在了ArrayList<ArrayList<
+String>>中，中间好像也没有toString()，反正就这样了。开始真的没有做对，还想的
+DFS，然后我俩的交流有了一点点尴尬，我说，给我one more minute， 终于，找到了
+答案，思路彻底清晰起来了。（大神们轻拍，**这里只是求第一轮顺利通过。）然后，
+解释了半天，小哥应该是听懂了。欢快地pass了。
+第三题我直接开的CC讲的，这两天刚刚起步看design，完全没思路，昨天看了一晚上的
+21点的设计。经典题目就是parking lot，反正我就刚刚开始看design，也答得很差劲
+。各位看官，有懂得，能不能给发个链接或者书籍或者什么博客或者什么主页或者什么
+总结？关于design的东西的？CC的design应该还是不错的，亚麻不也是考parking lot
+么？好像还有什么购物系统，看到之前的面经上有说的。CTCI的作者也出了一个针对PM
+的书籍，这个对design有多少帮助呢？不知道，有看过的留个言啥的呗~~~
+然后，设计要求见pdf，主要就是两层，各种size的车，记录时间，确定能否停靠。还
+是不难。但是，对于我这个刚看design一天的人，还是稍稍有一点难度的。
