@@ -37,14 +37,14 @@ def process_file():
         if title and content:
             ebooks[title].append(content)
 
-    if not os.path.isdir('./Export/kindle'):
-        os.mkdir('./Export/kindle')
+    if not os.path.isdir('../kindle'):
+        os.mkdir('../kindle')
 
     for ebook in ebooks.keys():
 
         ebook = ebook.replace('/', '')
         ebook = ebook.replace('\\', '')
-        fh = codecs.open('../' + ebook + '.md', 'w', 'utf-8')
+        fh = codecs.open('../kindle/' + ebook + '.md', 'w', 'utf-8')
         fh.write("#" + ebook + "\n\n")
         for content in ebooks[ebook]:
             fh.write(content + '\n\n')
