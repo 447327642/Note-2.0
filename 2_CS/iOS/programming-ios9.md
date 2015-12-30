@@ -916,6 +916,84 @@ main view 没有指向 view controller 的指针，但是 view controller 是一
 
 ## View Controller Responsibilities
 
+一个 view controller 必须有一个 view，也会提供 view 出现和消失时候的动画。大部分效果都有内置，但是如果你想要自己折腾的话，都是可以自由定制的。
+
+View controller 可以自动保存和恢复状态，这个特性保证了你的 app 即使在被关闭后也可以从用户最后看到的界面重新开始。
+
+最强大的 view controller 是 root view controller，它负责 root view，也就是在 view hierarchy 最顶端的那个。root view 作为 main window 的唯一直接 subview，是所有其他界面的 superview，并且被指定到 window 的 `rootViewController` 属性上。
+
+root view controller 主要负责两个重要的决定：
+
++ 界面的旋转
++ status bar 的控制
+
+## View Controller Hierarchy
+
+在 iOS 中，不同的 controller 之间可以有两种坐标关系：
+
++ Parentage(包含)
+	+ 一个 view controller 可以包含另一个 view controller
+	+ 导航界面就是一个很好的例子
++ Presentation(modal views)
+	+ 一个 view controller 展示另一个 view controller
+	+ 可以是替换或者是添加，可以是完整或者是局部
+	+ iOS4 及之前主要叫 modal view，现在更多叫 presented view，不过 modal view 的叫法还会出现在部分文档中
+
+通常来说 view hierarchy 是自动的，不需要我们去手动操作。
+
+举个例子，在下图中，我们可以看到两个界面元素
+
+![pios62](_resources/pios62.jpg)
+
++ 导航栏，包含 logo
++ 故事列表，是一个 `UITableView`
+
+![pios63](_resources/pios63.jpg)
+
++ 这个 app 的 root view controller 是 `UINavigationController`，`UINavigationController` 的 view 是这个 window 唯一的直接 subview，也就是 root view。导航栏是 root view 的 subview。
++ `UINavigationController` 包含第二个 `UIViewController`，是一个父子关系。这个子 controller 的 view 占据了屏幕的剩余部分，就是一个 `UITableView`。当用户点击这个 tableview 时，会有另一个 `UIViewController` 来取代这个 `UITableView`，但是导航栏会还在原地
+
+这个例子中所有的都是 automatic 的，所以再举一个例子包含 manual 的部分
+
+![pios64](_resources/pios64.jpg)
+
+这是一个显示拉丁单词信息的 app，然后下面有一个工具栏，具体的 view hierarchy 如下
+
+![pios65](_resources/pios65.jpg)
+
+因为有很多拉丁单词，所以这里用 `UIPageViewController` 来进行展示，但是工具栏本身不应该在 `UIPageViewController` 的 view 中，所以
+
++ app 的 root view controller 是自定义的 `UIViewController` 子类，包含工具栏以及一个 `UIPageViewController` 的 view。这个自定的 view controller  的 view 可以通过成为 window 的 rootViewController` 来自动成为 root view 的 subview。
++ 这里需要手动把 `UIPageViewController` 添加到 `RootViewController` 的 view 中
++ 最后 `UIPageViewController` 自动显示 `CardController` 的 view。
+
+这个 app 还有另一个模式，就是随机抽取并展示单词，虽然界面很像但是行为是完全不一样的
+
+![pios66](_resources/pios66.jpg)
+
+为了实现这个，我创建了另一个 `UIViewController` 的子类，叫做 `DrillViewController`，不同的是，这个 view controller 是被 `RootViewController` 给 present 的。
+
+![pios67](_resources/pios67.jpg)
+
+![pios68](_resources/pios68.jpg)
+
+## View Controller Creation
+
+创建 view controller 的实例和其他实例一样，新建并初始化
+
+```swift
+let llc = LessonListController(terms: self.data)
+let nav = UINavigationController(rootViewController: llc)
+```
+
+一个 view controller 被创建后必须被保持以保证不被回收，这个会在 view controller 被添加进 view controller hierarchy 的时候完成。
+
+被赋值到 `rootViewController` 属性的 view controller 会被对应的 window 保持，被当做子 view controller 的会被其父 view controller 保持，被 present 的 view controller 会由 present 它的 view controller 保持。
+
+如果一个 view 是从 storyboard 中实例化的，会自动被保持，其机制也就是和上面描述的一致。
+
+## How a View Controller Gets Its View
+
 
 
 
