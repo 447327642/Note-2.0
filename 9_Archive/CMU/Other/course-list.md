@@ -1,4 +1,27 @@
-# 2015 Fall 意向列表
+# 课程意向列表
+
+## 学分要求
+
++ 60 ECE 核心课程
+	+ 18641 Java Smart Phone
+	+ 18645 Fast Code
+	+ 18640 Computer Architecture
+	+ 18791 Medical Image
+	+ 18799 Speech Recognition
++ 24 研究生课
+	+ 10601 Machine Learning
+	+ 11601 Coding Boot Camp
++ 12 本科课
+
+
+## 跨界
+
++ 08640 Dynamic Network Analysis
++ 79262 Modern China
++ 80208 Critical Thinking
++ 08630 Ethics and Policy Issues in Computing
+
+## 课程列表
 
 ID | Name | Unit
 --- | --- | ---
@@ -11,10 +34,10 @@ ID | Name | Unit
 15666 | Computer Game Programming | 12
 15862 | Computational Photography | 12
 18794 | Pattern Recognition Theory | 12
-18641 | Java Smart Phone Development | 12
 18660 | Numerical Methods for Engineering Design and Optimization | 12
 18697 | Statistical Discovery and Learning | 12
-18781 | Speech Recognition and Understanding | 12
 18655 | Service Oriented Computing
 95712 | Object Oriented Programming in JAVA | 12
 95771 | Data Structures and Algorithms | 12
+
+
